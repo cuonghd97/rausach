@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load staticfiles %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Đăng nhập</title>
+  <!-- Bootstrap -->
+  <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+  <!-- NProgress -->
+  <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
+  <!-- Animate.css -->
+  <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
+
+  <!-- Custom Theme Style -->
+  <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
+</head>
+
+<body class="login">
+  <div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+
+    <div class="login_wrapper">
+      <div class="animate form login_form">
+        <section class="login_content">
+          <form action="" method="POST">
+            {% csrf_token %}
+            <h1>Rausach.com</h1>
+            <div>
+              <input type="text" class="form-control" placeholder="Username" required="" name='username' />
+            </div>
+            <div>
+              <input type="password" class="form-control" placeholder="Password" name="password" required="" />
+            </div>
+            <div>
+                {% if messages %}
+                  {% for message in messages %}
+                    <h4 class="text-danger">{{ message }}</h4>
+                  {% endfor %}
+                {% endif %}
+            </div>
+            <div>
+              <center>
+                <input class="btn btn-default submit" type="submit" value="Đăng nhập">
+              </center>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="separator">
+              <div class="clearfix"></div>
+              <br />
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+  <!-- jQuery -->
+  <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+  <!-- Bootstrap -->
+  <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>
