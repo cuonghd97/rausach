@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ManageStore'
+    'ManageStore',
+    'Shop'
 ]
 
 MIDDLEWARE = [
@@ -125,4 +126,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-AUTH_USER_MODEL = 'ManageStore.NhanVien'
+AUTH_USER_MODEL = 'ManageStore.MyUsers'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -13,6 +13,7 @@ urlpatterns = [
   path('products/list', views.products, name='products'),
   path('products/set-price/', views.set_price, name='set_price'),
   path('products/inventory/', views.inventory, name='inventory'),
+  path('data-products/', views.data_product),
   # Exchange
   path('exchange/invoices/', views.invoice, name='invoices'),
   path('exchange/purchase-order/', views.purchase_order, name='purchase_order'),
@@ -31,5 +32,7 @@ urlpatterns = [
   path('report/order-report/', views.order_report, name='order_report'),
   path('report/product-report/', views.product_report, name='product_report'),
   path('report/sale-report/', views.sale_report, name='sale_report'),
-  path('report/supplier-report/', views.supplier_report, name='supplier_report')
+  path('report/supplier-report/', views.supplier_report, name='supplier_report'),
+  # Nhận dữ liệu post sản phẩm bằng Ajax
+  path('post-data-add-product/', views.get_data_add_product)
 ]

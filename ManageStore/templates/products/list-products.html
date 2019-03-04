@@ -1,12 +1,150 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% block pagecontent %}
 <!-- Breadcrumb-->
 <div class="breadcrumb-holder">
     <div class="container-fluid">
         <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'ManageStore:dashboard' %}">Tổng quan</a></li>
-            <!-- <li class="breadcrumb-item active">Forms </li> -->
+            <li class="breadcrumb-item"><a href="#">Hàng hóa</a></li>
+            <li class="breadcrumb-item active">Sản phẩm </li>
         </ul>
     </div>
 </div>
+<section>
+    <div class="container-fluid">
+        <header>
+            <h1 class="h3 display">Danh sách sản phẩm</h1>
+        </header>
+        <div class="row">
+            <div class="container-fluid">
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{message}}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <button data-toggle="modal" data-target="#addproduct" class="btn btn-primary">Thêm sản phẩm</button>
+                        <!-- Modal add product-->
+                        <div id="addproduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true" class="modal fade text-left">
+                            <div role="document" class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 id="exampleModalLabel" class="modal-title">Thêm mới sản phẩm</h5>
+                                        <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span
+                                                aria-hidden="true">×</span></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container-fluid">
+                                            <form id="form-add-product" method="POST" enctype="multipart/form-data"
+                                                action="/post-data-add-product/">
+                                                {% csrf_token %}
+                                                <div class="form-group row">
+                                                    <label for="ma-san-pham" class="col-sm-4 col-form-label">Mã sản
+                                                        phẩm</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" required name="masanpham" id="ma-san-pham"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="ten-san-pham" class="col-sm-4 col-form-label">Tên
+                                                        sản phẩm</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" required name="tensanpham" id="ten-san-pham"
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="gia-von" class="col-sm-4 col-form-label">Giá vốn</label>
+                                                    <div class="col-sm-8 input-group">
+                                                        <input type="text" required name="giavon" id="gia-von" class="form-control">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">VND</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="gia-ban" class="col-sm-4 col-form-label">Giá bán</label>
+                                                    <div class="col-sm-8 input-group">
+                                                        <input type="text" required name="giaban" id="gia-ban" class="form-control">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">VND</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="ton-kho" class="col-sm-4 col-form-label">Tồn kho</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" required name="tonkho" id="ton-kho" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="trang-thai" class="col-sm-4 col-form-label">Trạng thái</label>
+                                                    <div class="col-sm-8">
+                                                        <select name="trangthai" class="custom-select">
+                                                            <option value="kd">Kinh doanh</option>
+                                                            <option value="ndk">Ngưng kinh doanh</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="image">Chọn file ảnh:</label>
+                                                    <input type="file" class="form-control-file" name="image" id="image"
+                                                        multiple>
+                                                </div>
+                                                <center>
+                                                    <div class="btn-group row" role="group">
+                                                        <input class="btn btn-warning" type="reset" value="Nhập lại">
+                                                        <input class="btn btn-primary" type="submit" id="submit" value="Lưu">
+                                                        <button class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                                                    </div>
+                                                </center>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="datatable" class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tên hàng</th>
+                                        <th>Ngày Nhập</th>
+                                        <th>Giá bán</th>
+                                        <th>Giá vốn</th>
+                                        <th>Chi tiết</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="body-table">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock pagecontent %}
+{% block js %}
+<script src="{% static 'js/products/list-products.js' %}"></script>
+<script>
+    $('#data-table').DataTable()
+</script>
+{% endblock js %}
