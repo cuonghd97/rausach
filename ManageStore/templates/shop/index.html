@@ -1,1 +1,112 @@
 {% extends "shop/base-shop.html" %}
+{% load staticfiles %}
+{% block pagecontent %}
+<div class="products">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="section_title text-center">Sản phẩm</div>
+            </div>
+        </div>
+        <div class="row page_nav_row">
+            <div class="col">
+                <div class="page_nav">
+                    <ul class="d-flex flex-row align-items-start justify-content-center">
+                        <li class="active"><a href="category.html">Rau ăn củ</a></li>
+                        <li><a href="category.html">Rau ăn lá</a></li>
+                        <li><a href="category.html">Rau gia vị</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row products_row">
+            <div class="card col-md-2 ml-4" style="width: 18rem;">
+                <a href="">
+                    <img class="card-img-top" src="{% static 'shop/products/1.jpg' %}" alt="Card image cap" style="height: 158px; width: 158 px;">
+                </a>
+                <div class="card-body">
+                    <p class="card-text">
+                        <p>Rau cải </p>
+                        <p class="card-text">10 000 VND</p>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <center><i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        <a href="">Thêm vào giỏ</a>
+                    </center>
+                </div>
+            </div>
+            <div class="card col-md-2 ml-4" style="width: 18rem;">
+                <a href="">
+                    <img class="card-img-top" src="{% static 'shop/products/2.jpg' %}" alt="Card image cap" style="height: 158px; width: 158 px;">
+                </a>
+                <div class="card-body">
+                    <p class="card-text">
+                        <p>Bắp cải </p>
+                        <p class="card-text">10 000 VND</p>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <center><i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        <a href="">Thêm vào giỏ</a>
+                    </center>
+                </div>
+            </div>
+            <div class="card col-md-2 ml-4" style="width: 18rem;">
+                <a href="">
+                    <img class="card-img-top" src="{% static 'shop/products/3.jpeg' %}" alt="Card image cap" style="height: 158px; width: 158 px;">
+                </a>
+                <div class="card-body">
+                    <p class="card-text">
+                        <p>Cà chua </p>
+                        <p class="card-text">10 000 VND</p>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <center><i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        <a href="">Thêm vào giỏ</a>
+                    </center>
+                </div>
+            </div>
+            <div class="card col-md-2 ml-4" style="width: 18rem;">
+                <a href="">
+                    <img class="card-img-top" src="{% static 'shop/products/4.jpg' %}" alt="Card image cap" style="height: 158px; width: 158 px;">
+                </a>
+                <div class="card-body">
+                    <p class="card-text">
+                        <p>Súp lơ </p>
+                        <p class="card-text">10 000 VND</p>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <center><i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        <a href="">Thêm vào giỏ</a>
+                    </center>
+                </div>
+            </div>
+            <div class="card col-md-2 ml-4" style="width: 18rem;">
+                <a href="">
+                    <img class="card-img-top" src="{% static 'shop/products/1.jpg' %}" alt="Card image cap" style="height: 158px; width: 158 px;">
+                </a>
+                <div class="card-body">
+                    <p class="card-text">
+                        <p>Rau cải </p>
+                        <p class="card-text">10 000 VND</p>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <center><i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        <a href="">Thêm vào giỏ</a>
+                    </center>
+                </div>
+            </div>
+
+        </div>
+        <div class="row load_more_row">
+            <div class="col">
+                <div class="button load_more ml-auto mr-auto"><a href="#">load more</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock pagecontent %}

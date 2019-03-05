@@ -4,5 +4,6 @@ from Shop import views
 app_name='Shop'
 
 urlpatterns = [
-    path('', views.index)
+    path('', views.index),
+    path('cart/', views.cart)
 ]

@@ -11,6 +11,8 @@
 <link href="{% static 'shop/plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="{% static 'shop/styles/main_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'shop/styles/responsive.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'shop/styles/cart.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'shop/styles/cart_responsive.css' %}">
 </head>
 <body>
 
@@ -91,46 +93,9 @@
 		<div class="super_overlay"></div>
 		<!-- Products -->
 		<div></div>
-		<div class="products">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-6 offset-lg-3">
-						<div class="section_title text-center">Sản phẩm</div>
-					</div>
-				</div>
-				<div class="row page_nav_row">
-					<div class="col">
-						<div class="page_nav">
-							<ul class="d-flex flex-row align-items-start justify-content-center">
-								<li class="active"><a href="category.html">Rau ăn củ</a></li>
-								<li><a href="category.html">Rau ăn lá</a></li>
-								<li><a href="category.html">Rau gia vị</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="row products_row">
-					<div class="card" style="width: 18rem;">
-						<a href="">
-							<img class="card-img-top" src="{% static 'shop/images/product_1.jpg' %}" alt="Card image cap">
-						</a>
-						<div class="card-body">
-						  <p class="card-text"><span>Tên: </span> <span class="pull-right">Giá:</span></p>
-						</div>
-						<div class="card-footer">
-							<center><i class="fa fa-cart-plus" aria-hidden="true"></i> 
-								<a href="">Thêm vào giỏ</a>							
-							</center>
-						</div>
-					</div>
-				</div>
-				<div class="row load_more_row">
-					<div class="col">
-						<div class="button load_more ml-auto mr-auto"><a href="#">load more</a></div>
-					</div>
-				</div>
-			</div>
-		</div>
+		{% block pagecontent %}
+		
+		{% endblock pagecontent %}
 
 		<!-- Footer -->
 
@@ -201,5 +166,6 @@ Trang web bán rau sạch - Đề tài thực tập - Hoàng Đức Cương - Ha
 <script src="{% static 'shop/plugins/progressbar/progressbar.min.js' %}"></script>
 <script src="{% static 'shop/plugins/parallax-js-master/parallax.min.js' %}"></script>
 <script src="{% static 'shop/js/custom.js' %}"></script>
+<script src="{% static 'shop/js/cart.js' %}"></script>
 </body>
 </html>
