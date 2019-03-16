@@ -1,0 +1,328 @@
+.mytable{
+    border: 1px solid #E6E9ED;
+    padding: 20px;
+    text-align: center;
+    width:100%;
+}
+.mytable td, .mytable tr{
+    border: 1px solid #E6E9ED;
+    padding: 10px;
+    text-align: center;
+}
+
+.div_tn{
+    padding: 5px;
+    width: 80%;
+}
+
+.div_tn p{
+    display: inline;
+}
+
+.div_tn input{
+    display: inline;
+    margin-left: 30px;
+    margin-right: 15px;
+}
+.baithi{
+    border-right-style: dotted;
+    border-left-style: dotted;
+}
+.baithi button, .baithi table {
+    margin:auto;
+    overflow-y: scroll;
+    height: -webkit-fill-available;
+}
+
+.div_ch{
+    border-radius:15px;
+    background-color:#E6E9ED;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 5px;
+    width: 95%;
+}
+
+.div_ch p{
+    margin: 10px 10px 10px 10px;
+}
+
+.div_sub{
+    border-radius:15px;
+    background-color:#E6E9ED;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    padding: 5px;
+    width: 95%;
+}
+
+.div_sub p{
+    margin: 10px 10px 10px 10px;
+    display: inline;
+}
+
+.div_dt{
+    padding: 5px;
+    width: 80%;
+}
+
+.div_dt p{
+    display: inline;
+    margin-left: 30px;
+    margin-right: 15px;
+}
+
+.div_tl{
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 5px;
+    width: 95%;
+}
+
+.plus {
+    color:red;
+    font-weight: bold;
+    font-size:120%;
+}
+
+.head_ch {
+
+}
+
+.head_ch input {
+    float:right;
+    width: 54px;
+    margin-bottom:5px;
+    margin-right:20px;
+    color:red;
+    font-weight: bold;
+}
+
+.head_ch p {
+    float:left;
+}
+
+.ques-container {
+    height: 200px;
+}
+.answer-container {
+    height: 50px;
+}
+
+.correct_answer{
+    color:red;
+}
+
+.stepContainer{
+    height: auto !important;
+}
+
+.exam_table{
+    border: 1px solid #E6E9ED;
+    padding: 20px;
+    text-align: center;
+    width:100%;
+    margin-bottom: 20px;
+}
+
+.exam_table tr ,.exam_table td {
+    border: 1px solid #E6E9ED;
+    text-align: center;
+    padding: 10px;
+    padding-bottom: 40px;
+}
+
+.exam {
+    display: block;
+    margin-left: 4em;
+    margin-right: 4em;
+    margin-top: 3em;
+    margin-bottom: 3em;
+    color:black;
+}
+
+ol {
+    font-weight: bold;
+}
+
+li div {
+    font-weight: normal;
+}
+
+
+@media print{
+    /*@page{margin:0px auto;}*/
+
+    .exam {
+        display: block;
+        margin-left: 4em;
+        margin-right: 4em;
+        margin-top: 3em;
+        margin-bottom: 3em;
+        color:black;
+    }
+
+    .exam_body {
+        margin-right: -10px;
+        margin-left: -10px;
+    }
+
+    ol {
+        font-weight: bold;
+    }
+
+    li div {
+        font-weight: normal;
+    }
+
+    p.bodyText {
+        font-family:georgia, times, serif;
+    }
+
+    .exam_table tr ,.exam_table td {
+        border: 1px solid #E6E9ED;
+        text-align: center;
+        padding: 10px;
+        padding-bottom: 40px;
+    }
+
+    .exam_table tr ,.exam_table td {
+        border: 1px solid #E6E9ED;
+        text-align: center;
+        padding: 10px;
+        padding-bottom: 40px;
+    }
+
+    #tieude{
+        text-align:center;
+        padding-bottom: 10px;
+    }
+    .row {
+        margin-right: 15px;
+        margin-left: 15px;
+    }
+
+    .dap_an_dien_tu {
+        display: none;
+    }
+
+    .col-md-2{
+        position: relative;
+        min-height: 1px;
+        float: left;
+        padding-right: 10px;
+        padding-left: 10px;
+        width:16.66666667%;
+    }
+
+    .col-md-3{
+        position: relative;
+        min-height: 1px;
+        float: left;
+        padding-right: 10px;
+        padding-left: 10px;
+        width:25%;
+    }
+
+    .col-md-4{
+        position: relative;
+        min-height: 1px;
+        float: left;
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 33.3333%;
+    }
+
+    .col-md-6{
+        position: relative;
+        min-height: 1px;
+        float: left;
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 50%;
+    }
+
+    .col-md-7{
+        position: relative;
+        min-height: 1px;
+        float: left;
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 58.3333%;
+    }
+
+    .col-md-8{
+        position: relative;
+        min-height: 1px;
+        float: left;
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 66.6666%;
+    }
+
+    .col-md-9{
+        position: relative;
+        min-height: 1px;
+        float: left;
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 75%;
+    }
+
+    .col-md-10{
+        position: relative;
+        min-height: 1px;
+        float: left;
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 83.3333%;
+    }
+
+    .col-md-11{
+        position: relative;
+        min-height: 1px;
+        float: left;
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 91.6666%;
+    }
+
+    .col-md-12{
+        position: relative;
+        min-height: 1px;
+        float: left;
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 100%;
+    }
+
+ }
+
+.exam_option {
+    border: 1px solid #E6E9ED;
+    border-radius: 5px;
+    margin: 1em;
+}
+
+.exam_option_title{
+    text-align: center;
+}
+
+.exam_option_body{
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+.exam_option_row{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.dap_an_trac_nhiem {
+    color:red;
+}
+
+.dap_an_dien_tu {
+    color:red;
+}

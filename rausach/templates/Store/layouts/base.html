@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- Meta, title, CSS, favicons, etc. -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>{% block title %}{% endblock %}</title>
+	{% load static %}
+
+	<!-- Bootstrap -->
+	<link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+	<!-- Font Awesome -->
+	<link href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet">
+
+	{% block css %}{% endblock %}
+
+	<!-- Custom Theme Style -->
+	<link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
+
+
+
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+			<div class="col-md-3 left_col">
+				<div class="left_col scroll-view">
+					<div class="navbar nav_title" style="border: 0;">
+						<a href="index.html" class="site_title"><i class="fa fa-home"></i> <span>Rau sạch</span></a>
+					</div>
+
+					<div class="clearfix"></div>
+
+					<!-- menu profile quick info -->
+					<div class="profile clearfix">
+						<div class="profile_pic">
+							<img src="{% static 'build/images/img.jpg' %}" alt="..." class="img-circle profile_img">
+						</div>
+						<div class="profile_info">
+							<span>Xin chào!</span>
+							<h2 class="full_name"></h2>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<!-- /menu profile quick info -->
+
+					<br />
+
+					<!-- sidebar menu -->
+					<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+						<div class="menu_section">
+							<ul class="nav side-menu">
+								<li>
+									<a href="">
+										<i class="fa fa-briefcase"></i> Quản lý niên khóa </a>
+								</li>
+								<li>
+									<a href="">
+										<i class="fa fa-briefcase"></i> Quản lý khoa </a>
+								</li>
+
+								<li>
+									<a href="">
+										<i class="fa fa-book"></i> Quản lý môn </a>
+								</li>
+
+								<li>
+									<a href="">
+										<i class="fa fa-users"></i> Quản lý giáo viên </a>
+								</li>
+
+								<li>
+									<a href="">
+										<i class="fa fa-graduation-cap"></i> Quản lý sinh viên</a>
+								</li>
+
+								<li>
+									<a href="">
+										<i class="fa fa-users"></i> Quản lý lớp</a>
+								</li>
+
+								<li>
+									<a href="#">
+										<i class="fa fa-question-circle-o"></i> Quản lý câu hỏi </a>
+								</li>
+
+								<li><a><i class="fa fa-table"></i> Quản lý đề <span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu">
+										<li><a href="#">Tự tạo đề</a></li>
+										<li><a href="#">Tạo đề tự động</a></li>
+										<li><a href="#">Danh sách đề</a></li>
+									</ul>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-info-circle"></i> Thông tin cá nhân </a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- /sidebar menu -->
+
+				</div>
+			</div>
+
+			<!-- top navigation -->
+			<div class="top_nav">
+				<div class="nav_menu">
+					<nav>
+						<div class="nav toggle">
+							<a id="menu_toggle"><i class="fa fa-bars"></i></a>
+						</div>
+
+						<ul class="nav navbar-nav navbar-right">
+							<li class="">
+								<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									<img src="{% static 'build/images/img.jpg' %}" alt=""><span class="full_name"></span>
+									<span class=" fa fa-angle-down"></span>
+								</a>
+								<ul class="dropdown-menu dropdown-usermenu pull-right">
+									<li><a href=""> Thông tin</a></li>
+									<li><a href=""><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- /top navigation -->
+
+			<!-- page content -->
+			<div class="right_col" role="main">
+				{% block content %}{% endblock %}
+
+			</div>
+			<!-- /page content -->
+
+			<!-- footer content -->
+			<footer>
+				<div class="pull-right">
+					Test pro
+				</div>
+				<div class="clearfix"></div>
+			</footer>
+			<!-- /footer content -->
+		</div>
+	</div>
+
+	<!-- jQuery -->
+	<script src="{% static 'build/js/jquery.min.js' %}"></script>
+	<!-- Bootstrap -->
+	<script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+	<!-- Custom Theme Scripts -->
+	<script src="{% static 'build/js/custom.min.js' %}"></script>
+	<!--sweat alert-->
+	<script src="{% static 'build/js/sweetalert2.all.min.js' %}"></script>
+
+	{% block js %}
+	<!-- <script src="{% static 'custom/js/admin_tp/user_profile.js' %}"></script> -->
+	{% endblock %}
+</body>
+
+</html>

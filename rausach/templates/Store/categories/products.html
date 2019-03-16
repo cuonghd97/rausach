@@ -1,0 +1,220 @@
+{% extends "admin_tp/base.html" %}
+{% load static %}
+{% block title %}
+Quản lý giáo viên
+{% endblock title %}
+
+{% block css %}
+<link href="{% static 'datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Danh sách giáo viên</h2>
+                    <!--<button class="btn btn btn-round btn-primary"  style="float:right;" data-toggle="modal" data-target="#new_mon_multi" data-title="new">-->
+                    <!--<i class="fa fa-plus"></i> Thêm nhiều môn-->
+                    <!--</button>-->
+                    <div class="clearfix"></div>
+                    <button class="btn btn-round btn-primary" data-toggle="modal" data-target="#new_giao_vien"
+                        data-title="new">
+                        <i class="fa fa-plus"></i> Tạo mới giáo viên
+                    </button>
+
+                    <button class="btn btn-round btn-primary" data-toggle="modal" data-target="#add_many_gv" data-title="new">
+                        <i class="fa fa-plus"></i> Thêm nhiều giáo viên
+                    </button>
+
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped jambo_table bulk_action" id="list_giao_vien" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>*</th>
+                                    <th>Họ tên</th>
+                                    <th>Giới tính</th>
+                                    <th>Tên đăng nhập</th>
+                                    <th>Active</th>
+                                    <th>
+                                        <center>Sửa</center>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_body">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal new giáo viên -->
+<div class="modal" id="new_giao_vien" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="new_mon_title">Tạo mới giáo viên</h4>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+
+                <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
+                    <input type="text" class="form-control has-feedback-left" name="ten_giao_vien" id="ten_giao_vien"
+                        placeholder="Tên giáo viên" required>
+                    <span class="fa fa-font form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+                <div class="col-md-6 col-sm-12 col-12 col-lg-6 form-group has-feedback">
+                    <select class="form-control" required id="gioi_tinh">
+                        <option value="">Chọn giới tính</option>
+                        <option value="nam">Nam</option>
+                        <option value="nu">Nữ</option>
+                        <option value="oth">Khác</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 col-sm-12 col-12 col-lg-6 form-group has-feedback">
+                    <input type="text" class="form-control has-feedback-left" name="ten_dang_nhap" id="ten_dang_nhap"
+                        placeholder="Tên đăng nhập" required>
+                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn_create_giao_vien">Tạo mới</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal edit giáo viên -->
+<div class="modal" id="edit_giao_vien" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="new_mon_title">Sửa giáo viên</h4>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <input type="hidden" name="id" id="id">
+
+                <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
+                    <input type="text" class="form-control has-feedback-left" name="ten_giao_vien" id="ten_giao_vien"
+                        placeholder="Tên giáo viên" required>
+                    <span class="fa fa-font form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+                <div class="col-md-6 col-sm-12 col-12 col-lg-12 form-group has-feedback">
+                    <select class="form-control" required id="gioi_tinh">
+                        <option value="">Chọn giới tính</option>
+                        <option value="nam">Nam</option>
+                        <option value="nu">Nữ</option>
+                        <option value="oth">Khác</option>
+                    </select>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
+                    <label> Active giáo viên: </label>
+                    <input type="checkbox"  name="is_active" id="is_active">
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
+                    <input type="text" class="form-control has-feedback-left" name="ten_dang_nhap" id="ten_dang_nhap"
+                        placeholder="Tên đăng nhập" required>
+                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn_edit_giao_vien">Tạo mới</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal thêm nhiều giáo viên -->
+<div class="modal" id="add_many_gv" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="new_mon_title">Thêm giáo viên</h4>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                <input type="hidden" name="id" id="id">
+                <h3>Danh sách giáo viên theo mẫu sau:</h3>
+                <center>
+                    <img src="{% static 'custom/images/example_teachers.png' %}" alt="">
+                </center>
+                <br>
+                <div class="clearfix"></div>
+                <div class="col-md-12 col-sm-12 col-12 col-lg-12 has-feedback">
+                    <input type="file" class="form-control has-feedback-left" name="danh_sach" id="danh_sach" required>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn_add_many_gv">Tạo mới</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal hiện tài khoản lỗi -->
+<div class="modal" id="error_gv" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="new_mon_title">Danh sách thêm không thành công</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table" id="error_list">
+                    <thead>
+                        <tr>
+                            <th>*</th>
+                            <th>Họ tên</th>
+                            <th>Giới tính</th>
+                            <th>Tên đăng nhập</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_body">
+
+                    </tbody>
+                </table>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block js %}
+<script src="{% static 'datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'xlsx.full.min.js' %}"></script>
+<script src="{% static 'custom/js/admin_tp/teacher.js' %}"></script>
+{% endblock js %}
