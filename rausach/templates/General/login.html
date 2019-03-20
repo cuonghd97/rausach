@@ -13,7 +13,7 @@
     <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
@@ -28,7 +28,7 @@
         <div class="animate form login_form">
           <section class="login_content">
             <form id="login_form">
-              <h1>Test Pro</h1>
+              <h1>Rau Sạch</h1>
               {% csrf_token %}
               <div>
                 <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" required="" />
@@ -46,8 +46,8 @@
 
       </div>
     </div>
-    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
-    <script src="{% static 'sweetalert2.all.min.js' %}"></script>
-    <script src="{% static 'custom/js/chung/login.js' %}"></script>
+    <script src="{% static 'build/js/jquery.min.js' %}"></script>
+    <script src="{% static 'build/js/sweetalert2.all.min.js' %}"></script>
+    <script src="{% static 'custom/js/General/login.js' %}"></script>
   </body>
 </html>
