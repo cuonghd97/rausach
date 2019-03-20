@@ -45,7 +45,12 @@ class MyUsers(AbstractBaseUser):
     class Meta:
         db_table = 'my_users'
 
+# Bảng loại hàng
+class LoaiHang(models.Model):
+    ten_loai = models.TextField()
 
+    class Meta:
+        db_table = 'loai_hang'
 # Bảng sản phẩm
 
 
@@ -60,14 +65,7 @@ class SanPham(models.Model):
     # Tồn kho
     ton_kho = models.IntegerField(default=0)
     is_active = models.IntegerField(default=1)
-    Loai = (('RGV', 'Rau gia vị'),
-            ('TC', 'Trái cây'),
-            ('RAC', 'Rau ăn củ'),
-            ('N', 'Nấm'),
-            ('RAL', 'Rau ăn lá'),
-            ('RCK', 'Các loại rau củ khác')
-            )
-    loai_hang = models.CharField(max_length=255, choices=Loai)
+    loai_hang = models.ForeignKey('LoaiHang', models.SET_NULL, null=True)
     mo_ta = models.TextField(blank=True)
     nha_cung_cap = models.ForeignKey('NhaCungCap', models.SET_NULL, null=True)
 

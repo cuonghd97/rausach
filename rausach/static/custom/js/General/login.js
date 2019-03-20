@@ -25,6 +25,15 @@ $(document).ready(function(){
             type:"POST",
             url: location.href,
             data: $('#login_form').serialize(),
+            beforeSend: function() {
+                Swal.fire({
+                    title: "Xin chờ...",
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
+                    },
+                    allowOutsideClick: false
+                });
+            },
             success: function(data){
                 var result = JSON.parse(JSON.stringify(data));
                 if(result.status == 'error'){

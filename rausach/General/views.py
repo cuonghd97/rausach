@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib.auth import login, logout
 from django.contrib.auth.hashers import check_password
 from django.http import HttpResponse, JsonResponse
@@ -11,7 +12,7 @@ def user_login(request):
     user = request.user
     if user.is_authenticated:
         if user.role == 0:
-            return redirect(reversed('Store:base'))
+            return redirect(reverse('Store:base'))
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -23,6 +24,8 @@ def user_login(request):
             else:
                 if check_password(password, user.password):
                     login(request, user)
+                    if user.role == 0:
+                        return JsonResponse({"status": "success", "messages": reverse('Store:base')})
                     if user.role == 1:
                         return JsonResponse({"status": "success", "messages": 'Nhân viên'})
                     elif user.role == 2:
@@ -33,4 +36,4 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return redirect(reversed('General:login'))
+    return redirect(reverse('General:login'))
