@@ -7,7 +7,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<title>{% block title %}{% endblock %}</title>
+		<title>{% block title %}Rau sạch{% endblock %}</title>
 		{% load static %}
 
 		<!-- Bootstrap -->
@@ -74,6 +74,12 @@
 									<li>
 										<a href="{% url 'Store:quan_ly_loai_hang' %}">
 											<i class="fa fa-bars"></i> Quản lý loại hàng
+										</a>
+									</li>
+
+									<li>
+										<a href="{% url 'Store:quan_ly_nha_cung_cap' %}">
+											<i class="fa fa-barcode"></i> Quản lý nhà cung cấp
 										</a>
 									</li>
 
