@@ -1,4 +1,6 @@
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from Store import views
 
@@ -21,5 +23,9 @@ urlpatterns = [
 	path('post', include([
 		path('-loai-hang/', views.post_loai_hang),
 		path('-nha-cung-cap/', views.post_nha_cung_cap),
+		path('-san-pham/', views.post_san_pham)
 	]))
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -72,21 +72,38 @@
 									</li>
 
 									<li>
-										<a href="{% url 'Store:quan_ly_loai_hang' %}">
-											<i class="fa fa-bars"></i> Quản lý loại hàng
-										</a>
+										<a
+											><i class="fa fa-table"></i> Hàng hóa
+											<span class="fa fa-chevron-down"></span
+										></a>
+										<ul class="nav child_menu">
+											<li>
+												<a href="{% url 'Store:quan_ly_loai_hang' %}">
+													<i class="fa fa-bars"></i> Quản lý loại hàng
+												</a>
+											</li>
+											<li>
+												<a href="{% url 'Store:quan_ly_san_pham' %}">
+													<i class="fa fa-cubes"></i> Quản lý sản phẩm
+												</a>
+											</li>
+										</ul>
 									</li>
 
 									<li>
-										<a href="{% url 'Store:quan_ly_nha_cung_cap' %}">
-											<i class="fa fa-barcode"></i> Quản lý nhà cung cấp
-										</a>
-									</li>
-
-									<li>
-										<a href="{% url 'Store:quan_ly_san_pham' %}">
-											<i class="fa fa-cubes"></i> Quản lý sản phẩm
-										</a>
+										<a
+											><i class="fa fa-table"></i> Đối tác
+											<span class="fa fa-chevron-down"></span
+										></a>
+										<ul class="nav child_menu">
+											<li>
+												<a href="{% url 'Store:quan_ly_nha_cung_cap' %}">
+													<i class="fa fa-barcode"></i> Quản lý nhà cung cấp
+												</a>
+											</li>
+											<li><a href="#">Quản lý nhân viên</a></li>
+											<li><a href="#">Quản lý người dùng</a></li>
+										</ul>
 									</li>
 
 									<li>

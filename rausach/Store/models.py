@@ -78,7 +78,7 @@ class SanPham(models.Model):
 class HinhAnhSP(models.Model):
     san_pham = models.ForeignKey('SanPham', models.CASCADE)
     hinh_anh = models.FileField(upload_to='product/')
-    duong_dan = models.FilePathField()
+    # duong_dan = models.FilePathField()
 
     class Meta:
         db_table = 'hinh_anh_san_pham'
