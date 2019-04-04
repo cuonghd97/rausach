@@ -31,7 +31,7 @@
 	<body class="nav-md">
 		<div class="container body">
 			<div class="main_container">
-				<div class="col-md-3 left_col">
+				<div class="col-md-3 left_col" style="position: fixed;">
 					<div class="left_col scroll-view">
 						<div class="navbar nav_title" style="border: 0;">
 							<a href="index.html" class="site_title"
@@ -52,7 +52,7 @@
 							</div>
 							<div class="profile_info">
 								<span>Xin chào!</span>
-								<h2 class="full_name"></h2>
+								<h2 class="full_name">{{user.username}}</h2>
 							</div>
 							<div class="clearfix"></div>
 						</div>
@@ -69,6 +69,10 @@
 								<ul class="nav side-menu">
 									<li>
 										<a href=""> <i class="fa fa-home"></i> Tổng quan </a>
+									</li>
+
+									<li>
+										<a href="{% url 'Store:quan_ly_nhan_vien' %}"> <i class="fa fa-home"></i> Quản lý nhân viên </a>
 									</li>
 
 									<li>
@@ -98,45 +102,10 @@
 										<ul class="nav child_menu">
 											<li>
 												<a href="{% url 'Store:quan_ly_nha_cung_cap' %}">
-													<i class="fa fa-barcode"></i> Quản lý nhà cung cấp
+													Quản lý nhà cung cấp
 												</a>
 											</li>
-											<li><a href="#">Quản lý nhân viên</a></li>
 											<li><a href="#">Quản lý người dùng</a></li>
-										</ul>
-									</li>
-
-									<li>
-										<a href="">
-											<i class="fa fa-users"></i> Quản lý giáo viên
-										</a>
-									</li>
-
-									<li>
-										<a href="">
-											<i class="fa fa-graduation-cap"></i> Quản lý sinh viên</a
-										>
-									</li>
-
-									<li>
-										<a href=""> <i class="fa fa-users"></i> Quản lý lớp</a>
-									</li>
-
-									<li>
-										<a href="#">
-											<i class="fa fa-question-circle-o"></i> Quản lý câu hỏi
-										</a>
-									</li>
-
-									<li>
-										<a
-											><i class="fa fa-table"></i> Quản lý đề
-											<span class="fa fa-chevron-down"></span
-										></a>
-										<ul class="nav child_menu">
-											<li><a href="#">Tự tạo đề</a></li>
-											<li><a href="#">Tạo đề tự động</a></li>
-											<li><a href="#">Danh sách đề</a></li>
 										</ul>
 									</li>
 									<li>

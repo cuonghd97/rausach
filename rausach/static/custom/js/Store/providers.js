@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	// Load dữ liệu lên bảng danh sách nhà cung cấp
 	var table = $("#list_nha_cung_cap").DataTable({
+		destroy: true,
 		ajax: {
 			type: "get",
 			url: "/store/data-nha-cung-cap/",

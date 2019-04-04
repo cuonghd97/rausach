@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    // console.log("aaaaa");
     $("#login").click(function(){
         var username = $('input[name=username]').val();
         var password = $('input[name=password]').val();
@@ -20,7 +21,7 @@ $(document).ready(function(){
             })
             return false;
         }
-
+        
         $.ajax({
             type:"POST",
             url: location.href,
@@ -51,7 +52,7 @@ $(document).ready(function(){
                         showConfirmButton: false,
                         timer: 1000
                     }).then(() =>{
-                        location.replace(result.messages)
+                        window.location.href = result.messages;
                     })
                 };
              }

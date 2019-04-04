@@ -1,0 +1,357 @@
+{% extends "../layouts/base.html" %} {% load static %} {% block title %} Quản lý
+loại hàng {% endblock title %} {% block css %}
+<link href="{% static 'DataTables/datatables.css' %}" rel="stylesheet" />
+{% endblock %} {% block content %}
+<div class="">
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Danh sách loại hàng</h2>
+					<!--<button class="btn btn btn-round btn-primary"  style="float:right;" data-toggle="modal" data-target="#new_mon_multi" data-title="new">-->
+					<!--<i class="fa fa-plus"></i> Thêm nhiều môn-->
+					<!--</button>-->
+					<div class="clearfix"></div>
+					<button
+						class="btn btn-round btn-primary"
+						data-toggle="modal"
+						data-target="#new_nhan_vien"
+                        data-title="new"
+                        id="btn_new_nhan_vien"
+					>
+						<i class="fa fa-plus"></i> Thêm mới nhân viên
+					</button>
+					<div class="clearfix"></div>
+				</div>
+
+				<div class="x_content">
+					<div class="table-responsive">
+						<table
+							class="table table-striped jambo_table bulk_action"
+							id="list_nhan_vien"
+							width="100%"
+						>
+							<thead>
+								<tr>
+									<th>*</th>
+									<th>Tên nhân viên</th>
+									<th>Vị trí</th>
+									<th>Lương</th>
+									<th>Giới tính</th>
+									<th>Active</th>
+									<th>
+										<center>Sửa/Xóa</center>
+									</th>
+								</tr>
+							</thead>
+							<tbody id="table_body"></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal new loại hàng -->
+<div class="modal" id="new_nhan_vien" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					&times;
+				</button>
+				<h4 class="modal-title" id="new_mon_title">Thêm mới nhân viên</h4>
+			</div>
+			<div class="modal-body">
+				{% csrf_token %}
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						class="form-control has-feedback-left"
+						name="ten_nhan_vien"
+						id="ten_nhan_vien"
+						placeholder="Tên nhân viên"
+						required
+					/>
+					<span
+						class="fa fa-font form-control-feedback left"
+						aria-hidden="true"
+					></span>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						class="form-control has-feedback-left"
+						name="username"
+						id="username"
+						placeholder="Tên đăng nhập"
+						required
+					/>
+					<span
+						class="fa fa-font form-control-feedback left"
+						aria-hidden="true"
+					></span>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<select name="gioi_tinh" id="gioi_tinh" class="form-control">
+						<option value="">--Giới tính--</option>
+						<option value="nam">Nam</option>
+						<option value="nu">Nữ</option>
+						<option value="oth">Khác</option>
+					</select>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="email"
+						class="form-control has-feedback-left"
+						name="email"
+						id="email"
+						placeholder="Email"
+						required
+					/>
+					<span
+						class="fa fa-at form-control-feedback left"
+						aria-hidden="true"
+					></span>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						class="form-control has-feedback-left"
+						name="sdt"
+						id="sdt"
+						placeholder="Số điện thoại"
+						required
+					/>
+					<span
+						class="fa fa-phone form-control-feedback left"
+						aria-hidden="true"
+					></span>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						class="form-control has-feedback-left"
+						name="address"
+						id="address"
+						placeholder="Địa chỉ"
+						required
+					/>
+					<span
+						class="fa fa-font form-control-feedback left"
+						aria-hidden="true"
+					></span>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<select name="tinh" id="tinh" class="form-control">
+						<option value="">--Tỉnh--</option>
+					</select>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<select name="huyen" id="huyen" class="form-control">
+						<option value="">--Huyện--</option>
+					</select>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<select name="role" id="role" class="form-control">
+						<option value="">--Chức vụ--</option>
+						<option value="2">Nhân viên quản lý</option>
+						<option value="1">Nhân viên bán hàng</option>
+					</select>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						name="ngay_sinh"
+						id="ngay_sinh"
+						placeholder="Ngày sinh"
+                        class="form-control"
+                        data-inputmask="'mask': '9999-99-99'"
+					/>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						name="luong"
+						id="luong"
+						placeholder="Lương"
+						class="form-control"
+					/>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<label>Chọn ảnh</label>
+					<input
+						type="file"
+						name="image"
+						id="image"
+						class="form-control-file"
+					/>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="btn_create_nhan_vien">
+					Tạo mới
+				</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					Đóng
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal sửa loại hàng -->
+<div class="modal" id="new_nhan_vien" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					&times;
+				</button>
+				<h4 class="modal-title" id="new_mon_title">Thêm mới nhân viên</h4>
+			</div>
+			<div class="modal-body">
+				{% csrf_token %}
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						class="form-control has-feedback-left"
+						name="ten_nhan_vien"
+						id="ten_nhan_vien"
+						placeholder="Tên nhân viên"
+						required
+					/>
+					<span
+						class="fa fa-font form-control-feedback left"
+						aria-hidden="true"
+					></span>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						class="form-control has-feedback-left"
+						name="username"
+						id="username"
+						placeholder="Tên đăng nhập"
+						required
+					/>
+					<span
+						class="fa fa-font form-control-feedback left"
+						aria-hidden="true"
+					></span>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<select name="gioi_tinh" id="gioi_tinh" class="form-control">
+						<option value="">--Giới tính--</option>
+						<option value="nam">Nam</option>
+						<option value="nu">Nữ</option>
+						<option value="oth">Khác</option>
+					</select>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="email"
+						class="form-control has-feedback-left"
+						name="email"
+						id="email"
+						placeholder="Email"
+						required
+					/>
+					<span
+						class="fa fa-at form-control-feedback left"
+						aria-hidden="true"
+					></span>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						class="form-control has-feedback-left"
+						name="sdt"
+						id="sdt"
+						placeholder="Số điện thoại"
+						required
+					/>
+					<span
+						class="fa fa-phone form-control-feedback left"
+						aria-hidden="true"
+					></span>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						class="form-control has-feedback-left"
+						name="address"
+						id="address"
+						placeholder="Địa chỉ"
+						required
+					/>
+					<span
+						class="fa fa-font form-control-feedback left"
+						aria-hidden="true"
+					></span>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<select name="tinh" id="tinh" class="form-control">
+						<option value="">--Tỉnh--</option>
+					</select>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<select name="huyen" id="huyen" class="form-control">
+						<option value="">--Huyện--</option>
+					</select>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<select name="role" id="role" class="form-control">
+						<option value="">--Chức vụ--</option>
+						<option value="2">Nhân viên quản lý</option>
+						<option value="1">Nhân viên bán hàng</option>
+					</select>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						name="ngay_sinh"
+						id="ngay_sinh"
+						placeholder="Ngày sinh"
+                        class="form-control"
+                        data-inputmask="'mask': '99/99/9999'"
+					/>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<input
+						type="text"
+						name="luong"
+						id="luong"
+						placeholder="Lương"
+						class="form-control"
+					/>
+				</div>
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="is_active" id="is_active" /> Active
+						</label>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="btn_create_nhan_vien">
+					Tạo mới
+				</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					Đóng
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %} {% block js %}
+<script src="{% static 'jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
+<script src="{% static 'DataTables/datatables.js' %}"></script>
+<script src="{% static 'build/js/xlsx.full.min.js' %}"></script>
+<script src="{% static 'custom/js/Store/staff.js' %}"></script>
+{% endblock js %}

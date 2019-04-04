@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.shortcuts import render
 from django.contrib.auth import decorators
@@ -9,9 +10,14 @@ from Store.models import *
 
 # Create your views here.
 
+THEM_THANH_CONG = {"status": "success", "messages": 'Thêm thành công'}
+SUA_THANH_CONG = {"status": "success", "messages": 'Sửa thành công'}
+LOI = {"status": "error", "messages": 'Lỗi'}
+XOA_THANH_CONG = {"status": "success", "messages": 'Xóa thành công'}
 
 def base(request):
-    return render(request, 'Store/layouts/base.html')
+    user = request.user
+    return render(request, 'Store/layouts/base.html',{"user":user})
 
 # Json tỉnh
 @decorators.login_required(login_url='/')
@@ -36,6 +42,9 @@ def san_pham(request):
     return render(request, 'Store/categories/products.html')
 # Data sản phẩm
 
+def data_anh_sp(request, id):
+    anh = HinhAnhSP.objects.filter(san_pham=id).values()
+    return JsonResponse(list(anh), safe=False)
 
 def data_san_pham(request):
     san_pham = SanPham.objects.all()
@@ -52,9 +61,13 @@ def data_san_pham(request):
         obj.update({'gia_ban': sp.gia_ban})
         obj.update({'ton_kho': sp.ton_kho})
         obj.update({'is_active': sp.is_active})
+        obj.update({'so_luong': sp.so_luong})
         obj.update({'mo_ta': sp.mo_ta})
         obj.update({'loai_hang': sp.loai_hang.ten_loai})
+        obj.update({'id_loai_hang': sp.loai_hang.id})
         obj.update({'nha_cung_cap': sp.nha_cung_cap.ten})
+        obj.update({'id_nha_cung_cap': sp.nha_cung_cap.id})
+        obj.update({"anh": str(sp.avt)})
         i+=1
 
         data.append(obj)
@@ -73,25 +86,65 @@ def post_san_pham(request):
         loai_hang = request.POST.get('loai_hang')
         nha_cung_cap = request.POST.get('nha_cung_cap')
         mo_ta = request.POST.get('mo_ta')
-        try:
-            san_pham = SanPham()
-            san_pham.ten_san_pham = ten_san_pham
-            san_pham.gia_von = gia_von
-            san_pham.gia_ban = gia_ban
-            san_pham.so_luong = so_luong
-            san_pham.loai_hang = LoaiHang.objects.get(pk=loai_hang)
-            san_pham.nha_cung_cap = NhaCungCap.objects.get(pk=nha_cung_cap)
-            san_pham.mo_ta = mo_ta
-            san_pham.ton_kho =so_luong
-            san_pham.save()
-            id_sp = san_pham.id
-            for image in images:
-                anh_sp = HinhAnhSP()
-                anh_sp.san_pham = SanPham.objects.get(pk=id_sp)
-                anh_sp.hinh_anh = image
-                anh_sp.save()
-        except:
-            pass
+        avt = request.FILES.get('image_avt')
+        is_add = request.POST.get('is_add')
+        id_sp = request.POST.get('id')
+        is_edit = request.POST.get('is_edit')
+        is_delete = request.POST.get('is_delete')
+        is_active = request.POST.get('is_active')
+        print(avt)
+        print(images)
+        if is_add != None:
+            try:
+                san_pham = SanPham()
+                san_pham.ten_san_pham = ten_san_pham
+                san_pham.gia_von = gia_von
+                san_pham.gia_ban = gia_ban
+                san_pham.so_luong = so_luong
+                san_pham.loai_hang = LoaiHang.objects.get(pk=loai_hang)
+                san_pham.nha_cung_cap = NhaCungCap.objects.get(pk=nha_cung_cap)
+                san_pham.mo_ta = mo_ta
+                san_pham.ton_kho =so_luong
+                san_pham.avt = avt
+                san_pham.save()
+                id_sp = san_pham.id
+                for image in images:
+                    anh_sp = HinhAnhSP()
+                    anh_sp.san_pham = SanPham.objects.get(pk=id_sp)
+                    anh_sp.hinh_anh = image
+                    anh_sp.save()
+            except:
+                pass
+        if is_edit != None:
+            try:
+                san_pham = SanPham.objects.get(pk=id_sp)
+                san_pham.ten_san_pham = ten_san_pham
+                san_pham.gia_von = gia_von
+                san_pham.gia_ban = gia_ban
+                san_pham.so_luong = so_luong
+                san_pham.loai_hang = LoaiHang.objects.get(pk=loai_hang)
+                san_pham.nha_cung_cap = NhaCungCap.objects.get(pk=nha_cung_cap)
+                san_pham.mo_ta = mo_ta
+                san_pham.ton_kho =so_luong
+                if avt != None:
+                    san_pham.avt = avt
+                san_pham.is_active = is_active
+                san_pham.save()
+                if images != []: 
+                    HinhAnhSP.objects.filter(san_pham=id_sp).delete()
+                    for image in images:
+                        anh_sp = HinhAnhSP()
+                        anh_sp.san_pham = SanPham.objects.get(pk=id_sp)
+                        anh_sp.hinh_anh = image
+                        anh_sp.save()
+            except:
+                pass
+        if is_delete != None:
+            try:
+                SanPham.objects.get(pk=id_sp).delete()
+                return JsonResponse(XOA_THANH_CONG)
+            except:
+                return JsonResponse(LOI)
         return JsonResponse({})
     return JsonResponse({})
 
@@ -139,15 +192,15 @@ def post_loai_hang(request):
             loai_hang.ten_loai = ten_loai
             loai_hang.save()
 
-            return JsonResponse({"status": "success", "messages": 'Thêm thành công'})
+            return JsonResponse(THEM_THANH_CONG)
         if is_edit != None:
             loai_hang = LoaiHang.objects.get(pk=id_loai_hang)
             loai_hang.ten_loai = ten_loai
             loai_hang.save()
-            return JsonResponse({"status": "success", "messages": 'Sửa thành công'})
+            return JsonResponse(SUA_THANH_CONG)
         if is_delete != None:
             loai_hang = LoaiHang.objects.get(pk=id_loai_hang).delete()
-            return JsonResponse({"status": "success", "messages": 'Xóa thành công'})
+            return JsonResponse(XOA_THANH_CONG)
     return JsonResponse({})
 
 
@@ -186,7 +239,8 @@ def data_nha_cung_cap(request):
 
 # Post dữ liệu nhà cung cấp
 
-
+@decorators.login_required(login_url='/')
+@is_admin
 def post_nha_cung_cap(request):
     if request.method == 'POST':
         ten_nha_cung_cap = request.POST.get('ten_nha_cung_cap')
@@ -213,9 +267,9 @@ def post_nha_cung_cap(request):
                 ncc.huyen = huyen
                 ncc.mo_ta = mo_ta
                 ncc.save()
-                return JsonResponse({"status": "success", "messages": 'Thêm thành công'})
+                return JsonResponse(THEM_THANH_CONG)
             except:
-                return JsonResponse({"status": "error", "messages": 'Lỗi'})
+                return JsonResponse(LOI)
 
         if is_edit != None:
             try:
@@ -230,16 +284,93 @@ def post_nha_cung_cap(request):
                 ncc.mo_ta = mo_ta
                 ncc.save()
 
-                return JsonResponse({"status": "success", "messages": 'Sửa thành công'})
+                return JsonResponse(SUA_THANH_CONG)
             except:
-                return JsonResponse({"status": "error", "messages": 'Lỗi'})
+                return JsonResponse(LOI)
         if is_delete != None:
             try:
                 ncc = NhaCungCap.objects.get(pk=id_ncc).delete()
 
-                return JsonResponse({"status": "success", "messages": 'Xóa thành công'})
+                return JsonResponse(XOA_THANH_CONG)
             except:
-                return JsonResponse({"status": "error", "messages": 'Lỗi'})
+                return JsonResponse(LOI)
 
     else:
-        return JsonResponse({"status": "error", "messages": 'Lỗi'})
+        return JsonResponse(LOI)
+
+
+# Quản lý nhân viên trong cửa hàng
+@decorators.login_required(login_url='/')
+@is_admin
+def nhan_vien(request):
+    return render(request, 'Store/staff/staff.html')
+
+# Data nhân viên
+@decorators.login_required(login_url='/')
+@is_admin
+def data_nhan_vien(request):
+    users = MyUsers.objects.filter(role__in=[1, 2])
+    data = []
+    i = 1
+    for nhan_vien in users:
+        obj = {}
+        obj.update({'no': i})
+        obj.update({'id': nhan_vien.id})
+        obj.update({'huyen': nhan_vien.huyen})
+        obj.update({'tinh': nhan_vien.tinh})
+        obj.update({'dia_chi': nhan_vien.dia_chi})
+        obj.update({'ho_ten': nhan_vien.ho_ten})
+        obj.update({'ngay_sinh': nhan_vien.ngay_sinh})
+        obj.update({'luong': nhan_vien.luong})
+        obj.update({'sdt': nhan_vien.sdt})
+        obj.update({'gioi_tinh': nhan_vien.gioi_tinh})
+        obj.update({'created_at': nhan_vien.created_at})
+        obj.update({'role': nhan_vien.role})
+        obj.update({'username': nhan_vien.username})
+        obj.update({'is_active': nhan_vien.is_active})
+        obj.update({'email': nhan_vien.email})
+        obj.update({'avatar': str(nhan_vien.avatar)})
+
+        i+=1
+        data.append(obj)
+    return JsonResponse(data, safe=False)
+
+# Post dữ liệu nhân viên
+@decorators.login_required(login_url='/')
+# @is_admin
+def post_nhan_vien(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        gioi_tinh = request.POST.get('gioi_tinh')
+        email = request.POST.get('email')
+        sdt = request.POST.get('sdt')
+        address = request.POST.get('address')
+        tinh = request.POST.get('tinh')
+        huyen = request.POST.get('huyen')
+        role = request.POST.get('role')
+        ngay_sinh = request.POST.get('ngay_sinh')
+        luong = request.POST.get('luong')
+        anh = request.FILES.get('anh')
+        is_add = request.POST.get('is_add')
+        if is_add != None:
+            try:
+                user = MyUsers()
+                user.username = username
+                user.gioi_tinh = gioi_tinh
+                user.email = email
+                user.sdt = sdt
+                user.set_password(username)
+                user.dia_chi = address
+                user.tinh = tinh
+                user.huyen = huyen
+                user.role = role
+                user.ngay_sinh = datetime.strptime(ngay_sinh,'%Y-%m-%d')
+                user.luong = luong
+                user.avatar = anh
+                user.is_active = 1
+                user.save()
+                return JsonResponse(THEM_THANH_CONG)
+            except:
+                return JsonResponse(LOI)
+        return JsonResponse({}, safe=False)
+    return JsonResponse({}, safe=False)

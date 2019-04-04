@@ -5,7 +5,7 @@ from django.utils import timezone
 # Create your models here.
 
 
-class MyUserManager(BaseUserManager):
+class MyUsersManager(BaseUserManager):
     def create(self, username, password, ho_ten, sdt, role):
         user = self.model(
             username=username,
@@ -22,6 +22,7 @@ class MyUserManager(BaseUserManager):
 
 
 class MyUsers(AbstractBaseUser):
+    email = models.EmailField(max_length=255, unique=True)
     username = models.CharField(max_length=30, unique=True)
     ho_ten = models.TextField(blank=True)
     is_admin = models.BooleanField(default=False)
@@ -33,14 +34,21 @@ class MyUsers(AbstractBaseUser):
     luong = models.IntegerField(default=0)
     sdt = models.CharField(max_length=255)
     gioi_tinh = models.CharField(max_length=10, blank=True)
+    # gioi_tinh = nam: Nam
+    # gioi_tinh = nu: Nữ
+    # gioi_tinh = oth: Khác
     created_at = models.DateTimeField(auto_now_add=True)
     role = models.IntegerField()
     # role = 0 Superadmin
-    # role = 1 Nhân viên trong cửa hàng
-    # role = 2 Khách hàng
+    # role = 1 Nhân viên bán hàng
+    # role = 2 Thủ kho
+    # role = 3 Khách hàng
+    is_active = models.BooleanField(default=False)
+    avatar = models.FileField(upload_to='users/')
+    
     USERNAME_FIELD = 'username'
 
-    objects = MyUserManager()
+    objects = MyUsersManager()
 
     class Meta:
         db_table = 'my_users'
@@ -68,6 +76,7 @@ class SanPham(models.Model):
     loai_hang = models.ForeignKey('LoaiHang', models.SET_NULL, null=True)
     mo_ta = models.TextField(blank=True)
     nha_cung_cap = models.ForeignKey('NhaCungCap', models.SET_NULL, null=True)
+    avt = models.FileField(upload_to='product/avatar/')
 
     class Meta:
         db_table = 'san_pham'
