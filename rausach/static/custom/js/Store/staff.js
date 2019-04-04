@@ -26,7 +26,7 @@ $(document).ready(function() {
 	// console.log(data)
 	// }
 	// })
-	$("#list_nhan_vien").DataTable({
+	var table = $("#list_nhan_vien").DataTable({
 		destroy: true,
 		ajax: {
 			type: "get",
@@ -38,19 +38,51 @@ $(document).ready(function() {
 			{ data: "ho_ten" },
 			{ data: "role" },
 			{ data: "luong" },
-			{ data: "gioi_tinh" },
-			{ data: "is_active" }
+			{
+				data: "gioi_tinh",
+				render: function(data, type, row) {
+					if (type == "display") {
+						if (data == "nam") {
+							return "Nam";
+						} else if (data == "nu") {
+							return "Nữ";
+						} else if (data == "oth") {
+							return "Khác";
+						} else {
+							return " ";
+						}
+					}
+					return data;
+				}
+			},
+			{
+				data: "is_active",
+				render: function(data, type, row) {
+					if (type == "display") {
+						if (data == true) {
+							return `<input type="radio" disabled checked>`;
+						} else {
+							return `<input type="radio" disabled>`;
+						}
+					}
+					return data;
+				}
+			}
 		],
 		columnDefs: [
 			{
 				targets: 6,
 				data: null,
-				defaultContent: `<button>click</button>`
+				defaultContent: `<center>
+				<button class="btn btn-danger" id="delete" data-toggle="tooltip" title="Xóa người dùng này"><i class="fa fa-times"></i></button>
+				<button class="btn btn-primary" id="edit" data-toggle="tooltip" title="Sửa người dùng này"><i class="fa fa-edit"></i></button>
+				</center>`
 			}
 		]
 	});
 
 	const valid_date = /^(19[5-9][0-9]|20[0-4][0-9]|2050)[-/](0?[1-9]|1[0-2])[-/](0?[1-9]|[12][0-9]|3[01])$/;
+	// Thêm mới nhân viên
 	$("#btn_new_nhan_vien").on("click", function() {
 		$("#new_nhan_vien .form-group")
 			.find("input")
@@ -150,9 +182,51 @@ $(document).ready(function() {
 				},
 				success: function(data) {
 					Swal.close();
-					console.log(data);
 				}
 			});
 		}
+	});
+
+	// Sửa thông tin nhân viên
+	$("#list_nhan_vien tbody").on("click", "#edit", function() {
+		$("#edit_nhan_vien").modal("show");
+		var data = table.row($(this).parents("tr")).data();
+
+		console.log(data)
+		// Load danh sách tỉnh
+		var elements = `<option>--Tỉnh--</option>`;
+		var tinh = JSON.parse(sessionStorage.getItem("tinh"));
+		tinh.map(function(item) {
+			elements += `<option value="${item.provinceid}">${item.name}</option>`;
+		});
+		$("#edit_nhan_vien #tinh").html(elements);
+
+		// Load danh sách huyện
+		var id_tinh = data.tinh;
+		var huyen = JSON.parse(sessionStorage.getItem("huyen"));
+		var elements = `<option>--Huyện--</option>`;
+		huyen.map(function(item) {
+			if (item.provinceid == id_tinh) {
+				elements += `<option value="${item.districtid}">${item.name}</option>`;
+			}
+		});
+		$("#edit_nhan_vien #huyen").html(elements);
+
+		// Huyện thay đổi theo tỉnh
+		$("#edit_nhan_vien #tinh").on("change", function() {
+			var id_tinh = $(this).val();
+			var huyen = JSON.parse(sessionStorage.getItem("huyen"));
+			var elements = `<option>--Huyện--</option>`;
+			huyen.map(function(item) {
+				if (item.provinceid == id_tinh) {
+					elements += `<option value="${item.districtid}">${
+						item.name
+					}</option>`;
+				}
+			});
+			$("#edit_nhan_vien #huyen").html(elements);
+		});
+
+		
 	});
 });

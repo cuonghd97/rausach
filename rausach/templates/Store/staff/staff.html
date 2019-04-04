@@ -16,8 +16,8 @@ loại hàng {% endblock title %} {% block css %}
 						class="btn btn-round btn-primary"
 						data-toggle="modal"
 						data-target="#new_nhan_vien"
-                        data-title="new"
-                        id="btn_new_nhan_vien"
+						data-title="new"
+						id="btn_new_nhan_vien"
 					>
 						<i class="fa fa-plus"></i> Thêm mới nhân viên
 					</button>
@@ -53,7 +53,7 @@ loại hàng {% endblock title %} {% block css %}
 	</div>
 </div>
 
-<!-- Modal new loại hàng -->
+<!-- Modal new nhân viên -->
 <div class="modal" id="new_nhan_vien" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
@@ -167,8 +167,8 @@ loại hàng {% endblock title %} {% block css %}
 						name="ngay_sinh"
 						id="ngay_sinh"
 						placeholder="Ngày sinh"
-                        class="form-control"
-                        data-inputmask="'mask': '9999-99-99'"
+						class="form-control"
+						data-inputmask="'mask': '9999-99-99'"
 					/>
 				</div>
 				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
@@ -202,8 +202,8 @@ loại hàng {% endblock title %} {% block css %}
 		</div>
 	</div>
 </div>
-<!-- Modal sửa loại hàng -->
-<div class="modal" id="new_nhan_vien" role="dialog">
+<!-- Modal sửa nhân viên -->
+<div class="modal" id="edit_nhan_vien" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -211,7 +211,7 @@ loại hàng {% endblock title %} {% block css %}
 				<button type="button" class="close" data-dismiss="modal">
 					&times;
 				</button>
-				<h4 class="modal-title" id="new_mon_title">Thêm mới nhân viên</h4>
+				<h4 class="modal-title" id="edit_mon_title">Sửa thông tin nhân viên</h4>
 			</div>
 			<div class="modal-body">
 				{% csrf_token %}
@@ -316,8 +316,8 @@ loại hàng {% endblock title %} {% block css %}
 						name="ngay_sinh"
 						id="ngay_sinh"
 						placeholder="Ngày sinh"
-                        class="form-control"
-                        data-inputmask="'mask': '99/99/9999'"
+						class="form-control"
+						data-inputmask="'mask': '9999-99-99'"
 					/>
 				</div>
 				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
@@ -330,11 +330,19 @@ loại hàng {% endblock title %} {% block css %}
 					/>
 				</div>
 				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" name="is_active" id="is_active" /> Active
-						</label>
-					</div>
+					<img
+						src=""
+						id="image"
+						alt="Ảnh đại diện nhân viên"
+						style="width: 100%; display: block; height: auto;"
+					/>
+					<label>Chọn ảnh</alabel>
+					<input
+						type="file"
+						name="image"
+						id="image"
+						class="form-control-file"
+					/>
 				</div>
 				<div class="clearfix"></div>
 			</div>
