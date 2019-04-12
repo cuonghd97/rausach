@@ -115,9 +115,9 @@ class NhaCungCap(models.Model):
 class HoaDon(models.Model):
     khach_hang = models.ForeignKey(
         'MyUsers', models.SET_NULL, related_name='khach_hang', null=True)
-    ngay_lap = models.DateTimeField(default=timezone.now)
+    ngay_lap = models.DateTimeField(default=timezone.now, null=True)
     created_at = models.DateField(auto_now_add=True)
-    ghi_chu = models.TextField()
+    ghi_chu = models.TextField(null=True)
     nguoiTao = models.ForeignKey(
         'MyUsers', models.SET_NULL, related_name='nguoi_tao_hoa_don', null=True)
     is_paid = models.IntegerField(default=0)
@@ -175,7 +175,7 @@ class ChiTietPhieuTra(models.Model):
 
 class PhieuNhap(models.Model):
     thoi_gian_nhap = models.DateTimeField(auto_now_add=True)
-    ghi_chu = models.TextField()
+    ghi_chu = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     nguoi_tao = models.ForeignKey('MyUsers', models.SET_NULL, null=True)
     nha_cung_cap = models.ForeignKey('NhaCungCap', models.SET_NULL, null=True)
@@ -200,7 +200,7 @@ class ChiTietPhieuNhap(models.Model):
 
 class PhieuTraHangNhap(models.Model):
     thoi_gian_tao = models.DateTimeField(default=timezone.now)
-    ghi_chu = models.TextField()
+    ghi_chu = models.TextField(null=True)
     nguoi_tao = models.ForeignKey('MyUsers', models.SET_NULL, null=True)
     nha_cung_cap = models.ForeignKey('NhaCungCap', models.SET_NULL, null=True)
 
@@ -223,8 +223,8 @@ class ChiTietPhieuTraHangNhap(models.Model):
 
 
 class PhieuXuatHuy(models.Model):
-    thoi_gian_tao = models.DateTimeField(timezone.now)
-    ghi_chu = models.TextField()
+    thoi_gian_tao = models.DateTimeField(auto_now_add=True)
+    ghi_chu = models.TextField(null=True)
     nguoi_tao = models.ForeignKey('MyUsers', models.SET_NULL, null=True)
 
     class Meta:
@@ -240,3 +240,38 @@ class ChiTietPhieuXuatHuy(models.Model):
 
     class Meta:
         db_table = 'chi_tiet_phieu_xuat_huy'
+
+class Log(models.Model):
+    BAN_DON_HANG = "bán đơn hàng"
+    NHAP_HANG = "nhập hàng"
+    TRA_HANG = "trả hàng"
+    TRA_HANG_NHAP = "trả hàng nhập"
+    XUAT_HUY = "xuất hủy"
+    created_at = models.DateTimeField(auto_now_add=True)
+    nguoi_tao = models.ForeignKey("MyUsers", models.SET_NULL, related_name='nguoi_tao', null=True)
+    hanh_dong = models.TextField()
+    hoa_don = models.ForeignKey("HoaDon", models.SET_NULL, related_name='log_hoa_don', null=True)
+    phieu_tra = models.ForeignKey("PhieuTra", models.SET_NULL, related_name='log_phieu_tra', null=True)
+    phieu_nhap = models.ForeignKey("PhieuNhap", models.SET_NULL, related_name='log_phieu_nhap', null=True)
+    phieu_tra_hang_nhap = models.ForeignKey("PhieuTraHangNhap", models.SET_NULL, related_name='log_phieu_tra_hang_nhap', null=True)
+    phieu_xuat_huy = models.ForeignKey("PhieuXuatHuy", models.SET_NULL, related_name='log_phieu_xuat_huy', null=True)
+
+    class Meta:
+        db_table = 'log'
+
+class SoQuy(models.Model):
+    tong_thu = models.IntegerField(default=0)
+    tong_chi = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'so_quy'
+
+class HangDat(models.Model):
+    nguoi_dung = models.ForeignKey('MyUsers', models.CASCADE)
+    hang_dat = models.ForeignKey('SanPham', models.CASCADE)
+    so_luong = models.IntegerField(default=0)
+    check = models.IntegerField(default=0)
+    create_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'hang_dat'

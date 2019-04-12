@@ -1,0 +1,170 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'Order/css/foundation.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Order/css/foundation-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'Order/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}" />
+    {% block css %}
+    {% endblock %}
+</head>
+
+<body>
+    <div class="top-bar" id="top-bar">
+        <div class="top-bar-left">
+            <ul class="menu">
+                <ul class="dropdown menu" data-dropdown-menu>
+                    <li class="menu-text"><a href="{% url 'Order:index' %}">Rau sạch</a></li>
+                    <li class="has-submenu">
+                        <a href="#">Các loại sản phẩm</a>
+                        <ul class="submenu menu vertical" data-submenu>
+                            {% for item in loai_hang %}
+                            <li><a href="#" data-id="{{ item.id }}" class="loc-hang">{{ item.ten_loai }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+        <div class="top-bar-right">
+            {% if user.is_authenticated %}
+            <ul class="menu">
+                {% if user.avatar %}
+                <li><img src="/media/{{ user.avatar }}" style="width: 50px; height: 50px; border-radius: 50%;"></li>
+                {% endif %}
+                <li><a href="{% url 'Order:thong_tin_ca_nhan' %}">Hello, {{ user.ho_ten }}</a></li>
+                <li><a href="{% url 'Order:gio_hang' %}"><i class="fi-shopping-cart"></i> Giỏ hàng</a></li>
+                <li><a href="{% url 'General:logout' %}">Đăng xuất</a></li>
+            </ul>
+            {% else %}
+            <ul class="menu">
+                {% csrf_token %}
+                <li><input type="text" name="username" id="username" placeholder="Tên đăng nhập..."></li>
+                <li><input type="password" name="password" id="password" placeholder="Mật khẩu"></li>
+                <li><button class="success button btn-login">Đăng nhập</button></li>
+                <li><a href="{% url 'General:register' %}" class="success button btn-login">Đăng ký</a></li>
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row column text-center">
+        <br>
+        <h2>Our Newest Products</h2>
+    </div>
+
+    {% block newproduct %}
+    {% endblock %}
+
+    {% block cart %}
+    {% endblock %}
+
+    {% block detail_product %}
+    {% endblock %}
+    <!-- <hr>
+    <div class="row column">
+        <div class="callout primary">
+            <h3>Really big special this week on items.</h3>
+        </div>
+    </div> -->
+    {% block neatproduct %}
+    {% endblock %}
+
+    {% block user_profile %}
+    {% endblock %}
+
+    {% block product %}
+    {% endblock %}
+    <div class="callout large secondary">
+        <div class="row">
+            <div class="large-4 columns">
+                <h5>Vivamus Hendrerit Arcu Sed Erat Molestie</h5>
+                <p>Curabitur vulputate, ligula lacinia scelerisque tempor, lacus lacus ornare ante, ac egestas est urna
+                    sit amet arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
+                    himenaeos. Sed molestie augue sit.</p>
+                </h4>
+            </div>
+            <div class="large-3 large-offset-2 columns">
+                <ul class="menu vertical">
+                    <li><a href="#">One</a></li>
+                    <li><a href="#">Two</a></li>
+                    <li><a href="#">Three</a></li>
+                    <li><a href="#">Four</a></li>
+                </ul>
+            </div>
+            <div class="large-3 columns">
+                <ul class="menu vertical">
+                    <li><a href="#">One</a></li>
+                    <li><a href="#">Two</a></li>
+                    <li><a href="#">Three</a></li>
+                    <li><a href="#">Four</a></li>
+                </ul>
+            </div>
+        </div>
+        <script src="{% static 'Order/js/jquery-2.1.4.min.js' %}"></script>
+        <script src="{% static 'Order/js/foundation.js' %}"></script>
+        <script src="{% static 'Order/js/login.js' %}"></script>
+        <script>
+            $(document).foundation();
+        </script>
+        <script>
+            $(document).ready(function () {
+                function formatNumber(num) {
+                    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' ' + '&#8363;'
+                }
+                $(".gia-ban").each(function () {
+                    $(this).html(formatNumber($(this).text()))
+                })
+                function to_slug(str) {
+                    // Chuyển hết sang chữ thường
+                    str = str.toLowerCase();
+
+                    // xóa dấu
+                    str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, 'a');
+                    str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, 'e');
+                    str = str.replace(/(ì|í|ị|ỉ|ĩ)/g, 'i');
+                    str = str.replace(/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/g, 'o');
+                    str = str.replace(/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/g, 'u');
+                    str = str.replace(/(ỳ|ý|ỵ|ỷ|ỹ)/g, 'y');
+                    str = str.replace(/(đ)/g, 'd');
+
+                    // Xóa ký tự đặc biệt
+                    str = str.replace(/([^0-9a-z-\s])/g, '');
+
+                    // Xóa khoảng trắng thay bằng ký tự -
+                    str = str.replace(/(\s+)/g, '-');
+
+                    // xóa phần dự - ở đầu
+                    str = str.replace(/^-+/g, '');
+
+                    // xóa phần dư - ở cuối
+                    str = str.replace(/-+$/g, '');
+
+                    // return
+                    return str;
+                }
+                $(".loc-hang").on("click", function () {
+                    var loai_hang = to_slug($(this).text())
+                    var id = $(this).data("id")
+                    $(this).attr("href", `/filter/${loai_hang}_${id}`)
+                })
+                $(".ten_san_pham").on("click", function () {
+                    var ten = $(this).data("tensp") + ""
+                    var ten_san_pham = to_slug(ten)
+                    var id = $(this).data("id")
+                    $(this).attr("href", `/detail/hang/${ten_san_pham}_${id}`)
+                })
+
+           })
+        </script>
+        {% block js %}
+
+        {% endblock %}
+</body>
+
+</html>

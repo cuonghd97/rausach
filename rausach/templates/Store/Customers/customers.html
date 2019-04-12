@@ -12,22 +12,20 @@ loại hàng {% endblock title %} {% block css %}
 					<!--<i class="fa fa-plus"></i> Thêm nhiều môn-->
 					<!--</button>-->
 					<div class="clearfix"></div>
-					<button class="btn btn-round btn-primary" data-toggle="modal" data-target="#new_nhan_vien"
-						data-title="new" id="btn_new_nhan_vien">
-						<i class="fa fa-plus"></i> Thêm mới nhân viên
+					<button class="btn btn-round btn-primary" data-toggle="modal" data-target="#new_nguoi_dung"
+						data-title="new" id="btn_new_nguoi_dung">
+						<i class="fa fa-plus"></i> Thêm mới người dùng
 					</button>
 					<div class="clearfix"></div>
 				</div>
 
 				<div class="x_content">
 					<div class="table-responsive">
-						<table class="table table-striped jambo_table bulk_action" id="list_nhan_vien" width="100%">
+						<table class="table table-striped jambo_table bulk_action" id="list_nguoi_dung" width="100%">
 							<thead>
 								<tr>
 									<th>*</th>
-									<th>Tên nhân viên</th>
-									<th>Vị trí</th>
-									<th>Lương</th>
+									<th>Tên người dùng</th>
 									<th>Giới tính</th>
 									<th>Active</th>
 									<th>
@@ -44,8 +42,8 @@ loại hàng {% endblock title %} {% block css %}
 	</div>
 </div>
 
-<!-- Modal new nhân viên -->
-<div class="modal" id="new_nhan_vien" role="dialog">
+<!-- Modal new người dùng -->
+<div class="modal" id="new_nguoi_dung" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -53,13 +51,13 @@ loại hàng {% endblock title %} {% block css %}
 				<button type="button" class="close" data-dismiss="modal">
 					&times;
 				</button>
-				<h4 class="modal-title" id="new_mon_title">Thêm mới nhân viên</h4>
+				<h4 class="modal-title" id="new_mon_title">Thêm mới người dùng</h4>
 			</div>
 			<div class="modal-body">
 				{% csrf_token %}
 				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
-					<input type="text" class="form-control has-feedback-left" name="ten_nhan_vien" id="ten_nhan_vien"
-						placeholder="Tên nhân viên" required />
+					<input type="text" class="form-control has-feedback-left" name="ten_nguoi_dung" id="ten_nguoi_dung"
+						placeholder="Tên người dùng" required />
 					<span class="fa fa-font form-control-feedback left" aria-hidden="true"></span>
 				</div>
 				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
@@ -100,20 +98,12 @@ loại hàng {% endblock title %} {% block css %}
 						<option value="">--Huyện--</option>
 					</select>
 				</div>
-				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
-					<select name="role" id="role" class="form-control">
-						<option value="">--Chức vụ--</option>
-						<option value="2">Nhân viên quản lý</option>
-						<option value="1">Nhân viên bán hàng</option>
-					</select>
-				</div>
+				
 				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
 					<input type="text" name="ngay_sinh" id="ngay_sinh" placeholder="Ngày sinh" class="form-control"
 						data-inputmask="'mask': '9999-99-99'" />
 				</div>
-				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
-					<input type="text" name="luong" id="luong" placeholder="Lương" class="form-control" />
-				</div>
+				
 				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
 					<label>Chọn ảnh</label>
 					<input type="file" name="image" id="image" class="form-control-file" />
@@ -121,7 +111,7 @@ loại hàng {% endblock title %} {% block css %}
 				<div class="clearfix"></div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn_create_nhan_vien">
+				<button type="button" class="btn btn-primary" id="btn_create_nguoi_dung">
 					Tạo mới
 				</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">
@@ -131,8 +121,8 @@ loại hàng {% endblock title %} {% block css %}
 		</div>
 	</div>
 </div>
-<!-- Modal sửa nhân viên -->
-<div class="modal" id="edit_nhan_vien" role="dialog">
+<!-- Modal sửa người dùng -->
+<div class="modal" id="edit_nguoi_dung" role="dialog">
 	<div class="modal-dialog modal-lg">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -140,15 +130,15 @@ loại hàng {% endblock title %} {% block css %}
 				<button type="button" class="close" data-dismiss="modal">
 					&times;
 				</button>
-				<h4 class="modal-title" id="edit_mon_title">Sửa thông tin nhân viên</h4>
+				<h4 class="modal-title" id="edit_mon_title">Sửa thông tin người dùng</h4>
 			</div>
 			<div class="modal-body">
 				{% csrf_token %}
 				<input type="hidden" name="id" id="id">
 				<div class="col-md-4 col-sm-4 col-4 col-lg-4 form-group has-feedback">
-					<label class="col-md-12">Tên nhân viên
-						<input type="text" class="form-control" name="ten_nhan_vien" id="ten_nhan_vien"
-							placeholder="Tên nhân viên" required />
+					<label class="col-md-12">Tên người dùng
+						<input type="text" class="form-control" name="ten_nguoi_dung" id="ten_nguoi_dung"
+							placeholder="Tên người dùng" required />
 						<!-- <span class="fa fa-font form-control-feedback left" aria-hidden="true"></span> -->
 					</label>
 				</div>
@@ -203,33 +193,21 @@ loại hàng {% endblock title %} {% block css %}
 						</select>
 					</label>
 				</div>
-				<div class="col-md-4 col-sm-4 col-4 col-lg-4 form-group has-feedback">
-					<label class="col-md-12">Chức vụ
-						<select name="role" id="role" class="form-control">
-							<option value="">--Chức vụ--</option>
-							<option value="2">Nhân viên quản lý</option>
-							<option value="1">Nhân viên bán hàng</option>
-						</select>
-					</label>
-				</div>
+				
 				<div class="col-md-4 col-sm-4 col-4 col-lg-4 form-group has-feedback">
 					<label class="col-md-12">Ngày sinh
 						<input type="text" name="ngay_sinh" id="ngay_sinh" placeholder="Ngày sinh" class="form-control"
 							data-inputmask="'mask': '9999-99-99'" />
 					</label>
 				</div>
-				<div class="col-md-4 col-sm-4 col-4 col-lg-4 form-group has-feedback">
-					<label class="col-md-12">Lương
-						<input type="text" name="luong" id="luong" placeholder="Lương" class="form-control" />
-					</label>
-				</div>
+				
 				<div class="col-md-4 col-sm-4 col-4 col-lg-4 form-group has-feedback">
 					<label class="col-md-12">
 						<input type="checkbox" name="is_active" id="is_active"/> Active
 					</label>
 				</div>
 				<div class="col-md-4 col-sm-4 col-4 col-lg-4 form-group has-feedback">
-					<img src="" id="image" alt="Ảnh đại diện nhân viên"
+					<img src="" id="image" alt="Ảnh đại diện người dùng"
 						style="width: 100%; display: block; height: auto;" />
 					<label>Chọn ảnh
 						<input type="file" name="new_image" id="new_image" class="form-control-file" />
@@ -239,7 +217,7 @@ loại hàng {% endblock title %} {% block css %}
 				<div class="clearfix"></div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn_save_nhan_vien">
+				<button type="button" class="btn btn-primary" id="btn_save_nguoi_dung">
 					Lưu
 				</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">
@@ -253,5 +231,5 @@ loại hàng {% endblock title %} {% block css %}
 <script src="{% static 'jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js' %}"></script>
 <script src="{% static 'DataTables/datatables.js' %}"></script>
 <script src="{% static 'build/js/xlsx.full.min.js' %}"></script>
-<script src="{% static 'custom/js/Store/staff.js' %}"></script>
+<script src="{% static 'custom/js/Store/customers.js' %}"></script>
 {% endblock js %}

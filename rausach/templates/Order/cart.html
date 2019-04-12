@@ -1,0 +1,42 @@
+{% extends 'Order/layouts/base.html' %}
+{% block title %}
+Giỏ hàng
+{% endblock %}
+
+{% load staticfiles %}
+
+{% block css %}
+<link href="{% static 'DataTables/datatables.css' %}" rel="stylesheet" />
+<style>
+    table {
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block cart %}
+<div class="row">
+<div class="column medium-9">
+    <table id="table-cart">
+        <thead>
+            <tr>
+                <th>*</th>
+                <th width="200">Tên hàng</th>
+                <th>Số lượng</th>
+                <th width="150">Hủy bỏ</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<div class="column medium-3">
+    <button class="success button">Đặt hàng</button>
+</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'Order/js/cart.js' %}"></script>
+<script src="{% static 'DataTables/datatables.js' %}"></script>
+{% endblock %}

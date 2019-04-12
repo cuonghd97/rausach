@@ -96,6 +96,40 @@
 
 									<li>
 										<a
+											><i class="fa fa-table"></i> Giao dịch
+											<span class="fa fa-chevron-down"></span
+										></a>
+										<ul class="nav child_menu">
+											<li>
+												<a href="{% url 'Store:quan_ly_hoa_don' %}">
+													<i class="fa fa-bars"></i> Hóa đơn
+												</a>
+											</li>
+											<li>
+												<a href="{% url 'Store:quan_ly_san_pham' %}">
+													<i class="fa fa-cubes"></i> Trả hàng
+												</a>
+											</li>
+											<li>
+												<a href="{% url 'Store:quan_ly_san_pham' %}">
+													<i class="fa fa-cubes"></i> Nhập hàng
+												</a>
+											</li>
+											<li>
+												<a href="{% url 'Store:quan_ly_san_pham' %}">
+													<i class="fa fa-cubes"></i> Trả hàng nhập
+												</a>
+											</li>
+											<li>
+												<a href="{% url 'Store:quan_ly_san_pham' %}">
+													<i class="fa fa-cubes"></i> Xuất hủy
+												</a>
+											</li>
+										</ul>
+									</li>
+
+									<li>
+										<a
 											><i class="fa fa-table"></i> Đối tác
 											<span class="fa fa-chevron-down"></span
 										></a>
@@ -105,7 +139,7 @@
 													Quản lý nhà cung cấp
 												</a>
 											</li>
-											<li><a href="#">Quản lý người dùng</a></li>
+											<li><a href="{% url 'Store:quan_ly_nguoi_dung' %}">Quản lý người dùng</a></li>
 										</ul>
 									</li>
 									<li>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'Order/css/foundation.min.css' %}">
+    <link rel="stylesheet" href="{% static 'Order/css/foundation-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'Order/css/base.css' %}">
+    {% block css %}
+    {% endblock %}
+</head>
+
+<body>
+    <form class="log-in-form">
+        <h4 class="text-center">Log in with you email account</h4>
+        <label>Email
+          <input type="email" placeholder="somebody@example.com">
+        </label>
+        <label>Password
+          <input type="password" placeholder="Password">
+        </label>
+        <input id="show-password" type="checkbox"><label for="show-password">Show password</label>
+        <p><input type="submit" class="button expanded" value="Log in"></input></p>
+        <p class="text-center"><a href="#">Forgot your password?</a></p>
+      </form>
+    
+        <script src="{% static 'Order/js/jquery-2.1.4.min.js' %}"></script>
+        <script src="{% static 'Order/js/foundation.js' %}"></script>
+        <script>
+            $(document).foundation();
+        </script>
+        {% block js %}
+        {% endblock %}
+</body>
+
+</html>

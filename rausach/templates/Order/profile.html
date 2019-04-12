@@ -1,0 +1,106 @@
+{% extends 'Order/layouts/base.html' %}
+{% load staticfiles %}
+{% block title %}
+Thay đổi thông tin cá nhân
+{% endblock %}
+{% block user_profile %}
+<div class="column row medium-5">
+    <ul class="tabs" data-active-collapse="true" data-tabs id="collapsing-tabs">
+        <li class="tabs-title is-active"><a href="#panel1c" aria-selected="true">Thay đổi thông tin cá nhân</a></li>
+        <li class="tabs-title"><a href="#panel2c">Đổi mật khẩu</a></li>
+    </ul>
+
+    <div class="tabs-content" data-tabs-content="collapsing-tabs">
+        <div class="tabs-panel is-active" id="panel1c">
+            <form action="{% url 'Order:thong_tin_ca_nhan' %}" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    {% csrf_token %}
+                    <div class="medium-12 column">
+                        <label> Họ tên
+                            <input type="text" name="ho_ten" id="ho_ten" value="{{ user.ho_ten }}">
+                        </label>
+                    </div>
+                    <div class="column" style="display: flex;">
+                        <div class="medium-12">
+                            <label> Giới tính
+                                <select name="gioi_tinh" id="gioi_tinh" value="{{ user.gioi_tinh }}">
+                                    <option value="nam">Nam</option>
+                                    <option value="nu">Nữ</option>
+                                    <option value="oth">Khác</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="medium-12">
+                            <label> Số điện thoại
+                                <input type="text" name="sdt" id="sdt" value="{{ user.sdt }}">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="medium-12 column">
+                        <label> Địa chỉ
+                            <input type="text" name="dia_chi" id="dia_chi" value="{{ user.dia_chi }}">
+                        </label>
+                    </div>
+
+                    <div class="medium-12 column">
+                        <label> Email
+                            <input type="text" name="email" id="email" value="{{ user.email }}" disabled>
+                        </label>
+                    </div>
+                    <div class="medium-6 column">
+                        <label> Ảnh đại diện
+                            <input type="file" name="avatar" id="avatar">
+                        </label>
+                    </div>
+                    <div class="medium-6 column">
+                        <label><img src="/media/{{ user.avatar }}" id="blah" alt="Ảnh đại diện"
+                                style="width: 100px; height: 100px;">
+                        </label>
+                    </div>
+                    <br>
+                    <div class="medium-12 column">
+                        <input type="submit" class="expanded success button" value="Lưu">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tabs-panel" id="panel2c">
+            <form action="{% url 'Order:thong_tin_ca_nhan' %}" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    {% csrf_token %}
+                    <div class="medium-12 column">
+                        <label> Mật khẩu cũ
+                            <input type="password" name="old-password" id="old-password">
+                        </label>
+                    </div>
+                    <div class="medium-12 column">
+                        <label> Mật khẩu mới
+                            <input type="password" name="password" id="password">
+                        </label>
+                    </div>
+                    <div class=" medium-12 column">
+                        <label> Nhập lại mật khẩu
+                            <input type="password" name="re-password" id="re-password">
+                        </label>
+                    </div>
+                    <div class="medium-12 column">
+                        {% if messages %}
+                        {% for message in messages %}
+                        <p class="{{ message.tags }}">{{ message }}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <br>
+                    <div class=" medium-12 column">
+                        <input type="submit" class="expanded success button" value="Đổi mật khẩu">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}
+{% block js %}
+<script src="{% static 'Order/js/profile.js' %}"></script>
+{% endblock %}

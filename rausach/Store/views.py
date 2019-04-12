@@ -337,10 +337,11 @@ def data_nhan_vien(request):
 
 # Post dữ liệu nhân viên
 @decorators.login_required(login_url='/')
-# @is_admin
+@is_admin
 def post_nhan_vien(request):
     if request.method == 'POST':
         username = request.POST.get('username')
+        ten_nhan_vien = request.POST.get('ten_nhan_vien')
         gioi_tinh = request.POST.get('gioi_tinh')
         email = request.POST.get('email')
         sdt = request.POST.get('sdt')
@@ -352,11 +353,16 @@ def post_nhan_vien(request):
         luong = request.POST.get('luong')
         anh = request.FILES.get('anh')
         is_add = request.POST.get('is_add')
+        is_edit = request.POST.get('is_edit')
+        id_staff = request.POST.get('id')
+        is_active = request.POST.get('is_active')
+        is_delete = request.POST.get('is_delete')
         if is_add != None:
             try:
                 user = MyUsers()
                 user.username = username
                 user.gioi_tinh = gioi_tinh
+                user.ho_ten = ten_nhan_vien
                 user.email = email
                 user.sdt = sdt
                 user.set_password(username)
@@ -372,5 +378,146 @@ def post_nhan_vien(request):
                 return JsonResponse(THEM_THANH_CONG)
             except:
                 return JsonResponse(LOI)
+        elif is_edit != None:
+            try:
+                user = MyUsers.objects.get(pk=id_staff)
+                user.username = username
+                user.ho_ten = ten_nhan_vien
+                user.gioi_tinh = gioi_tinh
+                user.email = email
+                user.sdt = sdt
+                user.set_password(username)
+                user.dia_chi = address
+                user.tinh = tinh
+                user.huyen = huyen
+                user.role = role
+                user.ngay_sinh = datetime.strptime(ngay_sinh,'%Y-%m-%d')
+                user.luong = luong
+                if anh != None:
+                    user.avatar = anh
+                user.is_active = is_active
+                user.save()
+
+                return JsonResponse(SUA_THANH_CONG)
+            except:
+                return JsonResponse(LOI)
+        elif is_delete != None:
+            try:
+                MyUsers.objects.get(pk=id_staff).delete()
+                return JsonResponse(XOA_THANH_CONG)
+            except:
+                return JsonResponse(LOI)
         return JsonResponse({}, safe=False)
     return JsonResponse({}, safe=False)
+
+# Quản lý người dùng
+@decorators.login_required(login_url='/')
+@is_admin
+def nguoi_dung(request):
+    return render(request, 'Store/Customers/customers.html')
+
+# Data người dùng
+@decorators.login_required(login_url='/')
+@is_admin
+def data_nguoi_dung(request):
+    users = MyUsers.objects.filter(role=3)
+    data = []
+    i = 1
+    for nguoi_dung in users:
+        obj = {}
+        obj.update({'no': i})
+        obj.update({'id': nguoi_dung.id})
+        obj.update({'huyen': nguoi_dung.huyen})
+        obj.update({'tinh': nguoi_dung.tinh})
+        obj.update({'dia_chi': nguoi_dung.dia_chi})
+        obj.update({'ho_ten': nguoi_dung.ho_ten})
+        obj.update({'ngay_sinh': nguoi_dung.ngay_sinh})
+        obj.update({'sdt': nguoi_dung.sdt})
+        obj.update({'gioi_tinh': nguoi_dung.gioi_tinh})
+        obj.update({'created_at': nguoi_dung.created_at})
+        obj.update({'role': nguoi_dung.role})
+        obj.update({'username': nguoi_dung.username})
+        obj.update({'is_active': nguoi_dung.is_active})
+        obj.update({'email': nguoi_dung.email})
+        obj.update({'avatar': str(nguoi_dung.avatar)})
+
+        i+=1
+        data.append(obj)
+    return JsonResponse(data, safe=False)
+
+# Post dữ liệu nhân viên
+@decorators.login_required(login_url='/')
+@is_admin
+def post_nguoi_dung(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        ten_nguoi_dung = request.POST.get('ten_nguoi_dung')
+        gioi_tinh = request.POST.get('gioi_tinh')
+        email = request.POST.get('email')
+        sdt = request.POST.get('sdt')
+        address = request.POST.get('address')
+        tinh = request.POST.get('tinh')
+        huyen = request.POST.get('huyen')
+        role = request.POST.get('role')
+        ngay_sinh = request.POST.get('ngay_sinh')
+        anh = request.FILES.get('anh')
+        is_add = request.POST.get('is_add')
+        is_edit = request.POST.get('is_edit')
+        id_staff = request.POST.get('id')
+        is_active = request.POST.get('is_active')
+        is_delete = request.POST.get('is_delete')
+        if is_add != None:
+            try:
+                user = MyUsers()
+                user.username = username
+                user.gioi_tinh = gioi_tinh
+                user.ho_ten = ten_nguoi_dung
+                user.email = email
+                user.sdt = sdt
+                user.set_password(username)
+                user.dia_chi = address
+                user.tinh = tinh
+                user.huyen = huyen
+                user.role = role
+                user.ngay_sinh = datetime.strptime(ngay_sinh,'%Y-%m-%d')
+                user.avatar = anh
+                user.is_active = 1
+                user.save()
+                return JsonResponse(THEM_THANH_CONG)
+            except:
+                return JsonResponse(LOI)
+        elif is_edit != None:
+            try:
+                user = MyUsers.objects.get(pk=id_staff)
+                user.username = username
+                user.ho_ten = ten_nguoi_dung
+                user.gioi_tinh = gioi_tinh
+                user.email = email
+                user.sdt = sdt
+                user.set_password(username)
+                user.dia_chi = address
+                user.tinh = tinh
+                user.huyen = huyen
+                user.role = role
+                user.ngay_sinh = datetime.strptime(ngay_sinh,'%Y-%m-%d')
+                if anh != None:
+                    user.avatar = anh
+                user.is_active = is_active
+                user.save()
+
+                return JsonResponse(SUA_THANH_CONG)
+            except:
+                return JsonResponse(LOI)
+        elif is_delete != None:
+            try:
+                MyUsers.objects.get(pk=id_staff).delete()
+                return JsonResponse(XOA_THANH_CONG)
+            except:
+                return JsonResponse(LOI)
+        return JsonResponse({}, safe=False)
+    return JsonResponse({}, safe=False)
+
+
+# Hóa đơn
+def hoa_don(request):
+    return render(request, 'Store/transfer/invoices.html')
