@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, JsonResponse
 from django.contrib.auth import login
@@ -100,7 +102,34 @@ def thong_tin_ca_nhan(request):
 def gio_hang(request):
     user = request.user
     if request.method == 'POST':
-        print('POST')
+        is_remove = request.POST.get('is_remove')
+        id_hang_dat = request.POST.get('id_hang_dat')
+        data = request.POST.get('data')
+
+        if is_remove != None:
+            try:
+                HangDat.objects.get(pk=id_hang_dat).delete()
+                return JsonResponse(XOA_THANH_CONG)
+            except:
+                return JsonResponse(LOI)
+        
+        if data != None:
+            user = request.user
+            data = json.loads(data)
+            print(data[0])
+            hoa_don = HoaDon()
+            hoa_don.khach_hang = user
+            hoa_don.save()
+            id_hoa_don = hoa_don.id
+
+            for item in data:
+                chi_tiet_hoa_don = ChiTietHoaDon()
+                chi_tiet_hoa_don.hoa_don = hoa_don
+                chi_tiet_hoa_don.san_pham = SanPham.objects.get(pk=item["id_hang"])
+                chi_tiet_hoa_don.so_luong_mua = item["so_luong"]
+                chi_tiet_hoa_don.save()
+
+            return JsonResponse(THEM_THANH_CONG)
     
     loai_hang = LoaiHang.objects.all()
     
@@ -122,5 +151,5 @@ def data_gio_hang(request):
 
         i+=1
         data.append(obj)
-        
+
     return JsonResponse(data, safe=False)

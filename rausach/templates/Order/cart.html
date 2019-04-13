@@ -18,6 +18,7 @@ Giỏ hàng
 <div class="row">
 <div class="column medium-9">
     <table id="table-cart">
+        {% csrf_token %}
         <thead>
             <tr>
                 <th>*</th>
@@ -31,7 +32,7 @@ Giỏ hàng
     </table>
 </div>
 <div class="column medium-3">
-    <button class="success button">Đặt hàng</button>
+    <button class="success button" id="btn-dat-hang">Đặt hàng</button>
 </div>
 </div>
 {% endblock %}

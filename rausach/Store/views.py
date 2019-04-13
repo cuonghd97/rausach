@@ -92,8 +92,6 @@ def post_san_pham(request):
         is_edit = request.POST.get('is_edit')
         is_delete = request.POST.get('is_delete')
         is_active = request.POST.get('is_active')
-        print(avt)
-        print(images)
         if is_add != None:
             try:
                 san_pham = SanPham()
