@@ -20,7 +20,7 @@ def base(request):
     return render(request, 'Store/layouts/base.html',{"user":user})
 
 # Json tỉnh
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 def data_tinh(request):
     json_data = open('static/data/province.json')
     data = json.load(json_data)
@@ -28,7 +28,7 @@ def data_tinh(request):
     return JsonResponse(data, safe=False)
 
 # Json huyện
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 def data_huyen(request):
     json_data = open('static/data/district.json')
     data = json.load(json_data)
@@ -36,7 +36,7 @@ def data_huyen(request):
     return JsonResponse(data, safe=False)
 
 # Quản lý sản phẩm trong cửa hàng
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def san_pham(request):
     return render(request, 'Store/categories/products.html')
@@ -74,7 +74,7 @@ def data_san_pham(request):
     return JsonResponse(data, safe=False)
 
 # Post sản phẩm
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def post_san_pham(request):
     if request.method == 'POST':
@@ -149,7 +149,7 @@ def post_san_pham(request):
 # Quản lý loại hàng
 
 
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def loai_hang(request):
     return render(request, 'Store/categories/categories.html')
@@ -175,7 +175,7 @@ def data_loai_hang(request):
 # Post loại hàng
 
 
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def post_loai_hang(request):
     if request.method == 'POST':
@@ -203,7 +203,7 @@ def post_loai_hang(request):
 
 
 #  Nhà cung cấp
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def nha_cung_cap(request):
     return render(request, 'Store/providers/providers.html')
@@ -237,7 +237,7 @@ def data_nha_cung_cap(request):
 
 # Post dữ liệu nhà cung cấp
 
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def post_nha_cung_cap(request):
     if request.method == 'POST':
@@ -298,13 +298,13 @@ def post_nha_cung_cap(request):
 
 
 # Quản lý nhân viên trong cửa hàng
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def nhan_vien(request):
     return render(request, 'Store/staff/staff.html')
 
 # Data nhân viên
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def data_nhan_vien(request):
     users = MyUsers.objects.filter(role__in=[1, 2])
@@ -334,7 +334,7 @@ def data_nhan_vien(request):
     return JsonResponse(data, safe=False)
 
 # Post dữ liệu nhân viên
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def post_nhan_vien(request):
     if request.method == 'POST':
@@ -409,13 +409,13 @@ def post_nhan_vien(request):
     return JsonResponse({}, safe=False)
 
 # Quản lý người dùng
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def nguoi_dung(request):
     return render(request, 'Store/Customers/customers.html')
 
 # Data người dùng
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def data_nguoi_dung(request):
     users = MyUsers.objects.filter(role=3)
@@ -444,7 +444,7 @@ def data_nguoi_dung(request):
     return JsonResponse(data, safe=False)
 
 # Post dữ liệu nhân viên
-@decorators.login_required(login_url='/')
+@decorators.login_required(login_url='/auth/login/')
 @is_admin
 def post_nguoi_dung(request):
     if request.method == 'POST':
@@ -517,5 +517,62 @@ def post_nguoi_dung(request):
 
 
 # Hóa đơn
+@decorators.login_required(login_url='/auth/login/')
+@is_admin
 def hoa_don(request):
+    if request.method == 'POST':
+        id_invoice = request.POST.get('id_invoice')
+        is_paid = request.POST.get('is_paid')
+        if is_paid != None:
+            try:
+                hoa_don = HoaDon.objects.get(pk=id_invoice)
+                hoa_don.is_paid = 1
+                hoa_don.save()
+                return JsonResponse(THEM_THANH_CONG)
+            except:
+                return JsonResponse(LOI)
+
     return render(request, 'Store/transfer/invoices.html')
+
+# Data hóa đơn
+@decorators.login_required(login_url='/auth/login/')
+@is_admin
+def data_hoa_don(request):
+    hoa_don = HoaDon.objects.all().order_by('-ngay_lap')
+    data = []
+    i = 1
+
+    for hd in hoa_don:
+        obj = {}
+        obj.update({'no': i})
+        obj.update({'id': hd.id})
+        if hd.nguoiTao:
+            obj.update({'nguoi_tao': hd.nguoiTao.ho_ten})
+        else:
+            obj.update({'nguoi_tao': ''})
+        obj.update({'is_paid': hd.is_paid})
+        obj.update({'ngay_lap': hd.ngay_lap})
+        obj.update({'thoi_gian_lap': hd.created_at.strftime('%H:%M')})
+        obj.update({'ghi_chu': hd.ghi_chu})
+        obj.update({'khach_hang': hd.ten_khach_hang})
+
+        i+=1
+        data.append(obj)
+
+    return JsonResponse(data, safe=False)
+
+def chi_tiet_hoa_don(request, id):
+    hang = ChiTietHoaDon.objects.filter(hoa_don=id)
+    thanh_tien = 0
+    i = 1
+    data = []
+    for item in hang:
+        obj = {}
+        obj.update({'no': i})
+        obj.update({'ten_san_pham': item.san_pham.ten_san_pham})
+        obj.update({'gia_ban': item.san_pham.gia_ban})
+        obj.update({'so_luong_mua': item.so_luong_mua})
+
+        thanh_tien += int(item.san_pham.gia_ban) * int(item.so_luong_mua)
+        data.append(obj)
+    return JsonResponse({'thanh_tien': thanh_tien, 'data': data}, safe=False)

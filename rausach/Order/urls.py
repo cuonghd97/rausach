@@ -11,7 +11,8 @@ urlpatterns = [
         path('-gio-hang/', views.gio_hang, name='gio_hang')
     ])),
     path('data', include([
-        path('-gio-hang/', views.data_gio_hang)
+        path('-gio-hang/', views.data_gio_hang),
+        path('-hoa-don/', views.data_hoa_don)
     ])),
     # path('post', include([
     # ])),

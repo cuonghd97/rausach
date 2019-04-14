@@ -75,7 +75,7 @@ $(document).ready(function () {
         }
     })
 
-    $("#table-cart tbody").on("click", "#remove", function() {
+    $("#table-cart tbody").on("click", "#remove", function () {
         var data = table.row($(this).parents("tr")).data()
         formData = new FormData()
         formData.append(
@@ -100,7 +100,7 @@ $(document).ready(function () {
                     allowOutsideClick: false
                 });
             },
-            success: function(data) {
+            success: function (data) {
                 table.ajax.reload()
                 if (data.status == 'success') {
                     Swal.fire({
@@ -119,11 +119,12 @@ $(document).ready(function () {
     })
 
     // Đặt hàng
-    $("#btn-dat-hang").on("click", function() {
+    $("#btn-dat-hang").on("click", function () {
         var data = table.rows().data()
         var cart = []
-        for (let i=0; i<data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             obj = {}
+            obj.id_hang_dat = data[i].id
             obj.id_hang = data[i].id_hang
             obj.so_luong = data[i].so_luong
 
@@ -158,5 +159,47 @@ $(document).ready(function () {
                 }
             }
         })
+    })
+
+    // Danh sách hàng đã đặt
+    var table_ordered = $("#ordered-cart").DataTable({
+        destroy: true,
+        info: false,
+        paging: false,
+        searching: false,
+        ajax: {
+            type: "get",
+            url: "/data-hoa-don/",
+            dataSrc: ""
+        },
+        columns: [
+            {
+                width: "10%",
+                data: "no"
+            },
+            {
+                width: "60%",
+                data: "ten_san_pham"
+            },
+            { data: "so_luong" }
+        ]
+    })
+
+    $("#btn-da-dat-hang").on("click", function () {
+        table_ordered.ajax.reload()
+        $("#cart-list").prop("hidden", true)
+        $("#ordered-list").prop("hidden", false)
+        $("#ordered-list #ordered-cart").css("width", "100%")
+        $("#btn-dat-hang").css("display", "none")
+        $("#xem-hang-dat").css("display", "initial")
+        $(this).css("display", "none")
+    })
+
+    $("#xem-hang-dat").on("click", function () {
+        $("#cart-list").prop("hidden", false)
+        $("#ordered-list").prop("hidden", true)
+        $("#btn-dat-hang").css("display", "initial")
+        $("#btn-da-dat-hang").css("display", "initial")
+        $(this).css("display", "none")
     })
 })

@@ -7,8 +7,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.hashers import check_password
-from Store.views import THEM_THANH_CONG, SUA_THANH_CONG, XOA_THANH_CONG, LOI
+from django.contrib.auth import decorators
 
+from Store.views import THEM_THANH_CONG, SUA_THANH_CONG, XOA_THANH_CONG, LOI
 from Store.models import *
 
 # Create your views here.
@@ -32,6 +33,7 @@ def index(request):
     data = {'san_pham': san_pham, 'loai_hang': loai_hang}
     return render(request, 'Order/index.html', data)
 
+@decorators.login_required(login_url='/')
 def loc_theo_loai_hang(request,loai_hang, id):
     san_pham = SanPham.objects.filter(is_active=1).filter(loai_hang=id).order_by('-ngay_them')
     paginator = Paginator(san_pham, 9)
@@ -47,6 +49,7 @@ def loc_theo_loai_hang(request,loai_hang, id):
     data = {'san_pham': san_pham, 'loai_hang': loai_hang}
     return render(request, 'Order/index.html', data)
 
+@decorators.login_required(login_url='/')
 def chi_tiet_hang(request, ten_hang, id):
     try:
         san_pham = SanPham.objects.get(pk=id)
@@ -73,6 +76,7 @@ def chi_tiet_hang(request, ten_hang, id):
     
     return render(request, 'Order/product_detail.html', data)
 
+@decorators.login_required(login_url='/')
 def thong_tin_ca_nhan(request):
     user = request.user
     if request.method == 'POST':
@@ -99,6 +103,7 @@ def thong_tin_ca_nhan(request):
     return render(request, 'Order/profile.html', data)
 
 # Xử lý giỏ hàng
+@decorators.login_required(login_url='/')
 def gio_hang(request):
     user = request.user
     if request.method == 'POST':
@@ -116,14 +121,17 @@ def gio_hang(request):
         if data != None:
             user = request.user
             data = json.loads(data)
-            print(data[0])
             hoa_don = HoaDon()
             hoa_don.khach_hang = user
+            hoa_don.ten_khach_hang = user.ho_ten
             hoa_don.save()
             id_hoa_don = hoa_don.id
 
             for item in data:
                 chi_tiet_hoa_don = ChiTietHoaDon()
+                hang_dat = HangDat.objects.get(pk=item['id_hang_dat'])
+                hang_dat.check = 1
+                hang_dat.save()
                 chi_tiet_hoa_don.hoa_don = hoa_don
                 chi_tiet_hoa_don.san_pham = SanPham.objects.get(pk=item["id_hang"])
                 chi_tiet_hoa_don.so_luong_mua = item["so_luong"]
@@ -136,6 +144,7 @@ def gio_hang(request):
     data = {'loai_hang': loai_hang}
     return render(request, 'Order/cart.html', data)
 
+@decorators.login_required(login_url='/')
 def data_gio_hang(request):
     user = request.user
     hang_dat = HangDat.objects.filter(nguoi_dung=user.id).filter(check=0)
@@ -152,4 +161,22 @@ def data_gio_hang(request):
         i+=1
         data.append(obj)
 
+    return JsonResponse(data, safe=False)
+
+@decorators.login_required(login_url='/')
+def data_hoa_don(request):
+    user = request.user
+    hoa_don = HoaDon.objects.filter(is_paid=0).filter(khach_hang=user)
+    data = []
+    i = 1
+    for hd in hoa_don:
+        chi_tiet_hoa_don = ChiTietHoaDon.objects.filter(hoa_don=hd)
+        for item in chi_tiet_hoa_don:
+            obj = {}
+            obj.update({'no': i})
+            obj.update({'so_luong': item.so_luong_mua})
+            obj.update({'ten_san_pham': item.san_pham.ten_san_pham})
+
+            i+=1
+            data.append(obj)
     return JsonResponse(data, safe=False)

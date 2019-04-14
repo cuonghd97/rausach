@@ -115,8 +115,9 @@ class NhaCungCap(models.Model):
 class HoaDon(models.Model):
     khach_hang = models.ForeignKey(
         'MyUsers', models.SET_NULL, related_name='khach_hang', null=True)
-    ngay_lap = models.DateTimeField(default=timezone.now, null=True)
-    created_at = models.DateField(auto_now_add=True)
+    ten_khach_hang = models.TextField(blank=True)
+    ngay_lap = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     ghi_chu = models.TextField(null=True)
     nguoiTao = models.ForeignKey(
         'MyUsers', models.SET_NULL, related_name='nguoi_tao_hoa_don', null=True)
