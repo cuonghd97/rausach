@@ -77,6 +77,7 @@ class SanPham(models.Model):
     mo_ta = models.TextField(blank=True)
     nha_cung_cap = models.ForeignKey('NhaCungCap', models.SET_NULL, null=True)
     avt = models.FileField(upload_to='product/avatar/')
+    update_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'san_pham'

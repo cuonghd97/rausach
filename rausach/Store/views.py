@@ -523,12 +523,22 @@ def hoa_don(request):
     if request.method == 'POST':
         id_invoice = request.POST.get('id_invoice')
         is_paid = request.POST.get('is_paid')
+        print(request.POST)
         if is_paid != None:
             try:
                 hoa_don = HoaDon.objects.get(pk=id_invoice)
-                hoa_don.is_paid = 1
-                hoa_don.save()
-                return JsonResponse(THEM_THANH_CONG)
+                if hoa_don.is_paid == 0:
+                    hoa_don.is_paid = 1
+                    hoa_don.save()
+                    chi_tiet_hoa_don = ChiTietHoaDon.objects.filter(hoa_don=hoa_don)
+
+                    for hang in chi_tiet_hoa_don:
+                        san_pham = SanPham.objects.get(pk=hang.san_pham.id)
+                        san_pham.ton_kho = san_pham.ton_kho - hang.so_luong_mua
+                        san_pham.save() 
+                    return JsonResponse(THEM_THANH_CONG)
+                else:
+                    return JsonResponse({'status': 'paided'})
             except:
                 return JsonResponse(LOI)
 
@@ -563,6 +573,8 @@ def data_hoa_don(request):
 
 def chi_tiet_hoa_don(request, id):
     hang = ChiTietHoaDon.objects.filter(hoa_don=id)
+    hoa_don = HoaDon.objects.get(pk=id)
+    user = request.user
     thanh_tien = 0
     i = 1
     data = []
@@ -572,7 +584,19 @@ def chi_tiet_hoa_don(request, id):
         obj.update({'ten_san_pham': item.san_pham.ten_san_pham})
         obj.update({'gia_ban': item.san_pham.gia_ban})
         obj.update({'so_luong_mua': item.so_luong_mua})
+        obj.update({'thanh_tien': int(item.san_pham.gia_ban) * int(item.so_luong_mua)})
 
         thanh_tien += int(item.san_pham.gia_ban) * int(item.so_luong_mua)
         data.append(obj)
-    return JsonResponse({'thanh_tien': thanh_tien, 'data': data}, safe=False)
+    response = {}
+    response.update({'ma_hoa_don': hoa_don.id})
+    response.update({'ngay_tao': hoa_don.ngay_lap})
+    response.update({'thanh_tien': thanh_tien})
+    response.update({'data': data})
+    response.update({'nguoi_tao': user.ho_ten})
+    response.update({'khach_hang': hoa_don.ten_khach_hang})
+    return JsonResponse(response, safe=False)
+
+# Bán hàng
+def ban_hang(request):
+    return render(request, 'Store/sale/sale.html')

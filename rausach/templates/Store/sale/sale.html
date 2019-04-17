@@ -1,0 +1,54 @@
+{% extends "../layouts/base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<div class="">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Bán hàng</h2>
+                    <!--<button class="btn btn btn-round btn-primary"  style="float:right;" data-toggle="modal" data-target="#new_mon_multi" data-title="new">-->
+                    <!--<i class="fa fa-plus"></i> Thêm nhiều môn-->
+                    <!--</button>-->
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="table-responsive">
+                            <table class="table table-striped jambo_table bulk_action" id="list_san_pham" width="100%">
+                                {% csrf_token %}
+                                <thead>
+                                    <tr>
+                                        <th>*</th>
+                                        <th>Tên hàng</th>
+                                        <th>Giá bán</th>
+                                        <th>Số lượng</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_body">
+    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <h3>Right</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'DataTables/datatables.js' %}"></script>
+<script src="{% static '/custom/js/Store/sale.js' %}"></script>
+{% endblock %}

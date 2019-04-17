@@ -6,6 +6,99 @@ Quản lý hóa đơn
 
 {% block css %}
 <link href="{% static 'DataTables/datatables.css' %}" rel="stylesheet">
+<style>
+    .invoice-box {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+        font-size: 16px;
+        line-height: 24px;
+        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        color: #555;
+    }
+
+    .invoice-box table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
+    }
+
+    .invoice-box table td {
+        padding: 5px;
+        vertical-align: top;
+    }
+
+    .invoice-box table tr td:nth-child(2) {
+        text-align: right;
+    }
+
+    .invoice-box table tr.top table td {
+        padding-bottom: 20px;
+    }
+
+    .invoice-box table tr.top table td.title {
+        font-size: 45px;
+        line-height: 45px;
+        color: #333;
+    }
+
+    .invoice-box table tr.information table td {
+        padding-bottom: 40px;
+    }
+
+    .invoice-box table tr.heading td {
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+    }
+
+    .invoice-box table tr.details td {
+        padding-bottom: 20px;
+    }
+
+    .invoice-box table tr.item td {
+        border-bottom: 1px solid #eee;
+    }
+
+    .invoice-box table tr.item.last td {
+        border-bottom: none;
+    }
+
+    .invoice-box table tr.total td:nth-child(2) {
+        border-top: 2px solid #eee;
+        font-weight: bold;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .invoice-box table tr.top table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+
+        .invoice-box table tr.information table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+    }
+
+    /** RTL **/
+    .rtl {
+        direction: rtl;
+        font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+
+    .rtl table {
+        text-align: right;
+    }
+
+    .rtl table tr td:nth-child(2) {
+        text-align: left;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +107,7 @@ Quản lý hóa đơn
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Danh sách hoas đơn</h2>
+                    <h2>Danh sách hóa đơn</h2>
                     <!--<button class="btn btn btn-round btn-primary"  style="float:right;" data-toggle="modal" data-target="#new_mon_multi" data-title="new">-->
                     <!--<i class="fa fa-plus"></i> Thêm nhiều môn-->
                     <!--</button>-->
@@ -33,9 +126,6 @@ Quản lý hóa đơn
                                     <th>Người lập</th>
                                     <th>Ngày lập</th>
                                     <th>Thanh toán</th>
-                                    <th>
-                                        <center>*</center>
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="table_body">
@@ -49,7 +139,7 @@ Quản lý hóa đơn
     </div>
 </div>
 
-<!-- Modal new loại hàng -->
+<!-- Modal thanh toán hóa -->
 <div class="modal" id="thanh-toan-hoa-don" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -58,12 +148,14 @@ Quản lý hóa đơn
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title" id="new_mon_title">Thanh toán hóa đơn</h4>
             </div>
+            <input type="hidden" name="id" id="id">
             <div class="modal-body" id="khung-modal">
                 {% csrf_token %}
                 <table id="chi-tiet-hoa-don">
                     <thead>
                         <th>*</th>
                         <th>Tên hàng</th>
+                        <th>Giá bán</th>
                         <th>Số lượng</th>
                         <th>Thành tiền</th>
                     </thead>
@@ -73,7 +165,91 @@ Quản lý hóa đơn
                 <div class="clearfix"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn_create_loai_hang">Tạo mới</button>
+                <button type="button" class="btn btn-primary" id="btn_thanh_toan">Thanh toán</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal hóa đơn -->
+<div class="modal" id="xem-hoa-don" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="new_mon_title">Thanh toán hóa đơn</h4>
+            </div>
+            <input type="hidden" name="id" id="id">
+            <div class="modal-body" id="khung-modal">
+                {% csrf_token %}
+                <div class="invoice-box">
+                    <table cellpadding="0" cellspacing="0">
+                        <tr class="top">
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            Ngày tạo: <span id="ngay-tao"></span><br>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr class="information">
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            Cửa hàng rau sạch.<br>
+                                            Trườn ĐHCN Hà Nội<br> <br>
+                                            Cầu Diễn, Minh Khai, Bắc Từ Liêm, Hà Nội
+                                        </td>
+
+                                        <td>
+                                            Người tạo: <span id="nguoi-tao"></span><br>
+                                            Khách hàng: <span id="khach-hang"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class="heading">
+                            <td>
+                                Sản phẩm
+                            </td>
+                            <td>
+                                Số lượng
+                            </td>
+                            <td>
+                                Giá tiền
+                            </td>
+                        </tr>
+                        <tbody id="list-san-pham">
+                            <tr class="item">
+                                <td>
+                                    Website design
+                                </td>
+                                <td>
+                                    Số lượng
+                                </td>
+                                <td>
+                                    $300.00
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tr class="total">
+                            <td></td>
+                            <td>
+                                Thành tiền: <span id="thanh-tien"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-in">In hóa đơn</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
             </div>
         </div>

@@ -12,7 +12,8 @@ urlpatterns = [
 		path('-nha-cung-cap/', views.nha_cung_cap, name='quan_ly_nha_cung_cap'),
 		path('-nhan-vien/', views.nhan_vien, name='quan_ly_nhan_vien'),
 		path('-nguoi-dung/', views.nguoi_dung, name='quan_ly_nguoi_dung'),
-		path('-hoa-don/', views.hoa_don, name='quan_ly_hoa_don')
+		path('-hoa-don/', views.hoa_don, name='quan_ly_hoa_don'),
+		path('-ban-hang/', views.ban_hang, name='ban_hang')
 	])),
 	path('data', include([
 		path('-san-pham/', views.data_san_pham),
