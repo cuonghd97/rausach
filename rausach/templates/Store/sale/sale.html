@@ -46,6 +46,38 @@
         </div>
     </div>
 </div>
+<!-- Modal chi tiết hàng -->
+<div class="modal" id="chi_tiet_hang" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					&times;
+				</button>
+				<h4 class="modal-title" id="new_mon_title">Sửa nhà cung cấp</h4>
+			</div>
+			<div class="modal-body">
+				<div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<label class="col-md-12">Giá bán
+						<input type="text" class="form-control" name="gia-ban" id="gia-ban" disabled/>
+					</label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
+					<label class="col-md-12">Giá vốn
+						<input type="text" class="form-control" name="gia-von" id="gia-von" disabled/>
+					</label>
+                </div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					Đóng
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 
 {% block js %}

@@ -13,7 +13,7 @@ def user_login(request):
     user = request.user
     if user.is_authenticated:
         if user.role == 0:
-            return JsonResponse({"status": "success", "messages": reverse('Store:base')})
+            return redirect(reverse('Store:base'))
         if user.role == 2:
             return JsonResponse({"status": "success", "messages": 'Bán hàng'})
         if user.role == 3:

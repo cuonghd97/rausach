@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#list_san_pham").DataTable({
+    var table = $("#list_san_pham").DataTable({
         ajax: {
             type: "get",
             url: "/store/data-san-pham/",
@@ -10,25 +10,11 @@ $(document).ready(function () {
             { data: "ten_san_pham" },
             { data: "gia_ban" },
             { data: "ton_kho" }
-        ],
-        drawCallback: function () {
-            $('tr').popover({
-                "html": true,
-                trigger: 'manual',
-                placement: 'left',
-                "content": function () {
-                    return "<div>Popover content</div>";
-                }
-            })
-        }
+        ]
     })
 
-    // $("#list-san-pham tr").popover({
-    //     html: true,
-    //     trigger: "hover",
-    //     placement: "bottom",
-    //     content: function() {
-    //         return `<img src="placehold.it/100x50">`
-    //     }
-    // })
+    $("#table_body").on("click", "tr", function() {
+        console.log("click")
+        $("#chi_tiet_hang").modal("show")
+    })
 })
