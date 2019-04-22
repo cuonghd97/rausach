@@ -1,0 +1,56 @@
+{% extends 'Order/layouts/base.html' %}
+{% block title %}
+Giỏ hàng
+{% endblock %}
+
+{% load staticfiles %}
+
+{% block css %}
+<link href="{% static 'DataTables/datatables.css' %}" rel="stylesheet" />
+<style>
+    table {
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block cart %}
+<div class="row">
+    <div class="column medium-9" id="cart-list">
+        <h3>Chi tiết hóa đơn</h3>
+        <p>Ngày lập: {{ ngay_lap }}</p>
+        <p>Trạng thái: {{ hoa_don.trang_thai.mo_ta }}</p>
+        <p>Thành tiền: {{ thanh_tien }}</p>
+        {% if hoa_don.trang_thai.ma == 'phrase1' %}
+        <form action="{% url 'Order:chi_tiet_hoa_don' hoa_don.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="alert button" value="Xóa đơn hàng">
+        </form>
+        {% endif %}
+        <table id="table-cart">
+            <thead>
+                <tr>
+                    <th width="200">Tên hàng</th>
+                    <th>Số lượng</th>
+                    <th>Giá bán</th>
+                </tr>
+                {% for item in san_pham %}
+                <tr>
+                    <th width="200">{{ item.san_pham.ten_san_pham }}</th>
+                    <th>{{ item.so_luong_mua }}</th>
+                    <th>{{ item.gia_ban }}</th>
+                </tr>
+                {% endfor %}
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="column medium-3">
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'DataTables/datatables.js' %}"></script>
+{% endblock %}

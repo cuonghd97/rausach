@@ -15,9 +15,10 @@ SUA_THANH_CONG = {"status": "success", "messages": 'Sửa thành công'}
 LOI = {"status": "error", "messages": 'Lỗi'}
 XOA_THANH_CONG = {"status": "success", "messages": 'Xóa thành công'}
 
+
 def base(request):
     user = request.user
-    return render(request, 'Store/layouts/base.html',{"user":user})
+    return render(request, 'Store/layouts/base.html', {"user": user})
 
 # Json tỉnh
 @decorators.login_required(login_url='/auth/login/')
@@ -27,6 +28,7 @@ def data_tinh(request):
 
     return JsonResponse(data, safe=False)
 
+
 # Json huyện
 @decorators.login_required(login_url='/auth/login/')
 def data_huyen(request):
@@ -35,6 +37,7 @@ def data_huyen(request):
 
     return JsonResponse(data, safe=False)
 
+
 # Quản lý sản phẩm trong cửa hàng
 @decorators.login_required(login_url='/auth/login/')
 @is_admin
@@ -42,9 +45,11 @@ def san_pham(request):
     return render(request, 'Store/categories/products.html')
 # Data sản phẩm
 
+
 def data_anh_sp(request, id):
     anh = HinhAnhSP.objects.filter(san_pham=id).values()
     return JsonResponse(list(anh), safe=False)
+
 
 def data_san_pham(request):
     san_pham = SanPham.objects.all()
@@ -67,11 +72,13 @@ def data_san_pham(request):
         obj.update({'id_loai_hang': sp.loai_hang.id})
         obj.update({'nha_cung_cap': sp.nha_cung_cap.ten})
         obj.update({'id_nha_cung_cap': sp.nha_cung_cap.id})
+        obj.update({'khuyen_mai': sp.khuyen_mai})
         obj.update({"anh": str(sp.avt)})
-        i+=1
+        i += 1
 
         data.append(obj)
     return JsonResponse(data, safe=False)
+
 
 # Post sản phẩm
 @decorators.login_required(login_url='/auth/login/')
@@ -85,6 +92,7 @@ def post_san_pham(request):
         so_luong = request.POST.get('so_luong')
         loai_hang = request.POST.get('loai_hang')
         nha_cung_cap = request.POST.get('nha_cung_cap')
+        khuyen_mai = request.POST.get('khuyen_mai')
         mo_ta = request.POST.get('mo_ta')
         avt = request.FILES.get('image_avt')
         is_add = request.POST.get('is_add')
@@ -102,7 +110,7 @@ def post_san_pham(request):
                 san_pham.loai_hang = LoaiHang.objects.get(pk=loai_hang)
                 san_pham.nha_cung_cap = NhaCungCap.objects.get(pk=nha_cung_cap)
                 san_pham.mo_ta = mo_ta
-                san_pham.ton_kho =so_luong
+                san_pham.ton_kho = so_luong
                 san_pham.avt = avt
                 san_pham.save()
                 id_sp = san_pham.id
@@ -121,14 +129,16 @@ def post_san_pham(request):
                 san_pham.gia_ban = gia_ban
                 san_pham.so_luong = so_luong
                 san_pham.loai_hang = LoaiHang.objects.get(pk=loai_hang)
+                san_pham.khuyen_mai = khuyen_mai
+                print(khuyen_mai)
                 san_pham.nha_cung_cap = NhaCungCap.objects.get(pk=nha_cung_cap)
                 san_pham.mo_ta = mo_ta
-                san_pham.ton_kho =so_luong
+                san_pham.ton_kho = so_luong
                 if avt != None:
                     san_pham.avt = avt
                 san_pham.is_active = is_active
                 san_pham.save()
-                if images != []: 
+                if images != []:
                     HinhAnhSP.objects.filter(san_pham=id_sp).delete()
                     for image in images:
                         anh_sp = HinhAnhSP()
@@ -237,6 +247,7 @@ def data_nha_cung_cap(request):
 
 # Post dữ liệu nhà cung cấp
 
+
 @decorators.login_required(login_url='/auth/login/')
 @is_admin
 def post_nha_cung_cap(request):
@@ -303,6 +314,7 @@ def post_nha_cung_cap(request):
 def nhan_vien(request):
     return render(request, 'Store/staff/staff.html')
 
+
 # Data nhân viên
 @decorators.login_required(login_url='/auth/login/')
 @is_admin
@@ -329,7 +341,7 @@ def data_nhan_vien(request):
         obj.update({'email': nhan_vien.email})
         obj.update({'avatar': str(nhan_vien.avatar)})
 
-        i+=1
+        i += 1
         data.append(obj)
     return JsonResponse(data, safe=False)
 
@@ -368,7 +380,7 @@ def post_nhan_vien(request):
                 user.tinh = tinh
                 user.huyen = huyen
                 user.role = role
-                user.ngay_sinh = datetime.strptime(ngay_sinh,'%Y-%m-%d')
+                user.ngay_sinh = datetime.strptime(ngay_sinh, '%Y-%m-%d')
                 user.luong = luong
                 user.avatar = anh
                 user.is_active = 1
@@ -389,7 +401,7 @@ def post_nhan_vien(request):
                 user.tinh = tinh
                 user.huyen = huyen
                 user.role = role
-                user.ngay_sinh = datetime.strptime(ngay_sinh,'%Y-%m-%d')
+                user.ngay_sinh = datetime.strptime(ngay_sinh, '%Y-%m-%d')
                 user.luong = luong
                 if anh != None:
                     user.avatar = anh
@@ -439,7 +451,7 @@ def data_nguoi_dung(request):
         obj.update({'email': nguoi_dung.email})
         obj.update({'avatar': str(nguoi_dung.avatar)})
 
-        i+=1
+        i += 1
         data.append(obj)
     return JsonResponse(data, safe=False)
 
@@ -477,7 +489,7 @@ def post_nguoi_dung(request):
                 user.tinh = tinh
                 user.huyen = huyen
                 user.role = role
-                user.ngay_sinh = datetime.strptime(ngay_sinh,'%Y-%m-%d')
+                user.ngay_sinh = datetime.strptime(ngay_sinh, '%Y-%m-%d')
                 user.avatar = anh
                 user.is_active = 1
                 user.save()
@@ -497,7 +509,7 @@ def post_nguoi_dung(request):
                 user.tinh = tinh
                 user.huyen = huyen
                 user.role = role
-                user.ngay_sinh = datetime.strptime(ngay_sinh,'%Y-%m-%d')
+                user.ngay_sinh = datetime.strptime(ngay_sinh, '%Y-%m-%d')
                 if anh != None:
                     user.avatar = anh
                 user.is_active = is_active
@@ -530,12 +542,13 @@ def hoa_don(request):
                 if hoa_don.is_paid == 0:
                     hoa_don.is_paid = 1
                     hoa_don.save()
-                    chi_tiet_hoa_don = ChiTietHoaDon.objects.filter(hoa_don=hoa_don)
+                    chi_tiet_hoa_don = ChiTietHoaDon.objects.filter(
+                        hoa_don=hoa_don)
 
                     for hang in chi_tiet_hoa_don:
                         san_pham = SanPham.objects.get(pk=hang.san_pham.id)
                         san_pham.ton_kho = san_pham.ton_kho - hang.so_luong_mua
-                        san_pham.save() 
+                        san_pham.save()
                     return JsonResponse(THEM_THANH_CONG)
                 else:
                     return JsonResponse({'status': 'paided'})
@@ -566,10 +579,11 @@ def data_hoa_don(request):
         obj.update({'ghi_chu': hd.ghi_chu})
         obj.update({'khach_hang': hd.ten_khach_hang})
 
-        i+=1
+        i += 1
         data.append(obj)
 
     return JsonResponse(data, safe=False)
+
 
 def chi_tiet_hoa_don(request, id):
     hang = ChiTietHoaDon.objects.filter(hoa_don=id)
@@ -584,7 +598,8 @@ def chi_tiet_hoa_don(request, id):
         obj.update({'ten_san_pham': item.san_pham.ten_san_pham})
         obj.update({'gia_ban': item.san_pham.gia_ban})
         obj.update({'so_luong_mua': item.so_luong_mua})
-        obj.update({'thanh_tien': int(item.san_pham.gia_ban) * int(item.so_luong_mua)})
+        obj.update({'thanh_tien': int(item.san_pham.gia_ban)
+                    * int(item.so_luong_mua)})
 
         thanh_tien += int(item.san_pham.gia_ban) * int(item.so_luong_mua)
         data.append(obj)
@@ -598,5 +613,7 @@ def chi_tiet_hoa_don(request, id):
     return JsonResponse(response, safe=False)
 
 # Bán hàng
+
+
 def ban_hang(request):
     return render(request, 'Store/sale/sale.html')

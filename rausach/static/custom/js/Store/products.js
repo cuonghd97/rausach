@@ -175,6 +175,7 @@ $(document).ready(function() {
 		$("#edit_san_pham #id").val(data.id);
 		$("#edit_san_pham #gia_von").val(data.gia_von);
 		$("#edit_san_pham #gia_ban").val(data.gia_ban);
+		$("#edit_san_pham #khuyen_mai").val(data.khuyen_mai);
 		$("#edit_san_pham #so_luong").val(data.so_luong);
 		if (data.is_active == "1") {
 			$("#edit_san_pham #is_active").prop("checked", true);
@@ -229,6 +230,7 @@ $(document).ready(function() {
 		var image_avt = $("#edit_san_pham #image_avt")[0].files[0];
 		var image = $("#edit_san_pham #image")[0].files;
 		var id = $("#edit_san_pham #id").val();
+		var khuyen_mai = $("#edit_san_pham #khuyen_mai").val();
 		var is_active = 0;
 		if ($('#edit_san_pham #is_active').is(":checked") == true) {
 			is_active = 1;
@@ -270,6 +272,7 @@ $(document).ready(function() {
 			formData.append("is_active", is_active);
 			formData.append("is_edit", 1);
 			formData.append("id", id);
+			formData.append("khuyen_mai", khuyen_mai);
 			formData.append(
 				"csrfmiddlewaretoken",
 				$("input[name=csrfmiddlewaretoken]").val()
