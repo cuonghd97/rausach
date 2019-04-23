@@ -13,21 +13,73 @@ $(document).ready(function () {
             { data: "khach_hang" },
             { data: "nguoi_tao" },
             { data: "ngay_lap" },
+        ],
+        columnDefs: [
             {
-                data: "is_paid",
-                render: function (data, type, row) {
-                    if (type == "display") {
-                        if (data == 0) {
-                            return `<button class="btn btn-info" id="thanh-toan">Thanh toán</button> <button class="btn btn-primary" id="xuat">Xuất hóa đơn</button>`
-                        } else {
-                            return `<button class="btn btn-primary" id="xuat">Xuất hóa đơn</button>`
-                        }
-                    }
-                    return data
-                }
+                width: "30%",
+                targets: 4,
+                data: null,
+                defaultContent: `<div class="btn-group" role="group" aria-label="Basic example">
+                                <button class="btn btn-primary" id="xuat">Xuất hóa đơn</button>
+                                <button class="btn btn-info" id="">Sửa</button>
+                                <button class="btn btn-danger" id="">Xóa</button>
+                                </div>`
             }
         ]
     })
+
+    // Lấy data các sản phẩm
+    $.ajax({
+        type: "get",
+        url: "/store/data-san-pham/",
+        success: function (data) {
+            sessionStorage.setItem("san_pham", JSON.stringify(data))
+        }
+    })
+
+    // Lấy data trạng thái
+    $.ajax({
+        type: "get",
+        url: "/store/data-trang-thai/",
+        success: function (data) {
+            sessionStorage.setItem('trang_thai', JSON.stringify(data))
+        }
+    })
+
+    $("#btn-new-hoa-don").on("click", function () {
+        var trang_thai = JSON.parse(sessionStorage.getItem("trang_thai"))
+        console.log(trang_thai)
+        var elements = `<option>-- Trạng thái --</option>`
+        for (item of trang_thai) {
+            elements += `<option value="${item.id}">${item.mo_ta}</option>`
+        }
+        $("#new_hoa_don #trang_thai").html(elements)
+
+        // Load danh sách sản phẩm đang bán
+        var san_pham = JSON.parse(sessionStorage.getItem("san_pham"))
+        $("#new_hoa_don #san_pham_dang_ban").DataTable({
+            destroy: true,
+            // info: false,
+            responsive: true,
+            data: san_pham,
+            dataSrc: "",
+            columns: [
+                {
+                    data: "id",
+                    render: function (data, type, row) {
+                        if (type == "display") {
+                            return `<button><</button>`
+                        }
+                        return data
+                    }
+                },
+                { data: "ten_san_pham" },
+                { data: "so_luong" },
+                { data: "gia_ban" }
+            ]
+        })
+    })
+
     $("#list_hoa_don tbody").on("click", "#thanh-toan", function () {
         var data = table.row($(this).parents("tr")).data()
         $("#thanh-toan-hoa-don #id").val(data.id)
@@ -128,6 +180,7 @@ $(document).ready(function () {
                 </tr>`
                 }
                 $("#xem-hoa-don table #list-san-pham").html(elements)
+                $("#xem-hoa-don").modal("show")
                 console.log(data)
             }
         })
@@ -136,6 +189,11 @@ $(document).ready(function () {
         $("body").first().html($("#xem-hoa-don #khung-modal").html());
         window.print();
         location.reload();
+    })
+
+    // Thêm sản phẩm
+    $("#new_hoa_don #them-san-pham").on("click", function() {
+        $("#danh_sach_hang").modal("show")
     })
 })
 // var data = table.row($(this).parents("tr")).data()

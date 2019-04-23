@@ -1,4 +1,4 @@
-#!/home/cuong/Documents/rausach/rausach/env/bin/python
+#!/home/meditech/Documents/rausach/rausach/env/bin/python
 
 import sys
 import getopt

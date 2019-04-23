@@ -184,7 +184,7 @@ def data_gio_hang(request):
 @decorators.login_required(login_url='/')
 def data_hoa_don(request):
     user = request.user
-    hoa_don = HoaDon.objects.filter(khach_hang=user).order_by('-ngay_lap')
+    hoa_don = HoaDon.objects.filter(khach_hang=user).order_by('-created_at')
     data = []
     i = 1
     for hd in hoa_don:

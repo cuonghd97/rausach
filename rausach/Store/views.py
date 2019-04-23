@@ -557,6 +557,7 @@ def hoa_don(request):
 
     return render(request, 'Store/transfer/invoices.html')
 
+
 # Data hóa đơn
 @decorators.login_required(login_url='/auth/login/')
 @is_admin
@@ -573,7 +574,8 @@ def data_hoa_don(request):
             obj.update({'nguoi_tao': hd.nguoiTao.ho_ten})
         else:
             obj.update({'nguoi_tao': ''})
-        obj.update({'is_paid': hd.is_paid})
+        obj.update({'id_trang_thai': hd.trang_thai.id})
+        obj.update({'trang_thai': hd.trang_thai.mo_ta})
         obj.update({'ngay_lap': hd.ngay_lap})
         obj.update({'thoi_gian_lap': hd.created_at.strftime('%H:%M')})
         obj.update({'ghi_chu': hd.ghi_chu})
@@ -617,3 +619,9 @@ def chi_tiet_hoa_don(request, id):
 
 def ban_hang(request):
     return render(request, 'Store/sale/sale.html')
+
+
+def data_trang_thai(request):
+    trang_thai = TrangThaiHoaDon.objects.all().values()
+
+    return JsonResponse(list(trang_thai), safe=False)
