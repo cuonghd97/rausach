@@ -25,7 +25,8 @@ urlpatterns = [
         path('-nhan-vien/', views.data_nhan_vien),
         path('-nguoi-dung/', views.data_nguoi_dung),
         path('-hoa-don/', views.data_hoa_don),
-        path('-chi-tiet-hoa-don/<int:id>', views.chi_tiet_hoa_don)
+        path('-chi-tiet-hoa-don/<int:id>', views.chi_tiet_hoa_don),
+        path('-trang-thai/', views.data_trang_thai)
     ])),
     path('post', include([
         path('-loai-hang/', views.post_loai_hang),

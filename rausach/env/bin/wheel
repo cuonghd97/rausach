@@ -1,4 +1,4 @@
-#!/home/cuong/Documents/rausach/rausach/env/bin/python2
+#!/home/meditech/Documents/rausach/rausach/env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

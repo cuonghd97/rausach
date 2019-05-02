@@ -1,4 +1,4 @@
-#!/home/cuong/Documents/rausach/rausach/env/bin/python
+#!/home/meditech/Documents/rausach/rausach/env/bin/python3
 from django.core import management
 
 if __name__ == "__main__":

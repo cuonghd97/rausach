@@ -61,14 +61,17 @@ def chi_tiet_hang(request, ten_hang, id):
         san_pham = SanPham.objects.get(pk=id)
     except ObjectDoesNotExist:
         loai_hang = LoaiHang.objects.all()
-        return render(request, 'Order/product_detail.html', {'loai_hang': loai_hang, 'not_found': '1'})
+        return render(request, 'Order/product_detail.html',
+                      {'loai_hang': loai_hang, 'not_found': '1'})
     loai_hang = LoaiHang.objects.all()
     anh_san_pham = HinhAnhSP.objects.filter(san_pham=san_pham.id)[:5]
 
     san_pham_lien_quan = SanPham.objects.filter(
-        loai_hang=san_pham.loai_hang).filter(is_active=1).order_by('-ngay_them')[:5]
+        loai_hang=san_pham.loai_hang).filter(
+            is_active=1).order_by('-ngay_them')[:5]
     data = {'loai_hang': loai_hang, 'san_pham': san_pham,
-            'anh_san_pham': anh_san_pham, 'san_pham_lien_quan': san_pham_lien_quan}
+            'anh_san_pham': anh_san_pham,
+            'san_pham_lien_quan': san_pham_lien_quan}
 
     if request.method == 'POST':
         try:
@@ -122,14 +125,14 @@ def gio_hang(request):
         id_hang_dat = request.POST.get('id_hang_dat')
         data = request.POST.get('data')
 
-        if is_remove != None:
+        if is_remove not None:
             try:
                 HangDat.objects.get(pk=id_hang_dat).delete()
                 return JsonResponse(XOA_THANH_CONG)
             except:
                 return JsonResponse(LOI)
 
-        if data != None:
+        if data not None:
             user = request.user
             data = json.loads(data)
             hoa_don = HoaDon()
@@ -184,7 +187,7 @@ def data_gio_hang(request):
 @decorators.login_required(login_url='/')
 def data_hoa_don(request):
     user = request.user
-    hoa_don = HoaDon.objects.filter(khach_hang=user).order_by('-ngay_lap')
+    hoa_don = HoaDon.objects.filter(khach_hang=user).order_by('-created_at')
     data = []
     i = 1
     for hd in hoa_don:
@@ -213,7 +216,7 @@ def chi_tiet_hoa_don(request, id):
     for item in san_pham:
         thanh_tien += item.so_luong_mua * item.gia_ban
     data = {'hoa_don': hoa_don, 'san_pham': san_pham, 'ngay_lap': ngay_lap,
-        'thanh_tien': thanh_tien}
+            'thanh_tien': thanh_tien}
     return render(request, 'Order/invoice_detail.html', data)
 
 

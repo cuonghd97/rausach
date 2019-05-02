@@ -6,7 +6,7 @@ from django.utils import timezone
 
 
 class MyUsersManager(BaseUserManager):
-    def create(self, username, password, ho_ten, sdt, role):
+    def create(self, username, password, ho_ten, sdt, role, is_active=1):
         user = self.model(
             username=username,
             ho_ten=ho_ten,
@@ -121,9 +121,10 @@ class HoaDon(models.Model):
     khach_hang = models.ForeignKey(
         'MyUsers', models.SET_NULL, related_name='khach_hang', null=True)
     ten_khach_hang = models.TextField(blank=True)
-    ngay_lap = models.DateField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True)
     ghi_chu = models.TextField(null=True)
+    sdt = models.CharField(max_length=200)
+    dia_chi = models.TextField()
     nguoiTao = models.ForeignKey(
         'MyUsers', models.SET_NULL, related_name='nguoi_tao_hoa_don',
         null=True)
@@ -254,29 +255,29 @@ class ChiTietHoaDon(models.Model):
 #     class Meta:
 #         db_table = 'chi_tiet_phieu_xuat_huy'
 
-class Log(models.Model):
-    BAN_DON_HANG = "bán đơn hàng"
-    NHAP_HANG = "nhập hàng"
-    TRA_HANG = "trả hàng"
-    TRA_HANG_NHAP = "trả hàng nhập"
-    XUAT_HUY = "xuất hủy"
-    created_at = models.DateTimeField(auto_now_add=True)
-    nguoi_tao = models.ForeignKey(
-        "MyUsers", models.SET_NULL, related_name='nguoi_tao', null=True)
-    hanh_dong = models.TextField()
-    hoa_don = models.ForeignKey(
-        "HoaDon", models.SET_NULL, related_name='log_hoa_don', null=True)
-    # phieu_tra = models.ForeignKey("PhieuTra", models.SET_NULL,
-    #     related_name='log_phieu_tra', null=True)
-    # phieu_nhap = models.ForeignKey("PhieuNhap", models.SET_NULL,
-    #     related_name='log_phieu_nhap', null=True)
-    # phieu_tra_hang_nhap = models.ForeignKey("PhieuTraHangNhap",
-    #     models.SET_NULL, related_name='log_phieu_tra_hang_nhap', null=True)
-    # phieu_xuat_huy = models.ForeignKey("PhieuXuatHuy", models.SET_NULL,
-    #     related_name='log_phieu_xuat_huy', null=True)
+# class Log(models.Model):
+#     BAN_DON_HANG = "bán đơn hàng"
+#     NHAP_HANG = "nhập hàng"
+#     TRA_HANG = "trả hàng"
+#     TRA_HANG_NHAP = "trả hàng nhập"
+#     XUAT_HUY = "xuất hủy"
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     nguoi_tao = models.ForeignKey(
+#         "MyUsers", models.SET_NULL, related_name='nguoi_tao', null=True)
+#     hanh_dong = models.TextField()
+#     hoa_don = models.ForeignKey(
+#         "HoaDon", models.SET_NULL, related_name='log_hoa_don', null=True)
+#     # phieu_tra = models.ForeignKey("PhieuTra", models.SET_NULL,
+#     #     related_name='log_phieu_tra', null=True)
+#     # phieu_nhap = models.ForeignKey("PhieuNhap", models.SET_NULL,
+#     #     related_name='log_phieu_nhap', null=True)
+#     # phieu_tra_hang_nhap = models.ForeignKey("PhieuTraHangNhap",
+#     #     models.SET_NULL, related_name='log_phieu_tra_hang_nhap', null=True)
+#     # phieu_xuat_huy = models.ForeignKey("PhieuXuatHuy", models.SET_NULL,
+#     #     related_name='log_phieu_xuat_huy', null=True)
 
-    class Meta:
-        db_table = 'log'
+#     class Meta:
+#         db_table = 'log'
 
 
 class SoQuy(models.Model):
