@@ -12,7 +12,7 @@ $(document).ready(function () {
             { data: "no" },
             { data: "khach_hang" },
             { data: "nguoi_tao" },
-            { data: "ngay_lap" },
+            { data: "created_at" },
         ],
         columnDefs: [
             {
