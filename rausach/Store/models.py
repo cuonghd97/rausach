@@ -11,7 +11,8 @@ class MyUsersManager(BaseUserManager):
             username=username,
             ho_ten=ho_ten,
             sdt=sdt,
-            role=role
+            role=role,
+            is_active=1
         )
         user.set_password(password)
         user.save(using=self._db)
