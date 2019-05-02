@@ -103,12 +103,14 @@ def thong_tin_ca_nhan(request):
         else:
             if request.POST.get('password') != request.POST.get('re-password'):
                 messages.warning(request, 'Mật khẩu nhập lại không khớp')
-            elif check_password(request.POST.get('old-password'), user.password):
+            elif check_password(request.POST.get('old-password'),
+                                user.password):
                 user.set_password(request.POST.get('password'))
                 user.save()
                 messages.success(request, 'Đổi mật khẩu thành công')
                 login(request, user)
-            elif check_password(request.POST.get('old-password'), user.password) == False:
+            elif check_password(request.POST.get('old-password'),
+                                user.password) == False:
                 messages.warning(request, 'Mật khẩu cũ không đúng')
         return redirect('Order:thong_tin_ca_nhan')
     loai_hang = LoaiHang.objects.all()
@@ -125,14 +127,14 @@ def gio_hang(request):
         id_hang_dat = request.POST.get('id_hang_dat')
         data = request.POST.get('data')
 
-        if is_remove not None:
+        if is_remove is not None:
             try:
                 HangDat.objects.get(pk=id_hang_dat).delete()
                 return JsonResponse(XOA_THANH_CONG)
             except:
                 return JsonResponse(LOI)
 
-        if data not None:
+        if data is not None:
             user = request.user
             data = json.loads(data)
             hoa_don = HoaDon()

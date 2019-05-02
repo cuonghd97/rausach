@@ -11,8 +11,8 @@ $(document).ready(function () {
         columns: [
             { data: "no" },
             { data: "khach_hang" },
-            { data: "nguoi_tao" },
-            { data: "ngay_lap" },
+            { data: "trang_thai" },
+            { data: "created_at" },
         ],
         columnDefs: [
             {
@@ -21,8 +21,8 @@ $(document).ready(function () {
                 data: null,
                 defaultContent: `<div class="btn-group" role="group" aria-label="Basic example">
                                 <button class="btn btn-primary" id="xuat">Xuất hóa đơn</button>
-                                <button class="btn btn-info" id="">Sửa</button>
-                                <button class="btn btn-danger" id="">Xóa</button>
+                                <button class="btn btn-info" id="sua">Sửa</button>
+                                <button class="btn btn-danger" id="xoa">Xóa</button>
                                 </div>`
             }
         ]
@@ -191,10 +191,38 @@ $(document).ready(function () {
         location.reload();
     })
 
-    // Thêm sản phẩm
-    $("#new_hoa_don #them-san-pham").on("click", function() {
-        $("#danh_sach_hang").modal("show")
+    $("#list_hoa_don tbody").on("click", "#sua", function () {
+        var data = table.row($(this).parents("tr")).data()
+        $("#sua-trang-thai #id").val(data.id)
+        $("#sua-trang-thai").modal("show")
+        $("#sua-trang-thai #khung-modal select").empty()
+        $.ajax({
+            type: "get",
+            url: "/store/data-trang-thai/",
+            success: function (data) {
+                var elements = `<option value="">--Chọn--</option>`
+                for (item of data) {
+                    elements += `<option value="${item.ma}">${item.mo_ta}</option>`
+                }
+                $("#sua-trang-thai #trang_thai").html(elements)
+            }
+        })
     })
+
+    $("#sua-trang-thai #btn-luu").on("click", function () {
+        var formData = new FormData();
+        formData.append("id_hoa_don", $("#sua-trang-thai #id").val())
+        formData.append("trang_thai", $("#sua-trang-thai #trang_thai").val())
+        formData.append("csrfmiddlewaretoken", $("input[name=csrfmiddlewaretoken]").val())
+        $.ajax({
+            contentType: false,
+            processData: false,
+            type: "post",
+            url: location.url,
+            data: formData,
+        })
+    })
+
 })
 // var data = table.row($(this).parents("tr")).data()
 //         formData = new FormData()

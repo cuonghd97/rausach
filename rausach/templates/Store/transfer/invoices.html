@@ -2,333 +2,248 @@
 hóa đơn {% endblock title %} {% block css %}
 <link href="{% static 'DataTables/datatables.css' %}" rel="stylesheet" />
 <style>
-  .invoice-box {
-    max-width: 800px;
-    margin: auto;
-    padding: 30px;
-    border: 1px solid #eee;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    font-size: 16px;
-    line-height: 24px;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-    color: #555;
-  }
+    .invoice-box {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        font-size: 16px;
+        line-height: 24px;
+        font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+        color: #555;
+    }
 
-  .invoice-box table {
-    width: 100%;
-    line-height: inherit;
-    text-align: left;
-  }
+    .invoice-box table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
+    }
 
-  .invoice-box table td {
-    padding: 5px;
-    vertical-align: top;
-  }
+    .invoice-box table td {
+        padding: 5px;
+        vertical-align: top;
+    }
 
-  .invoice-box table tr td:nth-child(2) {
-    text-align: right;
-  }
+    .invoice-box table tr td:nth-child(2) {
+        text-align: right;
+    }
 
-  .invoice-box table tr.top table td {
-    padding-bottom: 20px;
-  }
-
-  .invoice-box table tr.top table td.title {
-    font-size: 45px;
-    line-height: 45px;
-    color: #333;
-  }
-
-  .invoice-box table tr.information table td {
-    padding-bottom: 40px;
-  }
-
-  .invoice-box table tr.heading td {
-    background: #eee;
-    border-bottom: 1px solid #ddd;
-    font-weight: bold;
-  }
-
-  .invoice-box table tr.details td {
-    padding-bottom: 20px;
-  }
-
-  .invoice-box table tr.item td {
-    border-bottom: 1px solid #eee;
-  }
-
-  .invoice-box table tr.item.last td {
-    border-bottom: none;
-  }
-
-  .invoice-box table tr.total td:nth-child(2) {
-    border-top: 2px solid #eee;
-    font-weight: bold;
-  }
-
-  @media only screen and (max-width: 600px) {
     .invoice-box table tr.top table td {
-      width: 100%;
-      display: block;
-      text-align: center;
+        padding-bottom: 20px;
+    }
+
+    .invoice-box table tr.top table td.title {
+        font-size: 45px;
+        line-height: 45px;
+        color: #333;
     }
 
     .invoice-box table tr.information table td {
-      width: 100%;
-      display: block;
-      text-align: center;
+        padding-bottom: 40px;
     }
-  }
 
-  /** RTL **/
-  .rtl {
-    direction: rtl;
-    font-family: Tahoma, "Helvetica Neue", "Helvetica", Helvetica, Arial,
-      sans-serif;
-  }
+    .invoice-box table tr.heading td {
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+    }
 
-  .rtl table {
-    text-align: right;
-  }
+    .invoice-box table tr.details td {
+        padding-bottom: 20px;
+    }
 
-  .rtl table tr td:nth-child(2) {
-    text-align: left;
-  }
+    .invoice-box table tr.item td {
+        border-bottom: 1px solid #eee;
+    }
+
+    .invoice-box table tr.item.last td {
+        border-bottom: none;
+    }
+
+    .invoice-box table tr.total td:nth-child(2) {
+        border-top: 2px solid #eee;
+        font-weight: bold;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .invoice-box table tr.top table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+
+        .invoice-box table tr.information table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+    }
+
+    /** RTL **/
+    .rtl {
+        direction: rtl;
+        font-family: Tahoma, "Helvetica Neue", "Helvetica", Helvetica, Arial,
+            sans-serif;
+    }
+
+    .rtl table {
+        text-align: right;
+    }
+
+    .rtl table tr td:nth-child(2) {
+        text-align: left;
+    }
 </style>
 {% endblock %} {% block content %}
 <div class="">
-  <div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="x_panel">
-        <div class="x_title">
-          <h2>Danh sách hóa đơn</h2>
-          <button
-            class="btn btn btn-round btn-primary"
-            id="btn-new-hoa-don"
-            style="float:right;"
-            data-toggle="modal"
-            data-target="#new_hoa_don"
-            data-title="new"
-          >
-            <i class="fa fa-plus"></i> Thêm hóa đơn
-          </button>
-          <div class="clearfix"></div>
-        </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Danh sách hóa đơn</h2>
+                    <!-- <button class="btn btn btn-round btn-primary" id="btn-new-hoa-don" style="float:right;"
+                        data-toggle="modal" data-target="#new_hoa_don" data-title="new">
+                        <i class="fa fa-plus"></i> Thêm hóa đơn
+                    </button> -->
+                    <div class="clearfix"></div>
+                </div>
 
-        <div class="x_content">
-          <div class="table-responsive">
-            <table
-              class="table table-striped jambo_table bulk_action"
-              id="list_hoa_don"
-              width="100%"
-            >
-              {% csrf_token %}
-              <thead>
-                <tr>
-                  <th>*</th>
-                  <th>Khách hàng</th>
-                  <th>Người lập</th>
-                  <th>Ngày lập</th>
-                  <th>Thanh toán</th>
-                </tr>
-              </thead>
-              <tbody id="table_body"></tbody>
-            </table>
-          </div>
+                <div class="x_content">
+                    <div class="table-responsive">
+                        <table class="table table-striped jambo_table bulk_action" id="list_hoa_don" width="100%">
+                            {% csrf_token %}
+                            <thead>
+                                <tr>
+                                    <th>*</th>
+                                    <th>Khách hàng</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày lập</th>
+                                    <th>Thanh toán</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
-<div class="modal" id="new_hoa_don" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">
-          &times;
-        </button>
-        <h4 class="modal-title" id="new_mon_title">Tạo mới hóa đơn</h4>
-      </div>
-      <div class="modal-body">
-        {% csrf_token %}
-        <div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
-          <input
-            type="text"
-            class="form-control has-feedback-left"
-            name="ten_khach_hang"
-            id="ten_khach_hang"
-            placeholder="Tên khách hàng"
-            required
-          />
-          <span
-            class="fa fa-font form-control-feedback left"
-            aria-hidden="true"
-          ></span>
-        </div>
-        <div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
-          <select name="trang_thai" id="trang_thai" class="form-control">
-          </select>
-        </div>
-        <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
-          <h4>Sản phẩm mua</h4>
-          <button class="btn btn-primary" id="them-san-pham">Thêm sản phẩm</button>
-        </div>
-        <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
-          <table class="table" id="san_pham_mua">
-            <thead>
-              <tr>
-                <td>Tên hàng</td>
-                <td>Số lượng</td>
-                <td>Giá</td>
-                <td>Thành tiền</td>
-                <td>*</td>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="btn_create_loai_hang">
-          Tạo mới
-        </button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">
-          Đóng
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal" id="danh_sach_hang" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">
-          &times;
-        </button>
-        <h4 class="modal-title" id="new_mon_title">Danh sách sản phẩm</h4>
-      </div>
-      <div class="modal-body">
-        {% csrf_token %}
-        
-        <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
-          <h4>Sản phẩm mua</h4>
-        </div>
-        
-        <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
-          <table class="table" id="san_pham_mua">
-            <thead>
-              <tr>
-                <td>Tên hàng</td>
-                <td>Số lượng</td>
-                <td>Giá</td>
-                <td>Thành tiền</td>
-                <td>*</td>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="btn_create_loai_hang">
-          Tạo mới
-        </button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">
-          Đóng
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- Modal hóa đơn -->
 <div class="modal" id="xem-hoa-don" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">
-          &times;
-        </button>
-        <h4 class="modal-title" id="new_mon_title">Danh sách sản phẩm</h4>
-      </div>
-      <input type="hidden" name="id" id="id" />
-      <div class="modal-body" id="khung-modal">
-        <div class="invoice-box">
-          <table cellpadding="0" cellspacing="0">
-            <tr class="top">
-              <td colspan="2">
-                <table>
-                  <tr>
-                    <td>Ngày tạo: <span id="ngay-tao"></span><br /></td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="new_mon_title">Danh sách sản phẩm</h4>
+            </div>
+            <input type="hidden" name="id" id="id" />
+            <div class="modal-body" id="khung-modal">
+                <div class="invoice-box">
+                    <table cellpadding="0" cellspacing="0">
+                        <tr class="top">
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td>Ngày tạo: <span id="ngay-tao"></span><br /></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
 
-            <tr class="information">
-              <td colspan="2">
-                <table>
-                  <tr>
-                    <td>
-                      Cửa hàng rau sạch.<br />
-                      Trườn ĐHCN Hà Nội<br />
-                      <br />
-                      Cầu Diễn, Minh Khai, Bắc Từ Liêm, Hà Nội
-                    </td>
+                        <tr class="information">
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            Cửa hàng rau sạch.<br />
+                                            Trườn ĐHCN Hà Nội<br />
+                                            <br />
+                                            Cầu Diễn, Minh Khai, Bắc Từ Liêm, Hà Nội
+                                        </td>
 
-                    <td>
-                      Người tạo: <span id="nguoi-tao"></span><br />
-                      Khách hàng: <span id="khach-hang"></span>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr class="heading">
-              <td>
-                Sản phẩm
-              </td>
-              <td>
-                Số lượng
-              </td>
-              <td>
-                Giá tiền
-              </td>
-            </tr>
-            <tbody id="list-san-pham">
-              <tr class="item">
-                <td>
-                  Website design
-                </td>
-                <td>
-                  Số lượng
-                </td>
-                <td>
-                  $300.00
-                </td>
-              </tr>
-            </tbody>
-            <tr class="total">
-              <td></td>
-              <td>Thành tiền: <span id="thanh-tien"></span></td>
-            </tr>
-          </table>
+                                        <td>
+                                            Người tạo: <span id="nguoi-tao"></span><br />
+                                            Khách hàng: <span id="khach-hang"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class="heading">
+                            <td>
+                                Sản phẩm
+                            </td>
+                            <td>
+                                Số lượng
+                            </td>
+                            <td>
+                                Giá tiền
+                            </td>
+                        </tr>
+                        <tbody id="list-san-pham">
+                            <tr class="item">
+                                <td>
+                                    Website design
+                                </td>
+                                <td>
+                                    Số lượng
+                                </td>
+                                <td>
+                                    $300.00
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tr class="total">
+                            <td></td>
+                            <td>Thành tiền: <span id="thanh-tien"></span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-in">
+                    In hóa đơn
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="btn-in">
-          In hóa đơn
-        </button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">
-          Đóng
-        </button>
-      </div>
     </div>
-  </div>
+</div>
+<!-- Modal sửa trạng thái -->
+<div class="modal" id="sua-trang-thai" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="new_mon_title">Sửa trạng thái hóa đơn</h4>
+            </div>
+            <input type="hidden" name="id" id="id" />
+            <div class="modal-body" id="khung-modal">
+                {% csrf_token %}
+                <input type="hidden" name="id" id="id">
+                <select name="trang_thai" id="trang_thai" class="form-control"></select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-luu">
+                    Lưu
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock content %} {% block js %}
 <script src="{% static 'DataTables/datatables.js' %}"></script>

@@ -20,6 +20,7 @@ def base(request):
     user = request.user
     return render(request, 'Store/layouts/base.html', {"user": user})
 
+
 # Json tỉnh
 @decorators.login_required(login_url='/auth/login/')
 def data_tinh(request):
@@ -100,7 +101,7 @@ def post_san_pham(request):
         is_edit = request.POST.get('is_edit')
         is_delete = request.POST.get('is_delete')
         is_active = request.POST.get('is_active')
-        if is_add != None:
+        if is_add is not None:
             try:
                 san_pham = SanPham()
                 san_pham.ten_san_pham = ten_san_pham
@@ -121,7 +122,7 @@ def post_san_pham(request):
                     anh_sp.save()
             except:
                 pass
-        if is_edit != None:
+        if is_edit is not None:
             try:
                 san_pham = SanPham.objects.get(pk=id_sp)
                 san_pham.ten_san_pham = ten_san_pham
@@ -134,7 +135,7 @@ def post_san_pham(request):
                 san_pham.nha_cung_cap = NhaCungCap.objects.get(pk=nha_cung_cap)
                 san_pham.mo_ta = mo_ta
                 san_pham.ton_kho = so_luong
-                if avt != None:
+                if avt is not None:
                     san_pham.avt = avt
                 san_pham.is_active = is_active
                 san_pham.save()
@@ -147,7 +148,7 @@ def post_san_pham(request):
                         anh_sp.save()
             except:
                 pass
-        if is_delete != None:
+        if is_delete is not None:
             try:
                 SanPham.objects.get(pk=id_sp).delete()
                 return JsonResponse(XOA_THANH_CONG)
@@ -195,18 +196,18 @@ def post_loai_hang(request):
         id_loai_hang = request.POST.get('id_loai_hang')
         is_delete = request.POST.get('is_delete')
 
-        if is_add != None:
+        if is_add is not None:
             loai_hang = LoaiHang()
             loai_hang.ten_loai = ten_loai
             loai_hang.save()
 
             return JsonResponse(THEM_THANH_CONG)
-        if is_edit != None:
+        if is_edit is not None:
             loai_hang = LoaiHang.objects.get(pk=id_loai_hang)
             loai_hang.ten_loai = ten_loai
             loai_hang.save()
             return JsonResponse(SUA_THANH_CONG)
-        if is_delete != None:
+        if is_delete is not None:
             loai_hang = LoaiHang.objects.get(pk=id_loai_hang).delete()
             return JsonResponse(XOA_THANH_CONG)
     return JsonResponse({})
@@ -265,7 +266,7 @@ def post_nha_cung_cap(request):
         is_active = request.POST.get('is_active')
         is_delete = request.POST.get('is_delete')
 
-        if is_add != None:
+        if is_add is not None:
             try:
                 ncc = NhaCungCap()
                 ncc.ten = ten_nha_cung_cap
@@ -280,7 +281,7 @@ def post_nha_cung_cap(request):
             except:
                 return JsonResponse(LOI)
 
-        if is_edit != None:
+        if is_edit is not None:
             try:
                 ncc = NhaCungCap.objects.get(pk=id_ncc)
                 ncc.ten = ten_nha_cung_cap
@@ -296,7 +297,7 @@ def post_nha_cung_cap(request):
                 return JsonResponse(SUA_THANH_CONG)
             except:
                 return JsonResponse(LOI)
-        if is_delete != None:
+        if is_delete is not None:
             try:
                 ncc = NhaCungCap.objects.get(pk=id_ncc).delete()
 
@@ -345,6 +346,7 @@ def data_nhan_vien(request):
         data.append(obj)
     return JsonResponse(data, safe=False)
 
+
 # Post dữ liệu nhân viên
 @decorators.login_required(login_url='/auth/login/')
 @is_admin
@@ -367,7 +369,7 @@ def post_nhan_vien(request):
         id_staff = request.POST.get('id')
         is_active = request.POST.get('is_active')
         is_delete = request.POST.get('is_delete')
-        if is_add != None:
+        if is_add is not None:
             try:
                 user = MyUsers()
                 user.username = username
@@ -388,7 +390,7 @@ def post_nhan_vien(request):
                 return JsonResponse(THEM_THANH_CONG)
             except:
                 return JsonResponse(LOI)
-        elif is_edit != None:
+        elif is_edit is not None:
             try:
                 user = MyUsers.objects.get(pk=id_staff)
                 user.username = username
@@ -403,7 +405,7 @@ def post_nhan_vien(request):
                 user.role = role
                 user.ngay_sinh = datetime.strptime(ngay_sinh, '%Y-%m-%d')
                 user.luong = luong
-                if anh != None:
+                if anh is not None:
                     user.avatar = anh
                 user.is_active = is_active
                 user.save()
@@ -411,7 +413,7 @@ def post_nhan_vien(request):
                 return JsonResponse(SUA_THANH_CONG)
             except:
                 return JsonResponse(LOI)
-        elif is_delete != None:
+        elif is_delete is not None:
             try:
                 MyUsers.objects.get(pk=id_staff).delete()
                 return JsonResponse(XOA_THANH_CONG)
@@ -420,11 +422,13 @@ def post_nhan_vien(request):
         return JsonResponse({}, safe=False)
     return JsonResponse({}, safe=False)
 
+
 # Quản lý người dùng
 @decorators.login_required(login_url='/auth/login/')
 @is_admin
 def nguoi_dung(request):
     return render(request, 'Store/Customers/customers.html')
+
 
 # Data người dùng
 @decorators.login_required(login_url='/auth/login/')
@@ -455,6 +459,7 @@ def data_nguoi_dung(request):
         data.append(obj)
     return JsonResponse(data, safe=False)
 
+
 # Post dữ liệu nhân viên
 @decorators.login_required(login_url='/auth/login/')
 @is_admin
@@ -476,7 +481,7 @@ def post_nguoi_dung(request):
         id_staff = request.POST.get('id')
         is_active = request.POST.get('is_active')
         is_delete = request.POST.get('is_delete')
-        if is_add != None:
+        if is_add is not None:
             try:
                 user = MyUsers()
                 user.username = username
@@ -496,7 +501,7 @@ def post_nguoi_dung(request):
                 return JsonResponse(THEM_THANH_CONG)
             except:
                 return JsonResponse(LOI)
-        elif is_edit != None:
+        elif is_edit is not None:
             try:
                 user = MyUsers.objects.get(pk=id_staff)
                 user.username = username
@@ -510,7 +515,7 @@ def post_nguoi_dung(request):
                 user.huyen = huyen
                 user.role = role
                 user.ngay_sinh = datetime.strptime(ngay_sinh, '%Y-%m-%d')
-                if anh != None:
+                if anh is not None:
                     user.avatar = anh
                 user.is_active = is_active
                 user.save()
@@ -518,7 +523,7 @@ def post_nguoi_dung(request):
                 return JsonResponse(SUA_THANH_CONG)
             except:
                 return JsonResponse(LOI)
-        elif is_delete != None:
+        elif is_delete is not None:
             try:
                 MyUsers.objects.get(pk=id_staff).delete()
                 return JsonResponse(XOA_THANH_CONG)
@@ -533,27 +538,12 @@ def post_nguoi_dung(request):
 @is_admin
 def hoa_don(request):
     if request.method == 'POST':
-        id_invoice = request.POST.get('id_invoice')
-        is_paid = request.POST.get('is_paid')
-        print(request.POST)
-        if is_paid != None:
-            try:
-                hoa_don = HoaDon.objects.get(pk=id_invoice)
-                if hoa_don.is_paid == 0:
-                    hoa_don.is_paid = 1
-                    hoa_don.save()
-                    chi_tiet_hoa_don = ChiTietHoaDon.objects.filter(
-                        hoa_don=hoa_don)
+        id_hd = request.POST.get('id_hoa_don')
+        trang_thai = request.POST.get('trang_thai')
 
-                    for hang in chi_tiet_hoa_don:
-                        san_pham = SanPham.objects.get(pk=hang.san_pham.id)
-                        san_pham.ton_kho = san_pham.ton_kho - hang.so_luong_mua
-                        san_pham.save()
-                    return JsonResponse(THEM_THANH_CONG)
-                else:
-                    return JsonResponse({'status': 'paided'})
-            except:
-                return JsonResponse(LOI)
+        if trang_thai != '' and trang_thai != 'phrase1':
+            chi_tiet_hd = ChiTietHoaDon.objects.filter(hoa_don=id_hd)
+            print(chi_tiet_hd)
 
     return render(request, 'Store/transfer/invoices.html')
 
@@ -576,7 +566,7 @@ def data_hoa_don(request):
             obj.update({'nguoi_tao': ''})
         obj.update({'id_trang_thai': hd.trang_thai.id})
         obj.update({'trang_thai': hd.trang_thai.mo_ta})
-        # obj.update({'ngay_lap': hd.ngay_lap})
+        obj.update({'created_at': hd.created_at.strftime('%d/%d/%Y %H:%M')})
         obj.update({'thoi_gian_lap': hd.created_at.strftime('%H:%M')})
         obj.update({'ghi_chu': hd.ghi_chu})
         obj.update({'khach_hang': hd.ten_khach_hang})
@@ -607,7 +597,8 @@ def chi_tiet_hoa_don(request, id):
         data.append(obj)
     response = {}
     response.update({'ma_hoa_don': hoa_don.id})
-    response.update({'ngay_tao': hoa_don.ngay_lap})
+    response.update({'ngay_tao':
+                    hoa_don.created_at.strftime('%d/%d/%Y %H:%M')})
     response.update({'thanh_tien': thanh_tien})
     response.update({'data': data})
     response.update({'nguoi_tao': user.ho_ten})

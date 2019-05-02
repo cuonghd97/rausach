@@ -11,7 +11,8 @@ class MyUsersManager(BaseUserManager):
             username=username,
             ho_ten=ho_ten,
             sdt=sdt,
-            role=role
+            role=role,
+            is_active=1
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -126,9 +127,14 @@ class HoaDon(models.Model):
     sdt = models.CharField(max_length=200)
     dia_chi = models.TextField()
     nguoiTao = models.ForeignKey(
-        'MyUsers', models.SET_NULL, related_name='nguoi_tao_hoa_don',
+        'MyUsers',
+        models.SET_NULL,
+        related_name='nguoi_tao_hoa_don',
         null=True)
-    trang_thai = models.ForeignKey('TrangThaiHoaDon', models.SET_NULL, null=True)
+    trang_thai = models.ForeignKey(
+        'TrangThaiHoaDon',
+        models.SET_NULL,
+        null=True)
 
     class Meta:
         db_table = 'hoa_don'
@@ -147,137 +153,6 @@ class ChiTietHoaDon(models.Model):
 
     class Meta:
         db_table = 'chi_tiet_hoa_don'
-
-# Phiếu trả hàng
-
-
-# class PhieuTra(models.Model):
-#     thoi_gian_tra = models.DateTimeField(auto_now_add=True)
-#     ghi_chu = models.TextField(blank=True)
-#     khach_hang_tra = models.ForeignKey(
-#         'MyUsers', models.SET_NULL, related_name='khach_hang_tra', null=True)
-#     nguoi_ban = models.ForeignKey(
-#         'MyUsers', models.SET_NULL, related_name='nguoi_ban', null=True)
-#     nguoi_tao = models.ForeignKey(
-#         'MyUsers', models.SET_NULL, related_name='nguoi_tao_phieu_tra',
-#         null=True)
-#     created_at = models.DateTimeField(auto_now_add=True)
-
-#     class Meta:
-#         db_table = 'phieu_tra_hang'
-
-# # Chi tiết phiếu trả
-
-
-# class ChiTietPhieuTra(models.Model):
-#     # Giá nhập lại
-#     gia_nhap_lai = models.IntegerField(default=0)
-#     phieu_tra = models.ForeignKey(
-#         'PhieuTra', models.CASCADE, related_name='phieu_tra')
-#     san_pham = models.ForeignKey(
-#         'SanPham', models.SET_NULL, related_name='san_pham_phieu_tra',
-#         null=True)
-
-#     class Meta:
-#         db_table = 'chi_tiet_phieu_tra'
-
-# # Phiếu nhập
-
-
-# class PhieuNhap(models.Model):
-#     thoi_gian_nhap = models.DateTimeField(auto_now_add=True)
-#     ghi_chu = models.TextField(null=True)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     nguoi_tao = models.ForeignKey('MyUsers', models.SET_NULL, null=True)
-#     nha_cung_cap = models.ForeignKey('NhaCungCap', models.SET_NULL,
-#        null=True)
-
-#     class Meta:
-#         db_table = 'phieu_nhap'
-
-# # Chi tiết phiếu nhập
-
-
-# class ChiTietPhieuNhap(models.Model):
-#     san_pham = models.ForeignKey('SanPham', models.CASCADE)
-#     so_luong = models.IntegerField(default=0)
-#     don_gia_nhap = models.IntegerField(default=0)
-#     phieu_nhap = models.ForeignKey('PhieuNhap', models.SET_NULL, null=True)
-
-#     class Meta:
-#         db_table = 'chi_tiet_phieu_nhap'
-
-# # Phiếu trả hàng nhập
-
-
-# class PhieuTraHangNhap(models.Model):
-#     thoi_gian_tao = models.DateTimeField(default=timezone.now)
-#     ghi_chu = models.TextField(null=True)
-#     nguoi_tao = models.ForeignKey('MyUsers', models.SET_NULL, null=True)
-#     nha_cung_cap = models.ForeignKey('NhaCungCap', models.SET_NULL,
-#         null=True)
-
-#     class Meta:
-#         db_table = 'phieu_tra_hang_nhap'
-
-# # Chi tiết phiếu trả hàng nhập
-
-
-# class ChiTietPhieuTraHangNhap(models.Model):
-#     phieu_tra_hang_nhap = models.ForeignKey('PhieuTraHangNhap',
-#         models.CASCADE)
-#     so_luong = models.IntegerField(default=0)
-#     gia_tra_lai = models.IntegerField(default=0)
-#     san_pham = models.ForeignKey('SanPham', models.SET_NULL, null=True)
-
-#     class Meta:
-#         db_table = 'chi_tiet_phieu_tra_hang_nhap'
-
-# # Phiếu xuất hủy
-
-
-# class PhieuXuatHuy(models.Model):
-#     thoi_gian_tao = models.DateTimeField(auto_now_add=True)
-#     ghi_chu = models.TextField(null=True)
-#     nguoi_tao = models.ForeignKey('MyUsers', models.SET_NULL, null=True)
-
-#     class Meta:
-#         db_table = 'phieu_xuat_huy'
-
-# # Chi tiết phiếu xuất hủy
-
-
-# class ChiTietPhieuXuatHuy(models.Model):
-#     phieu_xuat_huy = models.ForeignKey('PhieuXuatHuy', models.CASCADE)
-#     san_pham = models.ForeignKey('SanPham', models.SET_NULL, null=True)
-#     so_luong = models.IntegerField(default=0)
-
-#     class Meta:
-#         db_table = 'chi_tiet_phieu_xuat_huy'
-
-# class Log(models.Model):
-#     BAN_DON_HANG = "bán đơn hàng"
-#     NHAP_HANG = "nhập hàng"
-#     TRA_HANG = "trả hàng"
-#     TRA_HANG_NHAP = "trả hàng nhập"
-#     XUAT_HUY = "xuất hủy"
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     nguoi_tao = models.ForeignKey(
-#         "MyUsers", models.SET_NULL, related_name='nguoi_tao', null=True)
-#     hanh_dong = models.TextField()
-#     hoa_don = models.ForeignKey(
-#         "HoaDon", models.SET_NULL, related_name='log_hoa_don', null=True)
-#     # phieu_tra = models.ForeignKey("PhieuTra", models.SET_NULL,
-#     #     related_name='log_phieu_tra', null=True)
-#     # phieu_nhap = models.ForeignKey("PhieuNhap", models.SET_NULL,
-#     #     related_name='log_phieu_nhap', null=True)
-#     # phieu_tra_hang_nhap = models.ForeignKey("PhieuTraHangNhap",
-#     #     models.SET_NULL, related_name='log_phieu_tra_hang_nhap', null=True)
-#     # phieu_xuat_huy = models.ForeignKey("PhieuXuatHuy", models.SET_NULL,
-#     #     related_name='log_phieu_xuat_huy', null=True)
-
-#     class Meta:
-#         db_table = 'log'
 
 
 class SoQuy(models.Model):
