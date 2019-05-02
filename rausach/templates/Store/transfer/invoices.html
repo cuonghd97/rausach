@@ -102,10 +102,10 @@ hóa đơn {% endblock title %} {% block css %}
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Danh sách hóa đơn</h2>
-                    <button class="btn btn btn-round btn-primary" id="btn-new-hoa-don" style="float:right;"
+                    <!-- <button class="btn btn btn-round btn-primary" id="btn-new-hoa-don" style="float:right;"
                         data-toggle="modal" data-target="#new_hoa_don" data-title="new">
                         <i class="fa fa-plus"></i> Thêm hóa đơn
-                    </button>
+                    </button> -->
                     <div class="clearfix"></div>
                 </div>
 
@@ -117,7 +117,7 @@ hóa đơn {% endblock title %} {% block css %}
                                 <tr>
                                     <th>*</th>
                                     <th>Khách hàng</th>
-                                    <th>Người lập</th>
+                                    <th>Trạng thái</th>
                                     <th>Ngày lập</th>
                                     <th>Thanh toán</th>
                                 </tr>
@@ -131,100 +131,6 @@ hóa đơn {% endblock title %} {% block css %}
     </div>
 </div>
 
-<div class="modal" id="new_hoa_don" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    &times;
-                </button>
-                <h4 class="modal-title" id="new_mon_title">Tạo mới hóa đơn</h4>
-            </div>
-            <div class="modal-body">
-                {% csrf_token %}
-                <div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
-                    <input type="text" class="form-control has-feedback-left" name="ten_khach_hang" id="ten_khach_hang"
-                        placeholder="Tên khách hàng" required />
-                    <span class="fa fa-font form-control-feedback left" aria-hidden="true"></span>
-                </div>
-                <div class="col-md-6 col-sm-6 col-6 col-lg-6 form-group has-feedback">
-                    <select name="trang_thai" id="trang_thai" class="form-control">
-                    </select>
-                </div>
-                <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
-                    <h4>Sản phẩm mua</h4>
-                    <button class="btn btn-primary" id="them-san-pham">Thêm sản phẩm</button>
-                </div>
-                <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
-                    <table class="table" id="san_pham_mua">
-                        <thead>
-                            <tr>
-                                <td>Tên hàng</td>
-                                <td>Số lượng</td>
-                                <td>Giá</td>
-                                <td>Thành tiền</td>
-                                <td>*</td>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn_create_loai_hang">
-                    Tạo mới
-                </button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">
-                    Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal" id="danh_sach_hang" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    &times;
-                </button>
-                <h4 class="modal-title" id="new_mon_title">Danh sách sản phẩm</h4>
-            </div>
-            <div class="modal-body">
-                {% csrf_token %}
-
-                <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
-                    <h4>Sản phẩm mua</h4>
-                </div>
-
-                <div class="col-md-12 col-sm-12 col-12 col-lg-12 form-group has-feedback">
-                    <table class="table" id="san_pham_mua">
-                        <thead>
-                            <tr>
-                                <td>Tên hàng</td>
-                                <td>Số lượng</td>
-                                <td>Giá</td>
-                                <td>Thành tiền</td>
-                                <td>*</td>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn_create_loai_hang">
-                    Tạo mới
-                </button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">
-                    Đóng
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- Modal hóa đơn -->
 <div class="modal" id="xem-hoa-don" role="dialog">
     <div class="modal-dialog">
@@ -303,6 +209,34 @@ hóa đơn {% endblock title %} {% block css %}
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btn-in">
                     In hóa đơn
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal sửa trạng thái -->
+<div class="modal" id="sua-trang-thai" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="new_mon_title">Sửa trạng thái hóa đơn</h4>
+            </div>
+            <input type="hidden" name="id" id="id" />
+            <div class="modal-body" id="khung-modal">
+                {% csrf_token %}
+                <input type="hidden" name="id" id="id">
+                <select name="trang_thai" id="trang_thai" class="form-control"></select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-luu">
+                    Lưu
                 </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     Đóng

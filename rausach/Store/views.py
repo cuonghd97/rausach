@@ -538,27 +538,12 @@ def post_nguoi_dung(request):
 @is_admin
 def hoa_don(request):
     if request.method == 'POST':
-        id_invoice = request.POST.get('id_invoice')
-        is_paid = request.POST.get('is_paid')
-        print(request.POST)
-        if is_paid is not None:
-            try:
-                hoa_don = HoaDon.objects.get(pk=id_invoice)
-                if hoa_don.is_paid == 0:
-                    hoa_don.is_paid = 1
-                    hoa_don.save()
-                    chi_tiet_hoa_don = ChiTietHoaDon.objects.filter(
-                        hoa_don=hoa_don)
+        id_hd = request.POST.get('id_hoa_don')
+        trang_thai = request.POST.get('trang_thai')
 
-                    for hang in chi_tiet_hoa_don:
-                        san_pham = SanPham.objects.get(pk=hang.san_pham.id)
-                        san_pham.ton_kho = san_pham.ton_kho - hang.so_luong_mua
-                        san_pham.save()
-                    return JsonResponse(THEM_THANH_CONG)
-                else:
-                    return JsonResponse({'status': 'paided'})
-            except:
-                return JsonResponse(LOI)
+        if trang_thai != '' and trang_thai != 'phrase1':
+            chi_tiet_hd = ChiTietHoaDon.objects.filter(hoa_don=id_hd)
+            print(chi_tiet_hd)
 
     return render(request, 'Store/transfer/invoices.html')
 
