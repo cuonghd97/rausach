@@ -38,5 +38,5 @@ urlpatterns = [
             views.chi_tiet_hoa_don,
             name='chi_tiet_hoa_don')
     ])),
-    path('search/', views.search, name='search')
+    path('search/<str:ten>/', views.search, name='search')
 ]

@@ -55,7 +55,7 @@ def loc_theo_loai_hang(request, loai_hang, id):
     return render(request, 'Order/index.html', data)
 
 
-@decorators.login_required(login_url='/')
+# @decorators.login_required(login_url='/')
 def chi_tiet_hang(request, ten_hang, id):
     try:
         san_pham = SanPham.objects.get(pk=id)
@@ -265,22 +265,21 @@ def data_chi_tiet_hoa_don(request, id):
 
 
 # Tìm kiếm
-def search(request):
-    if request.method == 'POST':
-        ten_sp = request.POST.get('search-text')
-        san_pham = SanPham.objects.filter(
-            ten_san_pham=ten_sp).order_by('-ngay_them')
-        paginator = Paginator(san_pham, 9)
-        page = request.GET.get('page', 1)
-        try:
-            san_pham = paginator.page(page)
-        except PageNotAnInteger:
-            san_pham = paginator.page(1)
-        except EmptyPage:
-            san_pham = paginator.page(paginator.num_pages)
+def search(request, ten):
+    print(ten)
+    san_pham = SanPham.objects.filter(
+        ten_san_pham=ten).order_by('-ngay_them')
+    paginator = Paginator(san_pham, 9)
+    page = request.GET.get('page', 1)
+    try:
+        san_pham = paginator.page(page)
+    except PageNotAnInteger:
+        san_pham = paginator.page(1)
+    except EmptyPage:
+        san_pham = paginator.page(paginator.num_pages)
 
-        loai_hang = LoaiHang.objects.all()
-        data = {'san_pham': san_pham, 'loai_hang': loai_hang}
+    loai_hang = LoaiHang.objects.all()
+    data = {'san_pham': san_pham, 'loai_hang': loai_hang}
     return render(request, 'Order/search.html', data)
 
 
