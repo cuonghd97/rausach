@@ -31,12 +31,14 @@ Giỏ hàng
             <thead>
                 <tr>
                     <th width="200">Tên hàng</th>
+                    <th>Trạng thái</th>
                     <th>Số lượng</th>
                     <th>Giá bán</th>
                 </tr>
                 {% for item in san_pham %}
                 <tr>
                     <th width="200">{{ item.san_pham.ten_san_pham }}</th>
+                    <th>{{ item.trang_thai.mo_ta }}</th>
                     <th>{{ item.so_luong_mua }}</th>
                     <th>{{ item.gia_ban }}</th>
                 </tr>

@@ -76,8 +76,16 @@ def chi_tiet_hang(request, ten_hang, id):
     if request.method == 'POST':
         try:
             hang_dat = HangDat()
+            print(request.POST)
             hang_dat.nguoi_dung = request.user
             hang_dat.so_luong = request.POST.get('so_luong')
+            print(request.POST.get('so_luong_con'))
+            if int(request.POST.get('so_luong_con')) >= int(request.POST.get('so_luong')):
+                hang_dat.trang_thai = TrangThaiHangHoa.objects.filter(
+                    ma='ch').first()
+            else:
+                hang_dat.trang_thai = TrangThaiHangHoa.objects.filter(
+                    ma='hh').first()
             hang_dat.hang_dat = SanPham.objects.get(
                 pk=request.POST.get('hang_dat'))
             hang_dat.save()
@@ -153,6 +161,8 @@ def gio_hang(request):
                 chi_tiet_hoa_don.hoa_don = hoa_don
                 sp = SanPham.objects.get(pk=item["id_hang"])
                 chi_tiet_hoa_don.san_pham = sp
+                chi_tiet_hoa_don.trang_thai = hang_dat.trang_thai
+                print(hang_dat.trang_thai)
                 chi_tiet_hoa_don.gia_ban = sp.gia_ban - \
                     int(sp.gia_ban * sp.khuyen_mai / 100)
                 chi_tiet_hoa_don.so_luong_mua = item["so_luong"]
@@ -179,7 +189,10 @@ def data_gio_hang(request):
         obj.update({'so_luong': hd.so_luong})
         obj.update({'id_hang': hd.hang_dat.id})
         obj.update({'ten_hang': hd.hang_dat.ten_san_pham})
-
+        if hd.trang_thai is not None:
+            obj.update({'trang_thai': hd.trang_thai.mo_ta})
+        else:
+            obj.update({'trang_thai': ''})
         i += 1
         data.append(obj)
 
@@ -198,6 +211,7 @@ def data_hoa_don(request):
         obj.update({'ngay_lap': hd.created_at.strftime('%d-%m-%Y, %H:%M')})
         obj.update({'ma_trang_thai': hd.trang_thai.ma})
         obj.update({'trang_thai': hd.trang_thai.mo_ta})
+        obj.update({'trang_thai_san+pham': hd.trang_thai.mo_ta})
         obj.update({'no': i})
 
         i += 1
@@ -236,7 +250,11 @@ def data_chi_tiet_hoa_don(request, id):
         obj.update({'id': item.id})
         obj.update({'so_luong_mua': item.so_luong_mua})
         obj.update({'gia_ban': item.gia_ban})
-
+        print(item.trang_thai)
+        if item.trang_thai.mo_ta is not None:
+            obj.update({'trang_thai': item.trang_thai.mo_ta})
+        else:
+            obj.update({'trang_thai': 'item.trang_thai.mo_ta'})
         data.append(obj)
 
     response_data = {}

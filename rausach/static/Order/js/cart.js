@@ -43,7 +43,7 @@ $(document).ready(function () {
                 width: "10%"
             },
             {
-                width: "50%",
+                width: "35%",
                 data: "ten_hang",
                 render: function (data, type, row) {
                     if (type == "display") {
@@ -53,6 +53,11 @@ $(document).ready(function () {
                 }
             },
             {
+                width: "20%",
+                data: "trang_thai"
+            },
+            {
+                width: "15%",
                 data: "so_luong",
                 render: function (data, type, row) {
                     if (type == "display") {
@@ -64,7 +69,7 @@ $(document).ready(function () {
         ],
         columnDefs: [
             {
-                targets: 3,
+                targets: 4,
                 data: null,
                 defaultContent: `<center><button class="alert button" id="remove"><i class="fi-x"></i><button></center>`
             }
@@ -137,7 +142,11 @@ $(document).ready(function () {
 
             cart.push(obj);
         }
+        var check = true
         for (let i = 0; i < cart.length; i++) {
+            if (data_so_luong[i] <= 0) {
+                check = false
+            }
             cart[i].so_luong = data_so_luong[i];
         }
         formData = new FormData();
@@ -145,8 +154,7 @@ $(document).ready(function () {
             "csrfmiddlewaretoken",
             $("input[name=csrfmiddlewaretoken]").val()
         );
-        console.log(JSON.stringify(cart));
-        if (data_so_luong.length > 0) {
+        if (data_so_luong.length > 0 && check === true) {
             cart = JSON.stringify(cart);
             formData.append("data", cart);
             $.ajax({

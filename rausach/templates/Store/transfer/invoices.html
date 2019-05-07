@@ -226,12 +226,25 @@ hóa đơn {% endblock title %} {% block css %}
                 <button type="button" class="close" data-dismiss="modal">
                     &times;
                 </button>
-                <h4 class="modal-title" id="new_mon_title">Sửa trạng thái hóa đơn</h4>
+                <h4 class="modal-title" id="new_mon_title">Sửa hóa đơn</h4>
             </div>
             <input type="hidden" name="id" id="id" />
             <div class="modal-body" id="khung-modal">
                 {% csrf_token %}
+                <table class="table" id="hoa-don">
+                    {% csrf_token %}
+                    <thead>
+                        <th>Tên hàng</th>
+                        <th>Số lượng</th>
+                        <th>Trạng thái</th>
+                        <th>Thành tiền</th>
+                        <th>*</th>
+                    </thead>
+                    <tbody></tbody>
+                </table>
                 <input type="hidden" name="id" id="id">
+                <div class="clearfix"></div>
+                <br>
                 <select name="trang_thai" id="trang_thai" class="form-control"></select>
             </div>
             <div class="modal-footer">

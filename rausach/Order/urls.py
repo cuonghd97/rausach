@@ -18,13 +18,23 @@ urlpatterns = [
     # path('post', include([
     # ])),
     path('filter/', include([
-        path('<str:loai_hang>_<int:id>/',
-             views.loc_theo_loai_hang, name='loc_theo_loai_hang'),
+        path(
+            '<str:loai_hang>_<int:id>/',
+            views.loc_theo_loai_hang,
+            name='loc_theo_loai_hang'),
     ])),
     path('detail/', include([
-        path('hang/<str:ten_hang>_<int:id>/',
-             views.chi_tiet_hang, name='chi_tiet_hang'),
-        path('nguoi-dung/', views.thong_tin_ca_nhan, name='thong_tin_ca_nhan'),
-        path('invoice/<int:id>/', views.chi_tiet_hoa_don, name='chi_tiet_hoa_don')
+        path(
+            'hang/<str:ten_hang>_<int:id>/',
+            views.chi_tiet_hang,
+            name='chi_tiet_hang'),
+        path(
+            'nguoi-dung/',
+            views.thong_tin_ca_nhan,
+            name='thong_tin_ca_nhan'),
+        path(
+            'invoice/<int:id>/',
+            views.chi_tiet_hoa_don,
+            name='chi_tiet_hoa_don')
     ]))
 ]

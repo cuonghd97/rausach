@@ -1,21 +1,16 @@
 $(document).ready(function () {
     $("#btn-add-to-cart").on("click", function () {
-        if (parseInt($("#so_luong_mua").val()) > parseInt($("#so_luong_con").val())) {
+        if ($("#so_luong_mua").val() <= 0) {
             Swal.fire({
-                type: 'error',
-                title: 'Lỗi',
-                text: 'Số lượng hàng đặt phải nhỏ hơn số lượng có',
-            })
-        } else if ($("#so_luong_mua").val() <= 0) {
-            Swal.fire({
-                type: 'error',
-                title: 'Lỗi',
-                text: 'Số lượng hàng đặt không hợp lệ',
+                type: "error",
+                title: "Lỗi",
+                text: "Số lượng hàng đặt không hợp lệ",
             })
         } else {
             var formData = new FormData()
-            formData.append('hang_dat', $("#id").val())
-            formData.append('so_luong', $("#so_luong_mua").val())
+            formData.append("hang_dat", $("#id").val())
+            formData.append("so_luong", $("#so_luong_mua").val())
+            formData.append("so_luong_con", $("#so_luong_con").val())
             formData.append(
                 "csrfmiddlewaretoken",
                 $("input[name=csrfmiddlewaretoken]").val()
@@ -36,18 +31,18 @@ $(document).ready(function () {
                     });
                 },
                 success: function (data) {
-                    if (data.status == 'success') {
+                    if (data.status == "success") {
                         Swal.fire({
-                            type: 'success',
-                            title: 'Thành công',
-                            text: 'Thêm vào giỏ hàng thành công',
+                            type: "success",
+                            title: "Thành công",
+                            text: "Thêm vào giỏ hàng thành công",
                             timer: 1000
                         })
                     } else {
                         Swal.fire({
-                            type: 'error',
-                            title: 'Lỗi',
-                            text: 'Thêm vào giỏ không thành công',
+                            type: "error",
+                            title: "Lỗi",
+                            text: "Thêm vào giỏ không thành công",
                         })
                     }
                 }

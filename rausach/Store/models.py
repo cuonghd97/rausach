@@ -150,6 +150,10 @@ class ChiTietHoaDon(models.Model):
     # Số lượng mua
     so_luong_mua = models.IntegerField(default=0)
     gia_ban = models.IntegerField(default=0)
+    trang_thai = models.ForeignKey(
+        'TrangThaiHangHoa',
+        models.SET_NULL,
+        null=True)
 
     class Meta:
         db_table = 'chi_tiet_hoa_don'
@@ -168,6 +172,10 @@ class HangDat(models.Model):
     hang_dat = models.ForeignKey('SanPham', models.CASCADE)
     so_luong = models.IntegerField(default=0)
     check = models.IntegerField(default=0)
+    trang_thai = models.ForeignKey(
+        'TrangThaiHangHoa',
+        models.SET_NULL,
+        null=True)
     create_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -190,3 +198,14 @@ class TrangThaiHoaDon(models.Model):
 
     class Meta:
         db_table = 'trang_thai'
+
+
+class TrangThaiHangHoa(models.Model):
+    '''
+    Trạng thái của sản phẩm trong hóa đơn là còn hàng hay hết hàng
+    '''
+    ma = models.CharField(max_length=200)
+    mo_ta = models.TextField()
+
+    class Meta:
+        db_table = 'trang_thai_hang_hoass'

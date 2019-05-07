@@ -540,6 +540,8 @@ def hoa_don(request):
     if request.method == 'POST':
         id_hd = request.POST.get('id_hoa_don')
         trang_thai = request.POST.get('trang_thai')
+        is_delete_in_invoives = request.POST.get('is_delete_in_invoives')
+        id_hang = request.POST.get('id_hang')
 
         if trang_thai != '' and trang_thai != 'phrase1':
             chi_tiet_hd = ChiTietHoaDon.objects.filter(hoa_don=id_hd)
@@ -590,6 +592,11 @@ def chi_tiet_hoa_don(request, id):
         obj.update({'ten_san_pham': item.san_pham.ten_san_pham})
         obj.update({'gia_ban': item.san_pham.gia_ban})
         obj.update({'so_luong_mua': item.so_luong_mua})
+        obj.update({'id': item.id})
+        if item.trang_thai is not None:
+            obj.update({'trang_thai': item.trang_thai.mo_ta})
+        else:
+            obj.update({'trang_thai': ''})
         obj.update({'thanh_tien': int(item.san_pham.gia_ban)
                     * int(item.so_luong_mua)})
 

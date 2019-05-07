@@ -207,6 +207,38 @@ $(document).ready(function () {
                 $("#sua-trang-thai #trang_thai").html(elements)
             }
         })
+        $("#sua-trang-thai #hoa-don").DataTable({
+            destroy: true,
+            paging: false,
+            searching: false,
+            info: false,
+            ajax: {
+                type: "get",
+                url: "/store/data-chi-tiet-hoa-don/" + data.id,
+                dataSrc: "data"
+            },
+            columns: [
+                {data: "ten_san_pham"},
+                {data: "so_luong_mua"},
+                {data: "trang_thai"},
+                {data: "gia_ban"}
+            ],
+            columnDefs: [
+                {
+                    targets: 4,
+                    data: null,
+                    defaultContent: `<button
+                                        class="btn btn-danger btn-xs"
+                                        id="btn-remove"
+                                    >
+                                        <i class="fa fa-times"></i>
+                                    </button>`
+                }
+            ],
+            createdRow: function(row, data, dataIndex) {
+                $(row).find("#btn-remove").attr("data-id", data["id"])
+            }
+        })
     })
 
     $("#sua-trang-thai #btn-luu").on("click", function () {
