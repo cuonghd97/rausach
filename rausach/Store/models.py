@@ -126,6 +126,7 @@ class HoaDon(models.Model):
     ghi_chu = models.TextField(null=True)
     sdt = models.CharField(max_length=200)
     dia_chi = models.TextField()
+    is_change = models.IntegerField(default=0)
     nguoiTao = models.ForeignKey(
         'MyUsers',
         models.SET_NULL,

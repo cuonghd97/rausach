@@ -128,62 +128,71 @@ $(document).ready(function () {
 
     // Đặt hàng
     $("#btn-dat-hang").on("click", function () {
-        var data = table.rows().data();
-        var cart = [];
-        var data_so_luong = $("#table-cart #so_luong_dat")
-            .map(function () {
-                return $(this).val();
-            })
-            .get();
-        for (let i = 0; i < data.length; i++) {
-            obj = {};
-            obj.id_hang_dat = data[i].id;
-            obj.id_hang = data[i].id_hang;
-
-            cart.push(obj);
-        }
-        var check = true
-        for (let i = 0; i < cart.length; i++) {
-            if (data_so_luong[i] <= 0) {
-                check = false
-            }
-            cart[i].so_luong = data_so_luong[i];
-        }
-        formData = new FormData();
-        formData.append(
-            "csrfmiddlewaretoken",
-            $("input[name=csrfmiddlewaretoken]").val()
-        );
-        if (data_so_luong.length > 0 && check === true) {
-            cart = JSON.stringify(cart);
-            formData.append("data", cart);
-            $.ajax({
-                contentType: false,
-                processData: false,
-                type: "post",
-                url: location.url,
-                data: formData,
-                success: function (data) {
-                    table.ajax.reload();
-                    if (data.status == "success") {
-                        Swal.fire({
-                            type: "success",
-                            title: "Thành công",
-                            timer: 1000
-                        });
-                    } else {
-                        Swal.fire({
-                            type: "error",
-                            title: "Lỗi"
-                        });
-                    }
-                }
-            });
-        } else {
+        if ($("#so_dien_thoai").val() == '' || $("#dia_chi").val() == '') {
             Swal.fire({
-                type: "error",
-                title: "Lỗi"
-            });
+                type: "warning",
+                // title: "Thành công",
+                text: "Vui lòng điền đầy đủ số điện thoại và địa chỉ",
+                // timer: 1000
+            })
+        } else {
+            var data = table.rows().data();
+            var cart = [];
+            var data_so_luong = $("#table-cart #so_luong_dat")
+                .map(function () {
+                    return $(this).val();
+                })
+                .get();
+            for (let i = 0; i < data.length; i++) {
+                obj = {};
+                obj.id_hang_dat = data[i].id;
+                obj.id_hang = data[i].id_hang;
+
+                cart.push(obj);
+            }
+            var check = true
+            for (let i = 0; i < cart.length; i++) {
+                if (data_so_luong[i] <= 0) {
+                    check = false
+                }
+                cart[i].so_luong = data_so_luong[i];
+            }
+            formData = new FormData();
+            formData.append(
+                "csrfmiddlewaretoken",
+                $("input[name=csrfmiddlewaretoken]").val()
+            );
+            if (data_so_luong.length > 0 && check === true) {
+                cart = JSON.stringify(cart);
+                formData.append("data", cart);
+                $.ajax({
+                    contentType: false,
+                    processData: false,
+                    type: "post",
+                    url: location.url,
+                    data: formData,
+                    success: function (data) {
+                        table.ajax.reload();
+                        if (data.status == "success") {
+                            Swal.fire({
+                                type: "success",
+                                title: "Thành công",
+                                timer: 1000
+                            });
+                        } else {
+                            Swal.fire({
+                                type: "error",
+                                title: "Lỗi"
+                            });
+                        }
+                    }
+                });
+            } else {
+                Swal.fire({
+                    type: "error",
+                    title: "Lỗi"
+                });
+            }
         }
     });
 

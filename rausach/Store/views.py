@@ -542,10 +542,61 @@ def hoa_don(request):
         trang_thai = request.POST.get('trang_thai')
         is_delete_in_invoives = request.POST.get('is_delete_in_invoives')
         id_hang = request.POST.get('id_hang')
+        is_remove_in_order_detail = request.POST.get(
+            'is_remove_in_order_detail')
+        id_san_pham_cthd = request.POST.get('id_san_pham_cthd')
+        is_change_status = request.POST.get('is_change_status')
+        is_delete_hd = request.POST.get('is_delete_hd')
 
-        if trang_thai != '' and trang_thai != 'phrase1':
-            chi_tiet_hd = ChiTietHoaDon.objects.filter(hoa_don=id_hd)
-            print(chi_tiet_hd)
+        # Xóa hàng trong một hóa đơn
+        if is_remove_in_order_detail is not None:
+            ChiTietHoaDon.objects.get(pk=id_san_pham_cthd).delete()
+
+            return JsonResponse(XOA_THANH_CONG, safe=False)
+
+        # Thay đổi trạng thái đơn hàng
+        if is_change_status is not None:
+            hoa_don = HoaDon.objects.get(id=id_hd)
+            # print(hoa_don.is_change)
+            if trang_thai != 'phrase1' and hoa_don.is_change == 0:
+                print(hoa_don.is_change)
+                cthd = ChiTietHoaDon.objects.filter(hoa_don=id_hd)
+                check = True
+                for item in cthd:
+                    # hang = SanPham.objects.get(pk=item.san_pham)
+                    if item.so_luong_mua > item.san_pham.ton_kho:
+                        check = False
+
+                if check:
+                    for item in cthd:
+                        hang = SanPham.objects.get(pk=item.san_pham.id)
+                        hang.ton_kho = hang.ton_kho - item.so_luong_mua
+                        hang.save()
+                    hoa_don.is_change = 1
+                    hoa_don.save()
+                    return JsonResponse(
+                        {'status': 'success', 'messages': 'Đổi trạng thái thành công'})
+                else:
+                    return JsonResponse(
+                        {'status': 'success', 'messages': 'Đổi trạng thái thất bại'})
+                # print(cthd)
+            elif trang_thai != 'phrase1' and hoa_don.is_change != 0:
+                # print(hoa_don.is_change)
+                hoa_don.trang_thai = TrangThaiHoaDon.objects.filter(
+                    ma=trang_thai).first()
+                hoa_don.save()
+
+                return JsonResponse({'status': 'success', 'messages': 'Đổi trạng thái thành công'})
+            elif trang_thai == 'phrase1':
+                return JsonResponse({'status': 'error', 'messages': 'Lỗi'})
+        # Xóa đơn hàng
+        if is_delete_hd is not None:
+            try:
+                HoaDon.objects.get(pk=id_hd).delete()
+
+                return JsonResponse(XOA_THANH_CONG, safe=False)
+            except:
+                return JsonResponse(LOI, safe=False)
 
     return render(request, 'Store/transfer/invoices.html')
 
@@ -567,6 +618,9 @@ def data_hoa_don(request):
         else:
             obj.update({'nguoi_tao': ''})
         obj.update({'id_trang_thai': hd.trang_thai.id})
+        obj.update({'ma_trang_thai': hd.trang_thai.ma})
+        obj.update({'dia_chi': hd.dia_chi})
+        obj.update({'so_dien_thoai': hd.sdt})
         obj.update({'trang_thai': hd.trang_thai.mo_ta})
         obj.update({'created_at': hd.created_at.strftime('%d/%d/%Y %H:%M')})
         obj.update({'thoi_gian_lap': hd.created_at.strftime('%H:%M')})

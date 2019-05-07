@@ -1,0 +1,62 @@
+{% extends 'Order/layouts/base.html' %}
+{% load staticfiles %}
+{% block title %}
+Rau sạch
+{% endblock %}
+
+{% block product %}
+<hr>
+<div class="row">
+    <div class="medium-4 columns float-left">
+        <h4>Kết quả tìm kiếm</h4>
+
+    </div>
+</div>
+<div class="row">
+    {% for item in san_pham %}
+    <div class="columns medium-4 float-left">
+        <div class="media-object">
+            <div class="media-object-section">
+                {% if item.avt %}
+                    <img class="thumbnail" src="/media/{{ item.avt }}" style="width:100px; height: 100px;">
+                {% else %}
+                    <img class="thumbnail" src="https://placehold.it/100x100">
+                {% endif %}
+
+            </div>
+            <div class="media-object-section">
+                <a href="#" data-id="{{ item.id }}" data-tensp="{{ item.ten_san_pham }}" class="ten_san_pham">{{ item.ten_san_pham }}</a>
+                <p class="gia-ban">{{ item.gia_ban }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="row columns medium-3">
+    {% if san_pham.has_other_pages %}
+    <ul class="pagination">
+        {% if san_pham.has_previous %}
+        <li><a href="?page={{ san_pham.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in san_pham.paginator.page_range %}
+        {% if san_pham.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if san_pham.has_next %}
+        <li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'build/js/sweetalert2.all.min.js' %}"></script>
+{% endblock %}

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'Order/css/foundation-icons.css' %}">
     <link rel="stylesheet" href="{% static 'Order/css/base.css' %}">
     <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'JqueryUI/jquery-ui.css' %}">
     {% block css %}
     {% endblock %}
 </head>
@@ -19,7 +20,7 @@
         <div class="top-bar-left">
             <ul class="menu">
                 <ul class="dropdown menu" data-dropdown-menu>
-                    <li class="menu-text"><a href="{% url 'Order:index' %}">Rau sạch</a></li>
+                    <li><a href="{% url 'Order:index' %}">Rau sạch</a></li>
                     <li class="has-submenu">
                         <a href="#">Các loại sản phẩm</a>
                         <ul class="submenu menu vertical" data-submenu>
@@ -27,6 +28,29 @@
                             <li><a href="#" data-id="{{ item.id }}" class="loc-hang">{{ item.ten_loai }}</a></li>
                             {% endfor %}
                         </ul>
+                    </li>
+                    <li>
+                        <form action="{% url 'Order:search' %}" method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input
+                                    class="input-group-field"
+                                    name="search-text"
+                                    type="text"
+                                    style="margin-right: 0;"
+                                    id="search-text"
+                                >
+                                <div class="input-group-button">
+                                    <button
+                                        type="submit"
+                                        class="button"
+                                        style="width: auto; margin-right: 0; border: none;"
+                                    >
+                                        <i class='fi-magnifying-glass'></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </li>
                 </ul>
             </ul>
@@ -46,8 +70,8 @@
                 {% csrf_token %}
                 <li><input type="text" name="username" id="username" placeholder="Tên đăng nhập..."></li>
                 <li><input type="password" name="password" id="password" placeholder="Mật khẩu"></li>
-                <li><button class="success button btn-login">Đăng nhập</button></li>
-                <li><a href="{% url 'General:register' %}" class="success button btn-login">Đăng ký</a></li>
+                <li><button class="success button btn-login" style="border: none;">Đăng nhập</button></li>
+                <li><a href="{% url 'General:register' %}" style="border: none;" class="success button btn-login">Đăng ký</a></li>
             </ul>
             {% endif %}
         </div>
@@ -88,11 +112,13 @@
                 <p>Đồ án tốt nghiệp - Đề tài: Xây dựng trang web quản lý bán hàng cho cửa hàng Rau Sạch</p>
                 </h4>
             </div>
-            
+
         </div>
         <script src="{% static 'Order/js/jquery-2.1.4.min.js' %}"></script>
         <script src="{% static 'Order/js/foundation.js' %}"></script>
         <script src="{% static 'Order/js/login.js' %}"></script>
+        <script src="{% static 'Order/js/base.js' %}"></script>
+        <script src="{% static 'JqueryUI/jquery-ui.js' %}"></script>
         <script>
             $(document).foundation();
         </script>
@@ -143,7 +169,6 @@
                     var id = $(this).data("id")
                     $(this).attr("href", `/detail/hang/${ten_san_pham}_${id}`)
                 })
-
            })
         </script>
         <script src="{% static 'build/js/sweetalert2.all.min.js' %}"></script>

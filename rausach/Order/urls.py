@@ -13,7 +13,8 @@ urlpatterns = [
     path('data', include([
         path('-gio-hang/', views.data_gio_hang),
         path('-hoa-don/', views.data_hoa_don),
-        path('-chi-tiet-hoa-don/<int:id>/', views.data_chi_tiet_hoa_don)
+        path('-chi-tiet-hoa-don/<int:id>/', views.data_chi_tiet_hoa_don),
+        path('-ten-san-pham/', views.data_ten_san_pham)
     ])),
     # path('post', include([
     # ])),
@@ -36,5 +37,6 @@ urlpatterns = [
             'invoice/<int:id>/',
             views.chi_tiet_hoa_don,
             name='chi_tiet_hoa_don')
-    ]))
+    ])),
+    path('search/', views.search, name='search')
 ]

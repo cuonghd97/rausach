@@ -191,23 +191,66 @@ $(document).ready(function () {
         location.reload();
     })
 
+    // Xóa đơn hàng
+    $("#list_hoa_don tbody").on("click", "#xoa", function () {
+        var data = table.row($(this).parents("tr")).data()
+        var id_hoa_don = data.id
+
+        $.ajax({
+            type: "post",
+            url: location.url,
+            data: {
+                id_hoa_don: id_hoa_don,
+                is_delete_hd: 1,
+                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+            },
+            success: function(data) {
+                table.ajax.reload()
+                if (data.status == "success") {
+                    Swal.fire({
+                        type: "success",
+                        title: "Thành công",
+                        text: data.messages,
+                        timer: 1000
+                    });
+                } else {
+                    Swal.fire({
+                        type: "error",
+                        title: "Lỗi",
+                        text: data.messages,
+                        timer: 1000
+                    });
+                }
+            }
+        })
+    })
+
+    // Sửa thông tin đơn hàng
     $("#list_hoa_don tbody").on("click", "#sua", function () {
         var data = table.row($(this).parents("tr")).data()
         $("#sua-trang-thai #id").val(data.id)
         $("#sua-trang-thai").modal("show")
         $("#sua-trang-thai #khung-modal select").empty()
+        $("#sua-trang-thai #khach-hang").html(data.khach_hang)
+        $("#sua-trang-thai #dia-chi").html(data.dia_chi)
+        $("#sua-trang-thai #so-dien-thoai").html(data.so_dien_thoai)
+        $("#sua-trang-thai #thoi-gian-dat").html(data.created_at)
+        var ma_trang_thai = data.ma_trang_thai
         $.ajax({
             type: "get",
             url: "/store/data-trang-thai/",
             success: function (data) {
-                var elements = `<option value="">--Chọn--</option>`
+                var elements = ``
                 for (item of data) {
+                    // if (item.ma )
                     elements += `<option value="${item.ma}">${item.mo_ta}</option>`
                 }
                 $("#sua-trang-thai #trang_thai").html(elements)
-            }
+                $("#sua-trang-thai #trang_thai").val(ma_trang_thai)
+            },
+            // complete:
         })
-        $("#sua-trang-thai #hoa-don").DataTable({
+        var chi_tiet_hoa_don_table = $("#sua-trang-thai #hoa-don").DataTable({
             destroy: true,
             paging: false,
             searching: false,
@@ -218,10 +261,10 @@ $(document).ready(function () {
                 dataSrc: "data"
             },
             columns: [
-                {data: "ten_san_pham"},
-                {data: "so_luong_mua"},
-                {data: "trang_thai"},
-                {data: "gia_ban"}
+                { data: "ten_san_pham" },
+                { data: "so_luong_mua" },
+                { data: "trang_thai" },
+                { data: "gia_ban" }
             ],
             columnDefs: [
                 {
@@ -235,23 +278,62 @@ $(document).ready(function () {
                                     </button>`
                 }
             ],
-            createdRow: function(row, data, dataIndex) {
+            createdRow: function (row, data, dataIndex) {
                 $(row).find("#btn-remove").attr("data-id", data["id"])
+            },
+            initComplete: function (settings, json) {
+                $("#sua-trang-thai #btn-remove").on("click", function () {
+                    console.log($(this).data("id"))
+                    var id_san_pham_cthd = $(this).data("id")
+                    $.ajax({
+                        type: "post",
+                        url: location.url,
+                        data: {
+                            is_remove_in_order_detail: 1,
+                            id_san_pham_cthd: id_san_pham_cthd,
+                            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+                        },
+                        success: function (data) {
+                            chi_tiet_hoa_don_table.ajax.reload()
+                        }
+                    })
+                })
             }
         })
     })
 
     $("#sua-trang-thai #btn-luu").on("click", function () {
+        console.log($("#sua-trang-thai #trang_thai").val())
         var formData = new FormData();
         formData.append("id_hoa_don", $("#sua-trang-thai #id").val())
         formData.append("trang_thai", $("#sua-trang-thai #trang_thai").val())
         formData.append("csrfmiddlewaretoken", $("input[name=csrfmiddlewaretoken]").val())
+        formData.append("is_change_status", 1)
         $.ajax({
             contentType: false,
             processData: false,
             type: "post",
             url: location.url,
             data: formData,
+            success: function (data) {
+                console.log(data)
+                $("#sua-trang-thai").modal("hide")
+                if (data.status == "success") {
+                    Swal.fire({
+                        type: "success",
+                        title: "Thành công",
+                        text: data.messages,
+                        timer: 1000
+                    });
+                } else {
+                    Swal.fire({
+                        type: "error",
+                        title: "Lỗi",
+                        text: data.messages,
+                        timer: 1000
+                    });
+                }
+            }
         })
     })
 

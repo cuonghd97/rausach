@@ -262,3 +262,32 @@ def data_chi_tiet_hoa_don(request, id):
     response_data.update({'san_pham': data})
 
     return JsonResponse(response_data, safe=False)
+
+
+# Tìm kiếm
+def search(request):
+    if request.method == 'POST':
+        ten_sp = request.POST.get('search-text')
+        san_pham = SanPham.objects.filter(
+            ten_san_pham=ten_sp).order_by('-ngay_them')
+        paginator = Paginator(san_pham, 9)
+        page = request.GET.get('page', 1)
+        try:
+            san_pham = paginator.page(page)
+        except PageNotAnInteger:
+            san_pham = paginator.page(1)
+        except EmptyPage:
+            san_pham = paginator.page(paginator.num_pages)
+
+        loai_hang = LoaiHang.objects.all()
+        data = {'san_pham': san_pham, 'loai_hang': loai_hang}
+    return render(request, 'Order/search.html', data)
+
+
+# Data tên sản phẩm
+def data_ten_san_pham(request):
+    san_pham = SanPham.objects.all()
+    data = []
+    for item in san_pham:
+        data.append(item.ten_san_pham)
+    return JsonResponse(data, safe=False)
