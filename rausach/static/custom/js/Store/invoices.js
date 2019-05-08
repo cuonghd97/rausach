@@ -21,8 +21,7 @@ $(document).ready(function () {
                 data: null,
                 defaultContent: `<div class="btn-group" role="group" aria-label="Basic example">
                                 <button class="btn btn-primary" id="xuat">Xuất hóa đơn</button>
-                                <button class="btn btn-info" id="sua">Sửa</button>
-                                <button class="btn btn-danger" id="xoa">Xóa</button>
+                                <button class="btn btn-info" id="sua">Duyệt</button>
                                 </div>`
             }
         ]

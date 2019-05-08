@@ -16,9 +16,9 @@ LOI = {"status": "error", "messages": 'Lỗi'}
 XOA_THANH_CONG = {"status": "success", "messages": 'Xóa thành công'}
 
 
-def base(request):
+def overview(request):
     user = request.user
-    return render(request, 'Store/layouts/base.html', {"user": user})
+    return render(request, 'Store/overview/overview.html', {"user": user})
 
 
 # Json tỉnh
@@ -557,9 +557,9 @@ def hoa_don(request):
         # Thay đổi trạng thái đơn hàng
         if is_change_status is not None:
             hoa_don = HoaDon.objects.get(id=id_hd)
-            # print(hoa_don.is_change)
+            print(trang_thai)
             if trang_thai != 'phrase1' and hoa_don.is_change == 0:
-                print(hoa_don.is_change)
+                # print(hoa_don.is_change)
                 cthd = ChiTietHoaDon.objects.filter(hoa_don=id_hd)
                 check = True
                 for item in cthd:
@@ -580,7 +580,7 @@ def hoa_don(request):
                     return JsonResponse(
                         {'status': 'success', 'messages': 'Đổi trạng thái thất bại'})
                 # print(cthd)
-            elif trang_thai != 'phrase1' and hoa_don.is_change != 0:
+            elif trang_thai != 'phrase1' and hoa_don.is_change == 1:
                 # print(hoa_don.is_change)
                 hoa_don.trang_thai = TrangThaiHoaDon.objects.filter(
                     ma=trang_thai).first()
@@ -589,6 +589,19 @@ def hoa_don(request):
                 return JsonResponse({'status': 'success', 'messages': 'Đổi trạng thái thành công'})
             elif trang_thai == 'phrase1':
                 return JsonResponse({'status': 'error', 'messages': 'Lỗi'})
+
+            elif trang_thai == 'phrase8' and hoa_don.is_change != 2:
+                print('phrase8')
+                cthd = ChiTietHoaDon.objects.filter(hoa_don=id_hd)
+                print(id_hd)
+                for item in cthd:
+                    hang = SanPham.objects.get(pk=item.san_pham.id)
+                    hang.ton_kho = hang.ton_kho + item.so_luong_mua
+                    hang.save()
+                hoa_don.is_change = 2
+                hoa_don.save()
+                return JsonResponse(
+                    {'status': 'success', 'messages': 'Đổi trạng thái thành công'})
         # Xóa đơn hàng
         if is_delete_hd is not None:
             try:
@@ -677,3 +690,139 @@ def data_trang_thai(request):
     trang_thai = TrangThaiHoaDon.objects.all().values()
 
     return JsonResponse(list(trang_thai), safe=False)
+
+
+def data_dem_hoa_don(request):
+    data = []
+    trang_thai_hoa_don = TrangThaiHoaDon.objects.all()
+    for item in trang_thai_hoa_don:
+        obj = {}
+        obj.update({'mo_ta': item.mo_ta})
+        obj.update({'count': HoaDon.objects.filter(
+            trang_thai=item.id).count()})
+        data.append(obj)
+    return JsonResponse(data, safe=False)
+
+
+def data_loc_hoa_don(request):
+    if request.method == 'POST':
+        loc_data = request.POST.get('loc_data')
+        tu_ngay = request.POST.get('tu_ngay')
+        den_ngay = request.POST.get('den_ngay')
+        if tu_ngay != '' and den_ngay != '':
+            tu_ngay = datetime.strptime(tu_ngay, '%d-%m-%Y').strftime('%Y-%m-%d')
+            den_ngay = datetime.strptime(den_ngay, '%d-%m-%Y').strftime('%Y-%m-%d')
+        hoa_don = HoaDon.objects.all().order_by('-created_at')
+        if int(loc_data) != -1 and tu_ngay is None:
+            print(loc_data)
+            hoa_don = HoaDon.objects.filter(
+                trang_thai=TrangThaiHoaDon.objects.get(
+                    pk=loc_data)).order_by('-created_at')
+
+        if tu_ngay != '' and int(loc_data) == -1:
+            hoa_don = HoaDon.objects.filter(ngay_tao__gte=tu_ngay).filter(
+                ngay_tao__lte=den_ngay).order_by('-created_at')
+        if tu_ngay != '' and int(loc_data) != -1:
+            hoa_don = HoaDon.objects.filter(ngay_tao__gte=tu_ngay).filter(
+                ngay_tao__lte=den_ngay).filter(
+                trang_thai=TrangThaiHoaDon.objects.get(
+                    pk=loc_data)).order_by('-created_at')
+        data = []
+        i = 1
+
+        for hd in hoa_don:
+            obj = {}
+            obj.update({'no': i})
+            obj.update({'id': hd.id})
+            if hd.nguoiTao:
+                obj.update({'nguoi_tao': hd.nguoiTao.ho_ten})
+            else:
+                obj.update({'nguoi_tao': ''})
+            obj.update({'id_trang_thai': hd.trang_thai.id})
+            obj.update({'ma_trang_thai': hd.trang_thai.ma})
+            obj.update({'dia_chi': hd.dia_chi})
+            obj.update({'so_dien_thoai': hd.sdt})
+            obj.update({'trang_thai': hd.trang_thai.mo_ta})
+            obj.update({'created_at': hd.created_at.strftime('%d/%d/%Y %H:%M')})
+            obj.update({'thoi_gian_lap': hd.created_at.strftime('%H:%M')})
+            obj.update({'ghi_chu': hd.ghi_chu})
+            obj.update({'khach_hang': hd.ten_khach_hang})
+
+            i += 1
+            data.append(obj)
+
+    return JsonResponse(data, safe=False)
+
+
+def data_thong_ke_san_pham(request):
+    so_luong_sp = SanPham.objects.all().count()
+
+    data = {}
+    data.update({'so_luong_san_pham': so_luong_sp})
+    theo_loai_hang = []
+    loai_hang = LoaiHang.objects.all()
+    for item in loai_hang:
+        obj = {}
+        obj.update({'count': SanPham.objects.filter(loai_hang=item).count()})
+        obj.update({'ten_loai': item.ten_loai})
+
+        theo_loai_hang.append(obj)
+    data.update({'theo_loai_hang': theo_loai_hang})
+
+    theo_nha_cung_cap = []
+    nha_cung_cap = NhaCungCap.objects.all()
+    for item in nha_cung_cap:
+        obj = {}
+        obj.update({'count': SanPham.objects.filter(nha_cung_cap=item).count()})
+        obj.update({'ten_nha_cung_cap': item.ten})
+
+        theo_nha_cung_cap.append(obj)
+
+    data.update({'theo_nha_cung_cap': theo_nha_cung_cap})
+
+    return JsonResponse(data, safe=False)
+
+
+def data_doanh_thu(request):
+    if request.method == 'POST':
+        tu_ngay = request.POST.get('tu_ngay')
+        den_ngay = request.POST.get('den_ngay')
+        if tu_ngay != '' and den_ngay != '':
+            tu_ngay = datetime.strptime(tu_ngay, '%d-%m-%Y').strftime('%Y-%m-%d')
+            den_ngay = datetime.strptime(den_ngay, '%d-%m-%Y').strftime('%Y-%m-%d')
+        phrase5 = TrangThaiHoaDon.objects.filter(ma='phrase5').first()
+        hoa_don = HoaDon.objects.filter(ngay_tao__gte=tu_ngay).filter(
+                ngay_tao__lte=den_ngay).filter(trang_thai=phrase5)
+        sum_invoice = 0
+        response_data = {}
+        data = []
+        i = 1
+
+        for hd in hoa_don:
+            obj = {}
+            obj.update({'no': i})
+            obj.update({'id': hd.id})
+            if hd.nguoiTao:
+                obj.update({'nguoi_tao': hd.nguoiTao.ho_ten})
+            else:
+                obj.update({'nguoi_tao': ''})
+            obj.update({'id_trang_thai': hd.trang_thai.id})
+            obj.update({'ma_trang_thai': hd.trang_thai.ma})
+            obj.update({'dia_chi': hd.dia_chi})
+            obj.update({'so_dien_thoai': hd.sdt})
+            obj.update({'trang_thai': hd.trang_thai.mo_ta})
+            obj.update({'created_at': hd.created_at.strftime('%d/%d/%Y %H:%M')})
+            obj.update({'thoi_gian_lap': hd.created_at.strftime('%H:%M')})
+            obj.update({'ghi_chu': hd.ghi_chu})
+            obj.update({'khach_hang': hd.ten_khach_hang})
+
+            i += 1
+
+            cthd = ChiTietHoaDon.objects.filter(hoa_don=hd)
+            for item in cthd:
+                sum_invoice += item.gia_ban
+            data.append(obj)
+
+        response_data.update({'tong': sum_invoice})
+        response_data.update({'data': data})
+    return JsonResponse(response_data, safe=False)

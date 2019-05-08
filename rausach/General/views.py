@@ -13,7 +13,7 @@ def user_login(request):
     user = request.user
     if user.is_authenticated:
         if user.role == 0:
-            return redirect(reverse('Store:base'))
+            return redirect(reverse('Store:overview'))
         if user.role == 2:
             return JsonResponse({"status": "success", "messages": 'Bán hàng'})
         if user.role == 3:
@@ -30,7 +30,7 @@ def user_login(request):
                 if check_password(password, user.password):
                     login(request, user)
                     if user.role == 0:
-                        return JsonResponse({"status": "success", "messages": reverse('Store:base')})
+                        return JsonResponse({"status": "success", "messages": reverse('Store:overview')})
                     if user.role == 2:
                         return JsonResponse({"status": "success", "messages": 'Bán hàng'})
                     if user.role == 3:

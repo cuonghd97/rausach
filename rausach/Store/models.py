@@ -122,7 +122,8 @@ class HoaDon(models.Model):
     khach_hang = models.ForeignKey(
         'MyUsers', models.SET_NULL, related_name='khach_hang', null=True)
     ten_khach_hang = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(timezone.now())
+    ngay_tao = models.DateField(timezone.now())
     ghi_chu = models.TextField(null=True)
     sdt = models.CharField(max_length=200)
     dia_chi = models.TextField()

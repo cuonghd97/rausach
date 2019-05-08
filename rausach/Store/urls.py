@@ -5,7 +5,7 @@ from Store import views
 app_name = 'Store'
 
 urlpatterns = [
-    path('base/', views.base, name='base'),
+    path('overview/', views.overview, name='overview'),
     path('quanly', include([
         path('-san-pham/', views.san_pham, name='quan_ly_san_pham'),
         path('-loai-hang/', views.loai_hang, name='quan_ly_loai_hang'),
@@ -26,7 +26,11 @@ urlpatterns = [
         path('-nguoi-dung/', views.data_nguoi_dung),
         path('-hoa-don/', views.data_hoa_don),
         path('-chi-tiet-hoa-don/<int:id>', views.chi_tiet_hoa_don),
-        path('-trang-thai/', views.data_trang_thai)
+        path('-trang-thai/', views.data_trang_thai),
+        path('-dem-hoa-don/', views.data_dem_hoa_don),
+        path('-loc-hoa-don/', views.data_loc_hoa_don),
+        path('-dem-san-pham/', views.data_thong_ke_san_pham),
+        path('-doanh-thu/', views.data_doanh_thu)
     ])),
     path('post', include([
         path('-loai-hang/', views.post_loai_hang),

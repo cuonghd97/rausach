@@ -6,46 +6,22 @@ Rau sạch
 {% block neatproduct %}
 <hr>
 <div class="row column text-center">
-    <h2>Sản phẩm bán chạy trong ngày</h2>
+    <h2>Sản phẩm đang hạ giá</h2>
     <hr>
 </div>
 <div class="row small-up-2 medium-up-3 large-up-6">
+    {% for item in new_sp %}
     <div class="column">
-        <img class="thumbnail" src="https://placehold.it/300x400">
-        <h5>Nulla At Nulla Justo, Eget</h5>
-        <p>$400</p>
-        <a href="#" class="button small expanded hollow">Buy</a>
+        <img class="thumbnail" src="/media/{{ item.avt }}" style="width: 170px; height: 170px;">
+        <h5>{{ item.ten_san_pham }} </h5>
+        <p class="gia-ban">{{ item.gia_ban }}</p>
+        <span>{{ item.khuyen_mai }} %</span>
+
+        <a href="#" data-id="{{ item.id }}" data-tensp="{{ item.ten_san_pham }}" class="ten_san_pham button small expanded hollow">Chi tiết</a>
     </div>
-    <div class="column">
-        <img class="thumbnail" src="https://placehold.it/300x400">
-        <h5>Nulla At Nulla Justo, Eget</h5>
-        <p>$400</p>
-        <a href="#" class="button small expanded hollow">Buy</a>
-    </div>
-    <div class="column">
-        <img class="thumbnail" src="https://placehold.it/300x400">
-        <h5>Nulla At Nulla Justo, Eget</h5>
-        <p>$400</p>
-        <a href="#" class="button small expanded hollow">Buy</a>
-    </div>
-    <div class="column">
-        <img class="thumbnail" src="https://placehold.it/300x400">
-        <h5>Nulla At Nulla Justo, Eget</h5>
-        <p>$400</p>
-        <a href="#" class="button small expanded hollow">Buy</a>
-    </div>
-    <div class="column">
-        <img class="thumbnail" src="https://placehold.it/300x400">
-        <h5>Nulla At Nulla Justo, Eget</h5>
-        <p>$400</p>
-        <a href="#" class="button small expanded hollow">Buy</a>
-    </div>
-    <div class="column">
-        <img class="thumbnail" src="https://placehold.it/300x400">
-        <h5>Nulla At Nulla Justo, Eget</h5>
-        <p>$400</p>
-        <a href="#" class="button small expanded hollow">Buy</a>
-    </div>
+    {% endfor %}
+
+
 </div>
 {% endblock %}
 
@@ -67,7 +43,7 @@ Rau sạch
                 {% else %}
                     <img class="thumbnail" src="https://placehold.it/100x100">
                 {% endif %}
-                
+
             </div>
             <div class="media-object-section">
                 <a href="#" data-id="{{ item.id }}" data-tensp="{{ item.ten_san_pham }}" class="ten_san_pham">{{ item.ten_san_pham }}</a>

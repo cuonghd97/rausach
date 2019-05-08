@@ -23,6 +23,7 @@ def base(request):
 
 def index(request):
     san_pham = SanPham.objects.filter(is_active=1).order_by('-ngay_them')
+    new_sp = SanPham.objects.filter(is_active=1).order_by('-khuyen_mai')[:6]
     paginator = Paginator(san_pham, 9)
     page = request.GET.get('page', 1)
     try:
@@ -33,7 +34,7 @@ def index(request):
         san_pham = paginator.page(paginator.num_pages)
 
     loai_hang = LoaiHang.objects.all()
-    data = {'san_pham': san_pham, 'loai_hang': loai_hang}
+    data = {'san_pham': san_pham, 'loai_hang': loai_hang, 'new_sp': new_sp}
     return render(request, 'Order/index.html', data)
 
 
